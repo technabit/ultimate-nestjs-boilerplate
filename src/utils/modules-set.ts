@@ -21,8 +21,10 @@ import {
   I18nModule,
   QueryResolver,
 } from 'nestjs-i18n';
+import { LoggerModule } from 'nestjs-pino';
 import path from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import loggerFactory from './logger-factory';
 
 function generateModulesSet() {
   const imports: ModuleMetadata['imports'] = [
@@ -95,11 +97,11 @@ function generateModulesSet() {
   });
 
   // FIXME: Uncomment this when LoggerModule is implemented
-  // const loggerModule = LoggerModule.forRootAsync({
-  //   imports: [ConfigModule],
-  //   inject: [ConfigService],
-  //   useFactory: loggerFactory,
-  // });
+  const loggerModule = LoggerModule.forRootAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: loggerFactory,
+  });
 
   const cacheModule = CacheModule.registerAsync({
     imports: [ConfigModule],
@@ -134,7 +136,7 @@ function generateModulesSet() {
         cacheModule,
         dbModule,
         i18nModule,
-        // loggerModule,
+        loggerModule,
         MailModule,
       ];
       break;
@@ -145,7 +147,7 @@ function generateModulesSet() {
         cacheModule,
         dbModule,
         i18nModule,
-        // loggerModule,
+        loggerModule,
         MailModule,
       ];
       break;
@@ -156,7 +158,7 @@ function generateModulesSet() {
         cacheModule,
         dbModule,
         i18nModule,
-        // loggerModule,
+        loggerModule,
       ];
       break;
     default:

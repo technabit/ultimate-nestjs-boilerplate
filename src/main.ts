@@ -28,7 +28,7 @@ async function bootstrap() {
     development: consoleLoggingConfig(),
     production: true,
     test: false,
-  };
+  } as const;
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -81,6 +81,7 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       whitelist: true,
+      forbidNonWhitelisted: true,
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       exceptionFactory: (errors: ValidationError[]) => {
         return new UnprocessableEntityException(errors);

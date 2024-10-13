@@ -84,7 +84,7 @@ export function consoleLoggingConfig(): Options {
       options: {
         singleLine: true,
         ignore:
-          'req.id,req.method,req.url,req.headers,req.remoteAddress,req.remotePort,res.headers',
+          'req.id,req.headers,req.remoteAddress,req.remotePort,res.headers',
       },
     },
   };
