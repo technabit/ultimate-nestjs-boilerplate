@@ -99,7 +99,7 @@ describe('UserController', () => {
         const errors = await validate(createUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
-          minLength: 'username must be longer than or equal to 1 characters',
+          minLength: 'username must be longer than or equal to 3 characters',
         });
       });
 
