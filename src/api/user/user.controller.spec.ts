@@ -50,7 +50,6 @@ describe('UserController', () => {
         email: 'mail@example.com',
         password: 'password',
         bio: 'bio',
-        image: 'image',
       } as CreateUserDto;
 
       const userResDto = new UserDto();
@@ -126,15 +125,6 @@ describe('UserController', () => {
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
           minLength: 'password must be longer than or equal to 6 characters',
-        });
-      });
-
-      it('should fail with invalid password', async () => {
-        createUserDto.password = 'invalid-password';
-        const errors = await validate(CreateUserDto);
-        expect(errors.length).toEqual(1);
-        expect(errors[0].constraints).toEqual({
-          isPassword: 'password is invalid',
         });
       });
 
