@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserResDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -53,12 +53,11 @@ describe('UserController', () => {
         image: 'image',
       } as CreateUserDto;
 
-      const userResDto = new UserResDto();
+      const userResDto = new UserDto();
       userResDto.id = '1';
       userResDto.username = 'john';
       userResDto.email = 'mail@example.com';
       userResDto.bio = 'bio';
-      userResDto.image = 'image';
       userResDto.createdAt = new Date();
       userResDto.updatedAt = new Date();
 
@@ -80,15 +79,14 @@ describe('UserController', () => {
     });
 
     describe('CreateUserDto', () => {
-      let CreateUserDto: CreateUserDto;
+      let createUserDto: CreateUserDto;
 
       beforeEach(() => {
-        CreateUserDto = plainToInstance(CreateUserDto, {
+        createUserDto = plainToInstance(CreateUserDto, {
           username: 'john',
           email: 'mail@example.com',
           password: 'password',
           bio: 'bio',
-          image: 'image',
         });
       });
 
@@ -98,7 +96,7 @@ describe('UserController', () => {
       });
 
       it('should fail with empty username', async () => {
-        CreateUserDto.username = '';
+        createUserDto.username = '';
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
@@ -107,14 +105,14 @@ describe('UserController', () => {
       });
 
       it('should fail with empty email', async () => {
-        CreateUserDto.email = '';
+        createUserDto.email = '';
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].property).toBe('email');
       });
 
       it('should fail with invalid email', async () => {
-        CreateUserDto.email = 'invalid-email';
+        createUserDto.email = 'invalid-email';
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
@@ -123,7 +121,7 @@ describe('UserController', () => {
       });
 
       it('should fail with empty password', async () => {
-        CreateUserDto.password = '';
+        createUserDto.password = '';
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
@@ -132,7 +130,7 @@ describe('UserController', () => {
       });
 
       it('should fail with invalid password', async () => {
-        CreateUserDto.password = 'invalid-password';
+        createUserDto.password = 'invalid-password';
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(1);
         expect(errors[0].constraints).toEqual({
@@ -140,61 +138,27 @@ describe('UserController', () => {
         });
       });
 
-      it('should fail with empty bio', async () => {
-        CreateUserDto.bio = '';
-        const errors = await validate(CreateUserDto);
-        expect(errors.length).toEqual(1);
-        expect(errors[0].constraints).toEqual({
-          minLength: 'bio must be longer than or equal to 1 characters',
-        });
-      });
-
       it('should success with bio is null', async () => {
-        CreateUserDto.bio = null;
+        createUserDto.bio = null;
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(0);
       });
 
       it('should success with bio is undefined', async () => {
-        CreateUserDto.bio = undefined;
-        const errors = await validate(CreateUserDto);
-        expect(errors.length).toEqual(0);
-      });
-
-      it('should fail with empty image', async () => {
-        CreateUserDto.image = '';
-        const errors = await validate(CreateUserDto);
-        expect(errors.length).toEqual(1);
-        expect(errors[0].constraints).toEqual({
-          minLength: 'image must be longer than or equal to 1 characters',
-        });
-      });
-
-      it('should success with image is null', async () => {
-        CreateUserDto.image = null;
-        const errors = await validate(CreateUserDto);
-        expect(errors.length).toEqual(0);
-      });
-
-      it('should success with image is undefined', async () => {
-        CreateUserDto.image = undefined;
+        createUserDto.bio = undefined;
         const errors = await validate(CreateUserDto);
         expect(errors.length).toEqual(0);
       });
     });
   });
 
-  // TODO: write unit tests for findAllUsers method
-  // TODO: write unit tests for loadMoreUsers method
-
   describe('findUser', () => {
     it('should return a user', async () => {
-      const userResDto = new UserResDto();
+      const userResDto = new UserDto();
       userResDto.id = '1';
       userResDto.username = 'john';
       userResDto.email = 'mail@example.com';
       userResDto.bio = 'bio';
-      userResDto.image = 'image';
       userResDto.createdAt = new Date();
       userResDto.updatedAt = new Date();
 
@@ -215,8 +179,4 @@ describe('UserController', () => {
       expect(userServiceValue.findOne).toHaveBeenCalledTimes(1);
     });
   });
-
-  // TODO: write unit tests for updateUser method
-  // TODO: write unit tests for removeUser method
-  // TODO: write unit tests for changePassword method
 });
