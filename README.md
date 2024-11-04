@@ -1,4 +1,4 @@
-# Nest.js Boilerplate ⚡
+# Ultimate Nest.js Boilerplate ⚡
 
 ## Tech 🖥️
 
@@ -8,7 +8,7 @@
 - [x] TypeORM
 - [x] Offset and Cursor based pagination support
 - [x] REST & Graphql API
-- [x] Swagger and API versioning
+- [x] Swagger and API versioning for REST API
 - [x] BullMQ for queue
 - [x] Pino for logging
 - [x] Testing with Jest
@@ -17,7 +17,6 @@
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
-- [ ] Rate Limiter
 
 ## Additional Features 📦:
 
