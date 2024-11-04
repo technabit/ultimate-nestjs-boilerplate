@@ -17,4 +17,22 @@
 - [x] SWC instead of Webpack
 - [ ] Rate Limiter
 
+### Dependency Graph
+
+Make sure [Graphviz](https://www.graphviz.org/) is installed first.
+
+- All dependencies:
+
+```
+pnpm graph:app
+```
+
+- Only circular dependencies:
+
+```
+pnpm graph:circular
+```
+
+<img src="./github-assets/graph.png">
+
 Extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
