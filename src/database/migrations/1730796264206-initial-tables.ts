@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class InitialTables1730545918237 implements MigrationInterface {
-  name = 'InitialTables1730545918237';
+export class InitialTables1730796264206 implements MigrationInterface {
+  name = 'InitialTables1730796264206';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
@@ -48,10 +48,12 @@ export class InitialTables1730545918237 implements MigrationInterface {
             WHERE "deletedAt" IS NULL
         `);
     await queryRunner.query(`
-            CREATE INDEX "IDX_ee5c9180c88edacae29c74a182" ON "session" ("deletedByUserId")
+            CREATE INDEX "IDX_b13a4f627ac3e62fb98bde3ebe" ON "session" ("deletedByUserId")
+            WHERE "deletedAt" IS NULL
         `);
     await queryRunner.query(`
-            CREATE INDEX "IDX_3d2f174ef04fb312fdebd0ddc5" ON "session" ("userId")
+            CREATE INDEX "IDX_a6aa20a633f4178e5a1fea212e" ON "session" ("userId")
+            WHERE "deletedAt" IS NULL
         `);
     await queryRunner.query(`
             ALTER TABLE "session"
@@ -89,10 +91,10 @@ export class InitialTables1730545918237 implements MigrationInterface {
             ALTER TABLE "session" DROP CONSTRAINT "FK_24a9ef949f68dca0294776b6b4c"
         `);
     await queryRunner.query(`
-            DROP INDEX "public"."IDX_3d2f174ef04fb312fdebd0ddc5"
+            DROP INDEX "public"."IDX_a6aa20a633f4178e5a1fea212e"
         `);
     await queryRunner.query(`
-            DROP INDEX "public"."IDX_ee5c9180c88edacae29c74a182"
+            DROP INDEX "public"."IDX_b13a4f627ac3e62fb98bde3ebe"
         `);
     await queryRunner.query(`
             DROP INDEX "public"."IDX_9928e7e276c40aa9411a2108dd"

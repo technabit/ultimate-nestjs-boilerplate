@@ -45,10 +45,10 @@ pnpm graph:circular
 
 ### 2. Database ERD 🛢️
 
-Visualize your database entities and their relationship.
+Visualize your database entities and their relationships.
 
 ```
-pnpm erd
+pnpm erd:generate
 ```
 
 <figure>
