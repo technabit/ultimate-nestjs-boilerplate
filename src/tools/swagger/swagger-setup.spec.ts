@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { SwaggerModule } from '@nestjs/swagger';
 import { Test, TestingModule } from '@nestjs/testing';
-import setupSwagger from './setup-swagger';
+import setupSwagger from './swagger.setup';
 
 describe('setupSwagger', () => {
   let app: INestApplication;

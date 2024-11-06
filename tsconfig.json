@@ -3,6 +3,7 @@
     "require": ["tsconfig-paths/register"] // configuration for typeorm migration
   },
   "compilerOptions": {
+    "jsx": "react",
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
