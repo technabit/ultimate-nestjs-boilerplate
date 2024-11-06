@@ -16,6 +16,7 @@
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
+- [x] File Uploads
 - [x] Testing with Jest
 - [x] pnpm
 - [x] Docker
