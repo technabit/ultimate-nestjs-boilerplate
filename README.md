@@ -20,7 +20,7 @@
 - [x] Sentry
 - [x] Testing with Jest
 - [x] pnpm
-- [x] Docker
+- [x] Docker: One click dev and prod ready
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
