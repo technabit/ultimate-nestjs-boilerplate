@@ -10,7 +10,6 @@ process.env.APP_FALLBACK_LANGUAGE = 'en';
 process.env.APP_LOG_LEVEL = 'debug';
 process.env.APP_LOG_SERVICE = 'console';
 process.env.APP_CORS_ORIGIN = 'http://localhost:3000,http://example.com';
-process.env.DATABASE_TYPE = 'postgres';
 process.env.DATABASE_HOST = 'localhost';
 process.env.DATABASE_PORT = '5432';
 process.env.DATABASE_USERNAME = 'postgres';
