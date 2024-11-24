@@ -20,7 +20,7 @@
 - [x] Sentry
 - [x] Testing with Jest
 - [x] pnpm
-- [x] Docker: Dev & Prod ready on from single script.
+- [x] Docker: Dev & Prod ready from single script. [Learn More](#4-docker)
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
@@ -69,3 +69,33 @@ pnpm erd:generate
 </figure>
 
 Extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
+
+### 4. Docker
+
+##### For local development:
+
+- Start container:
+
+```
+pnpm docker:dev:up
+```
+
+- View Logs:
+
+```
+docker logs -f nestjs-boilerplate-dev
+```
+
+- Stop container:
+
+```
+pnpm docker:dev:down
+```
+
+##### For prod deployment:
+
+```
+sh ./bin/deploy.sh
+```
+
+or run workflow `.github/workflows/main.yml` via GitHub Actions.
