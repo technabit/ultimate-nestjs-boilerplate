@@ -2,8 +2,6 @@ FROM node:20-alpine AS base
 
 RUN npm install -g pnpm@9.12.2
 
-RUN npm install -g pm2
-
 # BUILD FOR LOCAL DEVELOPMENT
 FROM base AS development
 WORKDIR /app
@@ -46,6 +44,8 @@ USER node
 FROM node:20-alpine AS production
 WORKDIR /app
 
+RUN npm install -g pm2
+
 RUN chown -R node:node /app
 
 # Copy the bundled code from the build stage to the production image
@@ -55,3 +55,5 @@ COPY --chown=node:node --from=builder /app/dist ./dist
 COPY --chown=node:node --from=builder /app/package.json ./
 
 USER node
+
+CMD ["pm2-runtime", "start", "pm2.config.json"]
