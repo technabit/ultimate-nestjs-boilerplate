@@ -30,7 +30,12 @@ COPY --chown=node:node --from=development /app/tsconfig.json ./tsconfig.json
 COPY --chown=node:node --from=development /app/tsconfig.build.json ./tsconfig.build.json
 COPY --chown=node:node --from=development /app/nest-cli.json ./nest-cli.json
 
+# Build server
 RUN pnpm build
+
+# Run migrations & seeds
+RUN pnpm migration:up
+RUN pnpm seed:run
 
 # Removes unnecessary packages and re-install only production dependencies
 ENV NODE_ENV production
@@ -53,6 +58,7 @@ COPY --chown=node:node --from=builder /app/src/generated/* ./src/generated/
 COPY --chown=node:node --from=builder /app/node_modules ./node_modules
 COPY --chown=node:node --from=builder /app/dist ./dist
 COPY --chown=node:node --from=builder /app/package.json ./
+COPY --chown=node:node --from=development /app/pm2.config.json ./
 
 USER node
 
