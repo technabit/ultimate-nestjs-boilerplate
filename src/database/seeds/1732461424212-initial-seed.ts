@@ -10,14 +10,14 @@ export class InitialSeed1732461424212 implements Seeder {
     dataSource: DataSource,
     _: SeederFactoryManager,
   ): Promise<any> {
-    const userRepository = dataSource.getRepository(UserEntity);
-    await userRepository.save(
-      userRepository.create({
-        username: 'admin',
-        email: 'admin@admin.com',
-        password: 'AKIAQ74UGXHKJBMMKPUT',
-        role: Role.Admin,
-      }),
-    );
+    // const userRepository = dataSource.getRepository(UserEntity);
+    // await userRepository.save(
+    //   userRepository.create({
+    //     username: 'admin',
+    //     email: 'admin@admin.com',
+    //     password: 'AKIAQ74UGXHKJBMMKPUT',
+    //     role: Role.Admin,
+    //   }),
+    // );
   }
 }
