@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 process.env.NODE_ENV = 'test';
-process.env.MODULES_SET = 'monolith';
 process.env.APP_NAME = 'NestJS API';
 process.env.APP_URL = 'http://localhost:3000';
 process.env.APP_PORT = '3000';
@@ -18,7 +17,7 @@ process.env.DATABASE_NAME = 'nestjs_api';
 process.env.DATABASE_LOGGING = 'true';
 process.env.DATABASE_SYNCHRONIZE = 'false';
 process.env.DATABASE_MAX_CONNECTIONS = '100';
-process.env.DATABASE_SSL_ENABLED = 'false';
+process.env.DATABASE_SSL = 'false';
 process.env.DATABASE_REJECT_UNAUTHORIZED = 'false';
 process.env.DATABASE_CA = '';
 process.env.DATABASE_KEY = '';
