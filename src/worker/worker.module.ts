@@ -3,4 +3,4 @@ import { EmailQueueModule } from './queues/email-queue/email-queue.module';
 @Module({
   imports: [EmailQueueModule],
 })
-export class BackgroundModule {}
+export class WorkerModule {}

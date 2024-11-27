@@ -13,7 +13,7 @@ services:
       - redis
       - mail
     command: >
-      sh -c "npx pnpm start:dev -y"
+      sh -c "pnpm start:dev"
 
   database:
     image: postgres:16
