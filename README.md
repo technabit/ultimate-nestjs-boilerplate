@@ -10,8 +10,9 @@
 - [x] REST & GraphQL API
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend)
-- [x] Websocket
+- [x] Websockets
 - [x] BullMQ for Queues
+- [x] Worker server for background tasks like queues.
 - [x] Caching using Redis
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
