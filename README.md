@@ -17,7 +17,7 @@
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
-- [x] Server Monitoring with Grafana & Prometheus [Learn More](#4-server-monitoring)
+- [x] Server Monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
 - [x] File Uploads
 - [x] Sentry
 - [x] Testing with Jest
