@@ -17,11 +17,12 @@
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
+- [x] Server Monitoring with Grafana & Prometheus [Learn More](#4-server-monitoring)
 - [x] File Uploads
 - [x] Sentry
 - [x] Testing with Jest
 - [x] pnpm
-- [x] Docker: Dev & Prod ready from single script. [Learn More](#4-docker)
+- [x] Docker: Dev & Prod ready from single script. [Learn More](#5-docker)
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
@@ -71,7 +72,15 @@ pnpm erd:generate
 
 Extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
 
-### 4. Docker
+### 4. Server Monitoring
+
+Prometheus & Grafana are available with Docker setup. They're available when application is ready after running `pnpm docker:<dev | prod>:up`.
+
+Make sure to set Grafana username and password in `.env` file to access the server dashboards.
+
+![alt text](./github-assets/server-monitoring.png)
+
+### 5. Docker
 
 ##### For local development:
 
