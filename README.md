@@ -2,8 +2,7 @@
 
 ## Features📦
 
-- [x] Fastify
-- [x] NestJS
+- [x] NestJS with Fastify
 - [x] Postgres
 - [x] TypeORM
 - [x] Offset and Cursor based Pagination
