@@ -16,7 +16,7 @@
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
-- [x] Server Monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
+- [x] Server & Database monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
 - [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
@@ -70,11 +70,9 @@ pnpm erd:generate
 <figcaption style="text-align: center; font-style: italic;">Sample ERD</figcaption>
 </figure>
 
-### 4. Server Monitoring
+### 4. Server & Database Monitoring
 
-Prometheus & Grafana are available with Docker setup only. You might only need to monitor your servers when the user base grows or when you want to debug some specific issues. That's why this step is completely optional. Whenever you want to monitor your server, just enable `monitoring` profile in your `.env` i.e. `COMPOSE_PROFILES=monitoring`.
-
-Make sure to set Grafana username and password in `.env` file to access the monitoring dashboards.
+Prometheus & Grafana are available with Docker setup only. You might only need to monitor your server or database when the user base grows or when you want to debug some specific issues. That's why this step is completely optional. If you want to monitor your server or database, just enable `monitoring` profile in your `.env` i.e. `COMPOSE_PROFILES=monitoring`.
 
 ![alt text](./github-assets/server-monitoring.png)
 
