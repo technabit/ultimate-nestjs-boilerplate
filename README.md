@@ -1,4 +1,5 @@
 # Ultimate Nest.js Boilerplate ⚡
+Advanced Nest.js boilerplate for scalable startups.
 
 ## Features📦
 
