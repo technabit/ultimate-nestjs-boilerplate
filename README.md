@@ -29,7 +29,7 @@
 - [x] Dependency Graph Visualizer [Learn More](#2-dependency-graph-)
 - [x] Database Entity Relationship Diagram Generator [Learn More](#3-database-entity-relationship-diagram️)
 
-### 1. Automatic API generation on the Frontend🚀
+### 1. Automatic API generation on the Frontend 🚀
 
 You can automatically generate and use all of your backend API in frontend in just one command, thanks to Swagger and OpenAPI spec. Running `pnpm codegen` on the frontend (example [repo](https://github.com/niraj-khatiwada/openapi-codegen)) will automatically generate all API's bootstrapped with [Tanstack Query](https://tanstack.com/query/latest) ready to be used with just one import. See complete example [here](https://github.com/niraj-khatiwada/openapi-codegen)
 <img src="./github-assets/openapi-codegen.png" style="border: 5px solid teal;" />
@@ -70,13 +70,17 @@ pnpm erd:generate
 <figcaption style="text-align: center; font-style: italic;">Sample ERD</figcaption>
 </figure>
 
-### 4. Server & Database Monitoring
+### 4. Server & Database Monitoring 📊
 
 Prometheus & Grafana are available with Docker setup only. You might only need to monitor your server or database when the user base grows or when you want to debug some specific issues. That's why this step is completely optional. If you want to monitor your server or database, just enable `monitoring` profile in your `.env` i.e. `COMPOSE_PROFILES=monitoring`.
 
+Server Monitoring Dashboard:
 ![alt text](./github-assets/server-monitoring.png)
 
-### 5. Docker
+Database Monitoring Dashboard:
+![alt text](./github-assets/database-monitoring.png)
+
+### 5. Docker 🐬
 
 ##### For local development:
 
@@ -86,19 +90,27 @@ Prometheus & Grafana are available with Docker setup only. You might only need t
 pnpm docker:dev:up
 ```
 
-- View Logs:
-
-```
-docker logs -f nestjs-boilerplate-dev
-```
-
 - Stop container:
 
 ```
 pnpm docker:dev:down
 ```
 
-##### For prod deployment:
+##### For prod build:
+
+- Start container:
+
+```
+pnpm docker:prod:up
+```
+
+- Stop container:
+
+```
+pnpm docker:prod:down
+```
+
+##### Deployment:
 
 ```
 sh ./bin/deploy.sh
