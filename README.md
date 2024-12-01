@@ -71,8 +71,6 @@ pnpm erd:generate
 <figcaption style="text-align: center; font-style: italic;">Sample ERD</figcaption>
 </figure>
 
-Extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
-
 ### 4. Server Monitoring
 
 Prometheus & Grafana are available with Docker setup. They're available when application is ready after running `pnpm docker:<dev | prod>:up`.
@@ -110,3 +108,7 @@ sh ./bin/deploy.sh
 ```
 
 or run workflow `.github/workflows/main.yml` via GitHub Actions.
+
+
+This boilerplate is extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
+
