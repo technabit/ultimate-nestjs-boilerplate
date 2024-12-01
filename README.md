@@ -11,7 +11,7 @@
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend)
 - [x] Websockets
-- [x] BullMQ for Queues. Bull board to inspect your jobs.
+- [x] BullMQ for Queues. Bull board UI to inspect your jobs.
 - [x] Worker server for processing background tasks like queues.
 - [x] Caching using Redis
 - [x] Pino for Logging
@@ -21,6 +21,7 @@
 - [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
+- [x] Internationalization using i18n 
 - [x] pnpm
 - [x] Docker: Dev & Prod ready from single script. [Learn More](#5-docker)
 - [x] Github Actions
