@@ -18,7 +18,7 @@
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
 - [x] Server Monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
-- [x] File Uploads
+- [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
 - [x] pnpm
