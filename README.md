@@ -20,7 +20,7 @@
 - [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
-- [x] Internationalization using i18n 
+- [x] Internationalization using i18n
 - [x] pnpm
 - [x] Docker: Dev & Prod ready from single script. [Learn More](#5-docker)
 - [x] Github Actions
@@ -72,9 +72,9 @@ pnpm erd:generate
 
 ### 4. Server Monitoring
 
-Prometheus & Grafana are available with Docker setup. They're available when application is ready after running `pnpm docker:<dev | prod>:up`.
+Prometheus & Grafana are available with Docker setup only. You might only need to monitor your servers when the user base grows or when you want to debug some specific issues. That's why this step is completely optional. Whenever you want to monitor your server, just enable `monitoring` profile in your `.env` i.e. `COMPOSE_PROFILES=monitoring`.
 
-Make sure to set Grafana username and password in `.env` file to access the server dashboards.
+Make sure to set Grafana username and password in `.env` file to access the monitoring dashboards.
 
 ![alt text](./github-assets/server-monitoring.png)
 
@@ -108,6 +108,4 @@ sh ./bin/deploy.sh
 
 or run workflow `.github/workflows/main.yml` via GitHub Actions.
 
-
 This boilerplate is extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
-
