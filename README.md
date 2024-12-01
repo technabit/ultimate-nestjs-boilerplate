@@ -21,6 +21,7 @@
 - [x] File Uploads
 - [x] Sentry
 - [x] Testing with Jest
+- [x] Internationalization using i18n 
 - [x] pnpm
 - [x] Docker: Dev & Prod ready from single script. [Learn More](#5-docker)
 - [x] Github Actions
