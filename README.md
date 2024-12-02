@@ -1,4 +1,5 @@
 # Ultimate Nest.js Boilerplate ⚡
+Advanced Nest.js boilerplate for scalable startups.
 
 ## Features📦
 
@@ -54,7 +55,6 @@ pnpm graph:circular
 
 <figure>
 <img src="./github-assets/graph.png" style="border: 5px solid teal" />
-<figcaption style="text-align: center; font-style: italic;">Sample Graph</figcaption>
 </figure>
 
 ### 3. Database Entity Relationship Diagram🛢️
@@ -67,7 +67,6 @@ pnpm erd:generate
 
 <figure>
 <img src="./github-assets/erd.png" style="border: 5px solid teal; height: 1080px;" />
-<figcaption style="text-align: center; font-style: italic;">Sample ERD</figcaption>
 </figure>
 
 ### 4. Server & Database Monitoring 📊
