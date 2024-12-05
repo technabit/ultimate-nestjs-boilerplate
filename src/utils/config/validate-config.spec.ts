@@ -1,4 +1,4 @@
-import validateConfig from '@/utils/validate-config';
+import validateConfig from '@/utils/config/validate-config';
 import { IsNumber, IsString } from 'class-validator';
 import 'reflect-metadata';
 

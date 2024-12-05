@@ -1,8 +1,8 @@
-import { AllConfigType } from '@/config/config.type';
+import { GlobalConfig } from '@/config/config.type';
 import { ConfigService } from '@nestjs/config';
 import { redisStore } from 'cache-manager-ioredis-yet';
 
-async function useCacheFactory(config: ConfigService<AllConfigType>) {
+async function useCacheFactory(config: ConfigService<GlobalConfig>) {
   return {
     store: await redisStore({
       host: config.getOrThrow('redis.host', {
