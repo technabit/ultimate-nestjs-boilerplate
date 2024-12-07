@@ -9,7 +9,6 @@ services:
       - IS_WORKER=false
     ports:
       - '${APP_PORT}:${APP_PORT}'
-      - '${APP_WEBSOCKET_PORT}:${APP_WEBSOCKET_PORT}'
     networks:
       - nestjs-boilerplate-network
     depends_on:
