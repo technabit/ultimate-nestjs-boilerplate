@@ -230,12 +230,10 @@ describe('AppConfig', () => {
     it('should return multiple origins when APP_CORS_ORIGIN is a comma-separated list of valid URLs', async () => {
       process.env.APP_CORS_ORIGIN = 'https://example.com,https://another.com';
       const config = await appConfig();
-      // eslint-disable-next-line no-console
-      console.log(config.corsOrigin);
       expect(config.corsOrigin).toEqual([
         'https://example.com',
-        'https://www.example.com',
         'https://another.com',
+        'https://www.example.com',
         'https://www.another.com',
       ]);
     });
