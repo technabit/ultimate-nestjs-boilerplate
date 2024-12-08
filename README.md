@@ -10,7 +10,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Offset and Cursor based Pagination
 - [x] REST & GraphQL API
 - [x] Swagger Documentation and API versioning for REST API
-- [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend)
+- [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend-)
 - [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
 - [x] BullMQ for Queues. Bull board UI to inspect your jobs.
 - [x] Worker server for processing background tasks like queues.
@@ -18,14 +18,14 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Pino for Logging
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
-- [x] Server & Database monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
+- [x] Server & Database monitoring with Prometheus & Grafana [Learn More](#4-server--database-monitoring-)
 - [x] API Monitoring with Swagger Stats [Learn More](#5-api-monitoring-)
 - [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
 - [x] Internationalization using i18n
 - [x] pnpm
-- [x] Docker: Dev & Prod ready from single script. [Learn More](#6-docker)
+- [x] Docker: Dev & Prod ready from single script. [Learn More](#6-docker-)
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
@@ -71,7 +71,7 @@ pnpm erd:generate
 <img src="./github-assets/erd.png" style="border: 5px solid teal; height: 1080px;" />
 </figure>
 
-### 4. Server & Database Monitoring 📊
+### 4. Server & Database Monitoring 🚨
 
 Prometheus & Grafana are available with Docker setup only. You might only need to monitor your server or database when the user base grows or when you want to debug some specific issues. That's why this step is completely optional. If you want to monitor your server or database, just enable `monitoring` profile in your `.env` i.e. `COMPOSE_PROFILES=monitoring`.
 
@@ -81,7 +81,7 @@ Server Monitoring Dashboard:
 Database Monitoring Dashboard:
 ![alt text](./github-assets/database-monitoring.png)
 
-### 5. API Monitoring 🐬
+### 5. API Monitoring 📊
 
 Monitor all your API endpoints, their response time, error rates & payload, requests per second, etc. and many more using your Swagger API.
 
