@@ -1,9 +1,9 @@
 import { type GlobalConfig } from '@/config/config.type';
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 
-function setupSwagger(app: INestApplication) {
+function setupSwagger(app: INestApplication): OpenAPIObject {
   const configService = app.get(ConfigService<GlobalConfig>);
   const appName = configService.getOrThrow('app.name', { infer: true });
 
@@ -25,6 +25,7 @@ function setupSwagger(app: INestApplication) {
     customSiteTitle: appName,
     jsonDocumentUrl: 'swagger/json',
   });
+  return document;
 }
 
 export default setupSwagger;

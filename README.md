@@ -1,4 +1,5 @@
 # Ultimate Nest.js Boilerplate ⚡
+
 Advanced Nest.js boilerplate for scalable startups.
 
 ## Features📦
@@ -18,12 +19,13 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Rate Limiter using Redis
 - [x] Graceful Shutdown
 - [x] Server & Database monitoring with Prometheus & Grafana [Learn More](#4-server-monitoring)
+- [x] API Monitoring with Swagger Stats [Learn More](#5-api-monitoring-)
 - [x] File Uploads using AWS S3
 - [x] Sentry
 - [x] Testing with Jest
 - [x] Internationalization using i18n
 - [x] pnpm
-- [x] Docker: Dev & Prod ready from single script. [Learn More](#5-docker)
+- [x] Docker: Dev & Prod ready from single script. [Learn More](#6-docker)
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
@@ -79,7 +81,15 @@ Server Monitoring Dashboard:
 Database Monitoring Dashboard:
 ![alt text](./github-assets/database-monitoring.png)
 
-### 5. Docker 🐬
+### 5. API Monitoring 🐬
+
+Monitor all your API endpoints, their response time, error rates & payload, requests per second, etc. and many more using your Swagger API.
+
+Visit `<host>/swagger-stats` and enter username and password of grafana set in `.env` to view the dashboard.
+
+![alt text](./github-assets/api-monitoring.png)
+
+### 6. Docker 🐬
 
 ##### For local development:
 

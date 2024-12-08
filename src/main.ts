@@ -15,6 +15,7 @@ import {
 import * as Sentry from '@sentry/node';
 import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
+import * as swaggerStats from 'swagger-stats';
 
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app.config';
@@ -87,9 +88,23 @@ async function bootstrap() {
 
   const env = configService.getOrThrow('app.nodeEnv', { infer: true });
 
-  if (env === 'development' || env === 'local') {
-    setupSwagger(app);
-  }
+  const document = setupSwagger(app);
+
+  app.use(
+    swaggerStats.getMiddleware({
+      name: configService.getOrThrow('app.name', { infer: true }),
+      swaggerSpec: document,
+      authentication: true,
+      onAuthenticate(_, username: string, password: string) {
+        return (
+          username ===
+            configService.getOrThrow('grafana.username', { infer: true }) &&
+          password ===
+            configService.getOrThrow('grafana.password', { infer: true })
+        );
+      },
+    }),
+  );
 
   if (env !== 'local') {
     setupGracefulShutdown({ app });

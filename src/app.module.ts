@@ -10,7 +10,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import {
@@ -24,6 +24,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { FastifyAdapter } from '@bull-board/fastify';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { ApiModule } from './api/api.module';
+import grafanaConfig from './grafana/config/grafana.config';
 import { default as useGraphqlFactory } from './graphql/graphql.factory';
 import { default as useI18nFactory } from './i18n/i18n.factory';
 import { default as awsConfig } from './libs/aws/aws.config';
@@ -57,6 +58,7 @@ export class AppModule {
             sentryConfig,
             throttlerConfig,
             awsConfig,
+            grafanaConfig,
           ],
           envFilePath: ['.env'],
         }),

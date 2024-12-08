@@ -1,5 +1,6 @@
 import { AuthConfig } from '@/api/auth/config/auth-config.type';
 import { DatabaseConfig } from '@/database/config/database-config.type';
+import { GrafanaConfig } from '@/grafana/config/grafana.type';
 import { AwsConfig } from '@/libs/aws/aws.types';
 import { MailConfig } from '@/mail/config/mail-config.type';
 import { RedisConfig } from '@/redis/redis-config.type';
@@ -18,4 +19,5 @@ export type GlobalConfig = {
   queue: BullConfig;
   throttler: ThrottlerConfig;
   aws: AwsConfig;
+  grafana: GrafanaConfig;
 };
