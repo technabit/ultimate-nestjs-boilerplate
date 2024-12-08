@@ -1,4 +1,4 @@
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import { ConfigService } from '@nestjs/config';
 import { I18nOptionsWithoutResolvers } from 'nestjs-i18n';
 import path from 'path';

@@ -1,4 +1,4 @@
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import { CacheKey } from '@/constants/cache.constant';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';

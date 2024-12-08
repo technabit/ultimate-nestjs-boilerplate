@@ -1,4 +1,4 @@
-import { type GlobalConfig } from '@/config/config.type';
+import { type GlobalConfig } from '@/config/global-config.type';
 import { loggingRedactPaths, LogService } from '@/constants/app.constant';
 import { ConfigService } from '@nestjs/config';
 import { type IncomingMessage, type ServerResponse } from 'http';

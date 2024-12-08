@@ -1,4 +1,4 @@
-import { getConfig as getRedisConfig } from '@/redis/redis.config';
+import { getConfig as getRedisConfig } from '@/tools/redis/redis.config';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
 import 'dotenv/config';

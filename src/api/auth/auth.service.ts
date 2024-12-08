@@ -1,6 +1,6 @@
 import { IVerifyEmailJob } from '@/common/interfaces/job.interface';
 import { Branded } from '@/common/types/types';
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import { JobName, QueueName } from '@/constants/job.constant';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { CacheService } from '@/shared/cache/cache.service';

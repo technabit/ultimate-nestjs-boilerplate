@@ -1,5 +1,5 @@
-import { RedisConfig } from '@/redis/redis-config.type';
-import redisConfig from '@/redis/redis.config';
+import { RedisConfig } from '@/tools/redis/redis-config.type';
+import redisConfig from '@/tools/redis/redis.config';
 import validateConfig from '@/utils/config/validate-config';
 import { registerAs } from '@nestjs/config';
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';

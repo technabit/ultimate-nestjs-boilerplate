@@ -5,7 +5,7 @@ import { Uuid } from '@/common/types/common.type';
 import { CurrentUser } from '@/decorators/current-user.decorator';
 import { ApiAuth } from '@/decorators/http.decorators';
 import { AuthGuard } from '@/guards/auth.guard';
-import { Serialize } from '@/interceptors/serialize';
+import { Serialize } from '@/utils/interceptors/serialize';
 import {
   Body,
   Controller,

@@ -1,4 +1,4 @@
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import {
   PutObjectCommand,
   PutObjectCommandInput,

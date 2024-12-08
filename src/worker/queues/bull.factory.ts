@@ -1,4 +1,4 @@
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import { type BullRootModuleOptions } from '@nestjs/bullmq';
 import { ConfigService } from '@nestjs/config';
 import bullConfig from './bull.config';

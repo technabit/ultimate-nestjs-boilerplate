@@ -1,7 +1,7 @@
 import { ErrorDto } from '@/common/dto/error.dto';
-import { GlobalConfig } from '@/config/config.type';
+import { GlobalConfig } from '@/config/global-config.type';
 import { Public } from '@/decorators/public.decorator';
-import { Serialize } from '@/interceptors/serialize';
+import { Serialize } from '@/utils/interceptors/serialize';
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RedisOptions, Transport } from '@nestjs/microservices';

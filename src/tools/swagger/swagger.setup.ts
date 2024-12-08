@@ -1,4 +1,4 @@
-import { type GlobalConfig } from '@/config/config.type';
+import { type GlobalConfig } from '@/config/global-config.type';
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';

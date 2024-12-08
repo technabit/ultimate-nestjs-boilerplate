@@ -19,7 +19,7 @@ import * as swaggerStats from 'swagger-stats';
 
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app.config';
-import { type GlobalConfig } from './config/config.type';
+import { type GlobalConfig } from './config/global-config.type';
 import { Environment } from './constants/app.constant';
 import { RedisIoAdapter } from './shared/socket/redis.adapter';
 import { consoleLoggingConfig } from './tools/logger/logger-factory';

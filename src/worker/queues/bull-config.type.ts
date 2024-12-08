@@ -1,4 +1,4 @@
-import { RedisConfig } from '@/redis/redis-config.type';
+import { RedisConfig } from '@/tools/redis/redis-config.type';
 import { JobsOptions } from 'bullmq';
 
 export type BullConfig = {

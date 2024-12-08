@@ -1,5 +1,5 @@
 import { IVerifyEmailJob } from '@/common/interfaces/job.interface';
-import { MailService } from '@/mail/mail.service';
+import { MailService } from '@/shared/mail/mail.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
