@@ -1,4 +1,4 @@
-import { MailService } from '@/mail/mail.service';
+import { MailService } from '@/shared/mail/mail.service';
 import { getQueueToken } from '@nestjs/bullmq';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailQueueService } from './email-queue.service';
