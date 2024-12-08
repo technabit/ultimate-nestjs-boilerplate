@@ -11,7 +11,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] REST & GraphQL API
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend)
-- [x] Websockets
+- [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
 - [x] BullMQ for Queues. Bull board UI to inspect your jobs.
 - [x] Worker server for processing background tasks like queues.
 - [x] Caching using Redis
