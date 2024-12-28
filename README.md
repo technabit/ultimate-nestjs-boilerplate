@@ -5,7 +5,7 @@ Advanced Nest.js boilerplate for scalable startups.
 ## Features📦
 
 - [x] NestJS with Fastify
-- [x] Postgres & TypeORM
+- [x] PostgreSQL & TypeORM
 - [x] Offset and Cursor based Pagination
 - [x] REST & GraphQL API
 - [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
