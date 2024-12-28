@@ -18,7 +18,7 @@ describe('AuthConfig', () => {
     it('should return the value of AUTH_JWT_SECRET', async () => {
       process.env.AUTH_JWT_SECRET = 'secret';
       const config = await authConfig();
-      expect(config.secret).toBe('secret');
+      expect(config.jwtSecret).toBe('secret');
     });
 
     it('should throw an error when AUTH_JWT_SECRET is an empty', async () => {
@@ -36,7 +36,7 @@ describe('AuthConfig', () => {
     it('should return the value of AUTH_JWT_TOKEN_EXPIRES_IN', async () => {
       process.env.AUTH_JWT_TOKEN_EXPIRES_IN = '1d';
       const config = await authConfig();
-      expect(config.expiresIn).toBe('1d');
+      expect(config.jwtExpiresIn).toBe('1d');
     });
 
     it('should throw an error when AUTH_JWT_TOKEN_EXPIRES_IN is an empty', async () => {
