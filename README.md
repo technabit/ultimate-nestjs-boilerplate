@@ -5,13 +5,13 @@ Advanced Nest.js boilerplate for scalable startups.
 ## Features📦
 
 - [x] Nest.js with Fastify
-- [x] PostgreSQL & TypeORM
-- [x] Offset and Cursor based Pagination
-- [x] REST & GraphQL API
+- [x] PostgreSQL with TypeORM
+- [x] REST, GraphQL & WebSocket API
 - [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
-- [x] Cookie based authentication for all REST, GraphQL & WebSockets.
+- [x] Cookie based authentication for all REST, GraphQL & WebSockets
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend-)
+- [x] Offset and Cursor based Pagination
 - [x] BullMQ for Queues. Bull board UI to inspect your jobs
 - [x] Worker server for processing background tasks like queues
 - [x] Caching using Redis
