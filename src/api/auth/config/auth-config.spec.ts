@@ -6,8 +6,6 @@ describe('AuthConfig', () => {
   beforeEach(() => {
     // Reset process.env to its original state before each test
     process.env = { ...originalEnv };
-    // eslint-disable-next-line no-console
-    console.log(process.env);
   });
 
   beforeAll(() => {
