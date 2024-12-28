@@ -7,6 +7,7 @@ import { buildPaginator } from '@/utils/pagination/cursor-pagination';
 import { paginate } from '@/utils/pagination/offset-pagination';
 import {
   ConflictException,
+  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -32,7 +33,6 @@ export class UserService {
   async create(dto: CreateUserDto): Promise<UserDto> {
     const { username, email, password } = dto;
 
-    // check uniqueness of username/email
     const user = await this.userRepository.findOne({
       where: [
         {
@@ -117,6 +117,7 @@ export class UserService {
   async remove(id: Uuid | string) {
     await this.userRepository.findOneByOrFail({ id });
     await this.userRepository.softDelete(id);
+    return HttpStatus.OK;
   }
 
   async getAll(options?: FindManyOptions<UserEntity>) {

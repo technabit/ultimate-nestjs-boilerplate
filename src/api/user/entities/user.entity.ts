@@ -1,6 +1,5 @@
 import { BaseModel } from '@/database/models/base.model';
-import { hashPassword as hashPass } from '@/utils/password/password.util';
-import { BeforeInsert, BeforeUpdate, Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 import { Role } from '../user.enum';
 
 @Entity('user')
@@ -26,11 +25,6 @@ export class UserEntity extends BaseModel {
   @Column({ nullable: true })
   bio?: string;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  async hashPassword() {
-    if (this.password) {
-      this.password = await hashPass(this.password);
-    }
-  }
+  @Column({ type: 'boolean', default: false })
+  isEmailVerified: boolean;
 }

@@ -1,3 +1,4 @@
+import fastifyCookie from '@fastify/cookie';
 import {
   ClassSerializerInterceptor,
   HttpStatus,
@@ -51,6 +52,12 @@ async function bootstrap() {
   );
   const configService = app.get(ConfigService<GlobalConfig>);
 
+  await app.register(fastifyCookie, {
+    secret: configService.getOrThrow('auth.cookieSecret', {
+      infer: true,
+    }) as string,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -72,7 +79,6 @@ async function bootstrap() {
     environment: configService.getOrThrow('app.nodeEnv', { infer: true }),
   });
 
-  app.use(helmet());
   app.enableCors({
     origin: configService.getOrThrow('app.corsOrigin', {
       infer: true,
@@ -81,6 +87,8 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Accept',
     credentials: true,
   });
+
+  app.use(helmet());
 
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));

@@ -1,4 +1,4 @@
-import { QueueName } from '@/constants/job.constant';
+import { Queue } from '@/constants/job.constant';
 import {
   OnQueueEvent,
   QueueEventsHost,
@@ -6,7 +6,7 @@ import {
 } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 
-@QueueEventsListener(QueueName.EMAIL, { blockingTimeout: 300000 })
+@QueueEventsListener(Queue.Email, { blockingTimeout: 300000 })
 export class EmailQueueEvents extends QueueEventsHost {
   private readonly logger = new Logger(EmailQueueEvents.name);
 

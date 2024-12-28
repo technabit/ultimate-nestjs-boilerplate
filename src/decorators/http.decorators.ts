@@ -1,4 +1,5 @@
 import { ErrorDto } from '@/common/dto/error.dto';
+import { Serialize } from '@/utils/interceptors/serialize';
 import {
   HttpCode,
   HttpStatus,
@@ -63,11 +64,17 @@ export const ApiPublic = (options: IApiPublicOptions = {}): MethodDecorator => {
       }),
   );
 
+  const serializers = [];
+  if (typeof options.type === 'function') {
+    serializers.push(Serialize(options?.type));
+  }
+
   return applyDecorators(
     Public(),
     ApiOperation({ summary: options?.summary }),
     HttpCode(options.statusCode || defaultStatusCode),
     isPaginated ? ApiPaginatedResponse(ok) : ApiOkResponse(ok),
+    ...serializers,
     ...errorResponses,
   );
 };
@@ -110,6 +117,11 @@ export const ApiAuth = (options: IApiAuthOptions = {}): MethodDecorator => {
     }
   });
 
+  const serializers = [];
+  if (typeof options.type === 'function') {
+    serializers.push(Serialize(options?.type));
+  }
+
   return applyDecorators(
     ApiOperation({ summary: options?.summary }),
     HttpCode(options.statusCode || defaultStatusCode),
@@ -119,6 +131,7 @@ export const ApiAuth = (options: IApiAuthOptions = {}): MethodDecorator => {
         ? ApiCreatedResponse(ok)
         : ApiOkResponse(ok),
     ...authDecorators,
+    ...serializers,
     ...errorResponses,
   );
 };

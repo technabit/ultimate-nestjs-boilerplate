@@ -1,7 +1,7 @@
-export enum QueueName {
-  EMAIL = 'email',
+export enum Queue {
+  Email = 'email',
 }
 
-export enum JobName {
-  EMAIL_VERIFICATION = 'email-verification',
+export enum Job {
+  EmailVerification = 'email-verification',
 }

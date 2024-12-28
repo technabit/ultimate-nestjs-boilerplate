@@ -1,6 +1,6 @@
 import { AuthService } from '@/api/auth/auth.service';
-import { JwtPayloadType } from '@/api/auth/types/jwt-payload.type';
 import { IS_AUTH_OPTIONAL, IS_PUBLIC } from '@/constants/app.constant';
+import { JwtToken } from '@/constants/auth.constant';
 import {
   CanActivate,
   ExecutionContext,
@@ -34,38 +34,33 @@ export class AuthGuard implements CanActivate {
     // ws
     if (context.getType() === 'ws') {
       const socket = context.switchToWs().getClient<Socket>();
-      const [type, token] = socket.handshake?.auth?.['token']?.split(' ') ?? [];
-      const accessToken = type === 'Bearer' ? token : undefined;
-      let payload: JwtPayloadType;
       try {
-        payload = await this.authService.verifyAccessToken(accessToken);
+        const payload = await this.authService.verifySocketAccessToken(socket);
+        socket['user'] = payload;
       } catch (_) {
         socket.disconnect();
         return false;
       }
-      socket['user'] = payload;
       return true;
     }
 
     // http
     const request = context.switchToHttp().getRequest<FastifyRequest>();
-    const [type, token] = request?.headers['authorization']?.split(' ') ?? [];
-    const accessToken = type === 'Bearer' ? token : undefined;
+    const accessToken = request?.cookies?.[JwtToken.AccessToken];
 
     if (isAuthOptional && !accessToken) {
       return true;
     }
     if (!accessToken) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid access token.');
     }
 
-    let payload: JwtPayloadType;
     try {
-      payload = await this.authService.verifyAccessToken(accessToken);
+      const payload = await this.authService.verifyAccessToken(accessToken);
+      request['user'] = payload;
     } catch (_) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid access token.');
     }
-    request['user'] = payload;
 
     return true;
   }

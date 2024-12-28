@@ -1,7 +1,7 @@
 import { MailService } from '@/shared/mail/mail.service';
 import { getQueueToken } from '@nestjs/bullmq';
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmailQueueService } from './email-queue.service';
+import { EmailQueueService } from './email.service';
 
 describe('EmailQueueService', () => {
   let service: EmailQueueService;
@@ -9,7 +9,7 @@ describe('EmailQueueService', () => {
 
   beforeAll(async () => {
     mailServiceValue = {
-      sendEmailVerification: jest.fn(),
+      sendEmailVerificationMail: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({

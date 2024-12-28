@@ -22,6 +22,7 @@ import {
 import { LoggerModule } from 'nestjs-pino';
 
 import { FastifyAdapter } from '@bull-board/fastify';
+import { JwtModule } from '@nestjs/jwt';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { ApiModule } from './api/api.module';
 import { default as useGraphqlFactory } from './graphql/graphql.factory';
@@ -86,6 +87,7 @@ export class AppModule {
         PrometheusModule.register(),
         CacheManagerModule,
         MailModule,
+        JwtModule,
       ],
     };
   }

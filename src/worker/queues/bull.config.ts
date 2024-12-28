@@ -1,15 +1,12 @@
+import { getConfig as getAppConfig } from '@/config/app.config';
 import { RedisConfig } from '@/tools/redis/redis-config.type';
 import redisConfig from '@/tools/redis/redis.config';
 import validateConfig from '@/utils/config/validate-config';
 import { registerAs } from '@nestjs/config';
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
-import kebabCase from 'lodash/kebabCase';
 import { BullConfig } from './bull-config.type';
 
 class EnvironmentVariablesValidator {
-  @IsString()
-  APP_NAME: string;
-
   @IsBoolean()
   @IsOptional()
   QUEUE_REMOVE_ON_COMPLETE: boolean;
@@ -27,9 +24,10 @@ class EnvironmentVariablesValidator {
   BULL_BOARD_PASSWORD: string;
 }
 
-export function getConfig() {
+export function getConfig(): BullConfig {
+  const appPrefix = getAppConfig().appPrefix;
   return {
-    prefix: `bull-${kebabCase(process.env.APP_NAME)}`,
+    prefix: `${appPrefix}:bull`,
     redis: redisConfig() as RedisConfig,
     defaultJobOptions: {
       removeOnComplete: process.env.QUEUE_REMOVE_ON_COMPLETE === 'true',

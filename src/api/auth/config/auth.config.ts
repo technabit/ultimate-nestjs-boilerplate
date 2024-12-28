@@ -7,6 +7,10 @@ import { AuthConfig } from './auth-config.type';
 class EnvironmentVariablesValidator {
   @IsString()
   @IsNotEmpty()
+  AUTH_COOKIE_SECRET: string;
+
+  @IsString()
+  @IsNotEmpty()
   AUTH_JWT_SECRET: string;
 
   @IsString()
@@ -44,8 +48,9 @@ class EnvironmentVariablesValidator {
 
 export function getConfig(): AuthConfig {
   return {
-    secret: process.env.AUTH_JWT_SECRET,
-    expiresIn: process.env.AUTH_JWT_TOKEN_EXPIRES_IN,
+    cookieSecret: process.env.AUTH_COOKIE_SECRET,
+    jwtSecret: process.env.AUTH_JWT_SECRET,
+    jwtExpiresIn: process.env.AUTH_JWT_TOKEN_EXPIRES_IN,
     refreshSecret: process.env.AUTH_REFRESH_SECRET,
     refreshExpiresIn: process.env.AUTH_REFRESH_TOKEN_EXPIRES_IN,
     forgotSecret: process.env.AUTH_FORGOT_SECRET,

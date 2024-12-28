@@ -1,5 +1,5 @@
 export enum CacheKey {
-  ACCESS_TOKEN = 'auth:token:%s:access', // %s: hash
-  EMAIL_VERIFICATION_TOKEN = 'auth:token:%s:email-verification', // %s: userId
-  USER_SOCKET_CLIENTS = 'socket:%s:clients', // %s: userId
+  AccessToken = 'auth:token:%s:access', // %s: hash
+  EmailVerificationToken = 'auth:token:%s:email-verification', // %s: userId
+  UserSocketClients = 'socket:%s:clients', // %s: userId
 }

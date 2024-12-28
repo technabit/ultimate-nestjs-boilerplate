@@ -87,7 +87,7 @@ export function getConfig(): AppConfig {
   const port = parseInt(process.env.APP_PORT, 10);
 
   return {
-    nodeEnv: (process.env.NODE_ENV || Environment.DEVELOPMENT) as Environment,
+    nodeEnv: (process.env.NODE_ENV || Environment.Development) as Environment,
     isHttps: process.env.IS_HTTPS === 'true',
     isWorker: process.env.IS_WORKER === 'true',
     name: process.env.APP_NAME,
@@ -99,7 +99,7 @@ export function getConfig(): AppConfig {
     fallbackLanguage: process.env.APP_FALLBACK_LANGUAGE || 'en',
     appLogging: process.env.APP_LOGGING === 'true',
     logLevel: process.env.APP_LOG_LEVEL || 'warn',
-    logService: process.env.APP_LOG_SERVICE || LogService.CONSOLE,
+    logService: process.env.APP_LOG_SERVICE || LogService.Console,
     corsOrigin: getCorsOrigin(),
   };
 }

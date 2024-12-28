@@ -27,8 +27,8 @@ export class PageOptionsDto {
   @StringFieldOptional()
   readonly q?: string;
 
-  @EnumFieldOptional(() => Order, { default: Order.ASC })
-  readonly order?: Order = Order.ASC;
+  @EnumFieldOptional(() => Order, { default: Order.Asc })
+  readonly order?: Order = Order.Asc;
 
   get offset() {
     return this.page ? (this.page - 1) * this.limit : 0;

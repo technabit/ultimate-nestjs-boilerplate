@@ -11,7 +11,7 @@ export class SocketService {
 
   async sendTo(userId: string, event: string, data?: any) {
     const userClients = await this.cacheService.get<string[]>({
-      key: 'USER_SOCKET_CLIENTS',
+      key: 'UserSocketClients',
       args: [userId],
     });
     if (userClients && Array.isArray(userClients)) {

@@ -1,5 +1,6 @@
 import { AuthService } from '@/api/auth/auth.service';
 import { getConfig as getAppConfig } from '@/config/app.config';
+import { CurrentUser } from '@/decorators/current-user.decorator';
 import { AuthGuard } from '@/guards/auth.guard';
 import { Logger, UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
@@ -19,7 +20,14 @@ import { CacheService } from '../cache/cache.service';
 
 const appConfig = getAppConfig();
 
-@WebSocketGateway(0, { cors: appConfig.corsOrigin })
+@WebSocketGateway(0, {
+  cors: {
+    origin: appConfig.corsOrigin,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept',
+    credentials: true,
+  },
+})
 export class SocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -40,12 +48,10 @@ export class SocketGateway
   afterInit(): void {
     this.logger.log(`Websocket gateway initialized.`);
     this.server.use(async (socket: Socket, next) => {
-      const [type, token] = socket.handshake?.auth?.['token']?.split(' ') ?? [];
-      const bearerToken = type === 'Bearer' ? token : undefined;
       try {
-        socket['user'] = await this.authService.verifyAccessToken(bearerToken);
+        socket['user'] = await this.authService.verifySocketAccessToken(socket);
         return next();
-      } catch (_) {
+      } catch {
         return next(new UnauthorizedException());
       }
     });
@@ -59,13 +65,13 @@ export class SocketGateway
     }
     this.clients.set(socket?.id, socket);
     const userClients = await this.cacheService.get<string[]>({
-      key: 'USER_SOCKET_CLIENTS',
+      key: 'UserSocketClients',
       args: [userId],
     });
     const clients = new Set<string>(Array.from(userClients ?? []));
     clients.add(socket?.id);
     await this.cacheService.set(
-      { key: 'USER_SOCKET_CLIENTS', args: [userId] },
+      { key: 'UserSocketClients', args: [userId] },
       Array.from(clients),
       { ttl: ms('1h') },
     );
@@ -80,14 +86,14 @@ export class SocketGateway
       return;
     }
     const userClients = await this.cacheService.get<string[]>({
-      key: 'USER_SOCKET_CLIENTS',
+      key: 'UserSocketClients',
       args: [userId],
     });
     const clients = new Set<string>(Array.from(userClients ?? []));
     if (clients.has(socket?.id)) {
       clients.delete(socket?.id);
       await this.cacheService.set(
-        { key: 'USER_SOCKET_CLIENTS', args: [userId] },
+        { key: 'UserSocketClients', args: [userId] },
         Array.from(clients),
         { ttl: ms('1h') },
       );
@@ -97,14 +103,14 @@ export class SocketGateway
   @UseGuards(AuthGuard)
   @SubscribeMessage('message')
   handleMessage(
-    @MessageBody() message: any,
     @ConnectedSocket() socket: Socket,
+    @MessageBody() _message: any,
+    @CurrentUser('sub') _userId: string,
   ) {
     // console.log(
-    //   `Received message from client: ${socket?.id}`,
+    //   `Received message from client: ${socket?.id}. User=${userId}`,
     //   JSON.stringify(message, null, 2),
     // );
-
     socket.send('hello world');
   }
 

@@ -43,11 +43,11 @@ const customErrorMessage = (req, res, err) => {
 
 function logServiceConfig(logService: string): Options {
   switch (logService) {
-    case LogService.GOOGLE_LOGGING:
+    case LogService.GoogleLogging:
       return googleLoggingConfig();
-    case LogService.AWS_CLOUDWATCH:
+    case LogService.AwsCloudWatch:
       return cloudwatchLoggingConfig();
-    case LogService.CONSOLE:
+    case LogService.Console:
     default:
       return consoleLoggingConfig();
   }

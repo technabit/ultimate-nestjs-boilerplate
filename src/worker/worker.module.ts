@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EmailQueueModule } from './queues/email-queue/email-queue.module';
+import { EmailQueueModule } from './queues/email/email.module';
+
 @Module({
   imports: [EmailQueueModule],
 })

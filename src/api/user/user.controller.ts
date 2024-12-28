@@ -1,11 +1,9 @@
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
-import { ErrorDto } from '@/common/dto/error.dto';
 import { OffsetPaginatedDto } from '@/common/dto/offset-pagination/paginated.dto';
 import { Uuid } from '@/common/types/common.type';
 import { CurrentUser } from '@/decorators/current-user.decorator';
 import { ApiAuth } from '@/decorators/http.decorators';
 import { AuthGuard } from '@/guards/auth.guard';
-import { Serialize } from '@/utils/interceptors/serialize';
 import {
   Body,
   Controller,
@@ -19,7 +17,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ListUserDto } from './dto/list-user.dto';
 import { LoadMoreUsersDto } from './dto/load-more-users.dto';
@@ -27,9 +25,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
-@ApiTags('users')
+@ApiTags('user')
 @Controller({
-  path: 'users',
+  path: 'user',
   version: '1',
 })
 @UseGuards(AuthGuard)
@@ -37,15 +35,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @ApiAuth({
-    type: UserDto,
     summary: 'Get current user',
+    type: UserDto,
   })
-  @Get('me')
-  async getCurrentUser(@CurrentUser('id') userId: Uuid): Promise<UserDto> {
+  @Get('whoami')
+  async getCurrentUser(@CurrentUser('sub') userId: Uuid): Promise<UserDto> {
     return await this.userService.findOne(userId);
   }
 
-  @Post()
+  @Post('/')
   @ApiAuth({
     type: UserDto,
     summary: 'Create user',
@@ -55,7 +53,7 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
-  @Get()
+  @Get('/all')
   @ApiAuth({
     type: UserDto,
     summary: 'List users',
@@ -81,24 +79,14 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiAuth({ type: UserDto, summary: 'Find user by id' })
-  @ApiParam({ name: 'id', type: 'String' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: UserDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'User not found',
-    type: ErrorDto,
-  })
-  @Serialize(UserDto)
+  @ApiAuth({ summary: 'Find user by id', type: UserDto })
+  @ApiParam({ name: 'id', type: 'string' })
   async findUser(@Param('id', ParseUUIDPipe) id: Uuid): Promise<UserDto> {
     return await this.userService.findOne(id);
   }
 
   @Patch(':id')
-  @ApiAuth({ type: UserDto, summary: 'Update user' })
+  @ApiAuth({ summary: 'Update user', type: UserDto })
   @ApiParam({ name: 'id', type: 'String' })
   updateUser(
     @Param('id', ParseUUIDPipe) id: Uuid,
@@ -109,17 +97,11 @@ export class UserController {
 
   @Delete(':id')
   @ApiAuth({
-    summary: 'Delete user',
+    summary: 'Delete a user',
     errorResponses: [400, 401, 403, 404, 500],
   })
   @ApiParam({ name: 'id', type: 'String' })
   removeUser(@Param('id', ParseUUIDPipe) id: Uuid) {
     return this.userService.remove(id);
-  }
-
-  @ApiAuth()
-  @Post('me/change-password')
-  async changePassword() {
-    return 'change-password';
   }
 }

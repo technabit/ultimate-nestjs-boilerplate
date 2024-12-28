@@ -1,6 +1,7 @@
 export type AuthConfig = {
-  secret: string;
-  expiresIn: string;
+  cookieSecret: string;
+  jwtSecret: string;
+  jwtExpiresIn: string;
   refreshSecret: string;
   refreshExpiresIn: string;
   forgotSecret: string;

@@ -1,23 +1,20 @@
-export const IS_PUBLIC = 'isPublic';
-export const IS_AUTH_OPTIONAL = 'isAuthOptional';
-
 export enum Environment {
-  LOCAL = 'local',
-  DEVELOPMENT = 'development',
-  STAGING = 'staging',
-  PRODUCTION = 'production',
-  TEST = 'test',
+  Local = 'local',
+  Development = 'development',
+  Staging = 'staging',
+  Production = 'production',
+  Test = 'test',
 }
 
 export enum LogService {
-  CONSOLE = 'console',
-  GOOGLE_LOGGING = 'google_logging',
-  AWS_CLOUDWATCH = 'aws_cloudwatch',
+  Console = 'console',
+  GoogleLogging = 'google-logging',
+  AwsCloudWatch = 'aws-cloudwatch',
 }
 
 export enum Order {
-  ASC = 'ASC',
-  DESC = 'DESC',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 // Redact value of these paths from logs
@@ -29,6 +26,9 @@ export const loggingRedactPaths = [
   'req.body.password',
   'req.body.oldPassword',
 ];
+
+export const IS_PUBLIC = 'is-public';
+export const IS_AUTH_OPTIONAL = 'is-auth-optional';
 
 export const DEFAULT_PAGE_LIMIT = 10;
 export const DEFAULT_CURRENT_PAGE = 1;

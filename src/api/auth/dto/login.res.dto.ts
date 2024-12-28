@@ -8,14 +8,6 @@ export class LoginResDto {
   userId!: string;
 
   @Expose()
-  @StringField()
-  accessToken!: string;
-
-  @Expose()
-  @StringField()
-  refreshToken!: string;
-
-  @Expose()
   @NumberField()
   tokenTTL!: number;
 }
