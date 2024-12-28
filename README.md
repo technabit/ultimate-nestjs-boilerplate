@@ -8,7 +8,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Postgres
 - [x] TypeORM
 - [x] Offset and Cursor based Pagination
-- [x] REST & GraphQL API.
+- [x] REST & GraphQL API
 - [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
 - [x] Cookie based authentication for all REST, GraphQL & WebSockets.
 - [x] Swagger Documentation and API versioning for REST API
