@@ -7,7 +7,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Nest.js with Fastify
 - [x] PostgreSQL with TypeORM
 - [x] REST, GraphQL & WebSocket API
-- [x] Websockets using Socket.io via Redis Adapter(For future scalability with clusters)
+- [x] Websocket using Socket.io via Redis Adapter(For future scalability with clusters)
 - [x] Cookie based authentication for all REST, GraphQL & WebSockets
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend-)
