@@ -25,7 +25,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Testing with Jest
 - [x] Internationalization using i18n
 - [x] pnpm
-- [x] Docker: Dev & Prod ready from a single script. [Learn More](#6-docker-)
+- [x] Docker: Dev & Prod ready from a single script [Learn More](#6-docker-)
 - [x] Github Actions
 - [x] Commitlint & Husky
 - [x] SWC instead of Webpack
