@@ -3,11 +3,13 @@ import { IS_AUTH_OPTIONAL, IS_PUBLIC } from '@/constants/app.constant';
 import { JwtToken } from '@/constants/auth.constant';
 import {
   CanActivate,
+  ContextType,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { type FastifyRequest } from 'fastify';
 import { Socket } from 'socket.io';
 
@@ -31,8 +33,10 @@ export class AuthGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+    const contextType: ContextType & 'graphql' = context.getType();
+
     // ws
-    if (context.getType() === 'ws') {
+    if (contextType === 'ws') {
       const socket = context.switchToWs().getClient<Socket>();
       try {
         const payload = await this.authService.verifySocketAccessToken(socket);
@@ -44,15 +48,25 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // http
-    const request = context.switchToHttp().getRequest<FastifyRequest>();
-    const accessToken = request?.cookies?.[JwtToken.AccessToken];
+    let request: FastifyRequest;
+    let accessToken: string;
+
+    // graphql
+    if (contextType === 'graphql') {
+      const gqlCtx = GqlExecutionContext.create(context);
+      request = gqlCtx.getContext()?.req;
+      accessToken = request?.cookies?.[JwtToken.AccessToken];
+    } else {
+      // http
+      request = context.switchToHttp().getRequest<FastifyRequest>();
+      accessToken = request?.cookies?.[JwtToken.AccessToken];
+    }
 
     if (isAuthOptional && !accessToken) {
       return true;
     }
     if (!accessToken) {
-      throw new UnauthorizedException('Invalid access token.');
+      throw new UnauthorizedException();
     }
 
     try {

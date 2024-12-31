@@ -9,18 +9,16 @@ function useGraphqlFactory(
   configService: ConfigService<GlobalConfig>,
 ): ApolloDriverConfig {
   const env = configService.get('app.nodeEnv', { infer: true });
+  const isDevelopment = env === 'development' || env === 'local';
   return {
-    playground: env === 'development' || env === 'local',
+    playground: isDevelopment,
     autoSchemaFile: path.join(
       __dirname,
       '../../src/generated/schema.generated.gql',
     ),
     formatError: (...params: Parameters<ApolloDriverConfig['formatError']>) => {
       const [err] = params;
-      if (
-        configService.getOrThrow('app.nodeEnv', { infer: true }) !==
-        'development'
-      ) {
+      if (!isDevelopment) {
         if ('stacktrace' in err.extensions) {
           err.extensions.stacktrace = null;
         }

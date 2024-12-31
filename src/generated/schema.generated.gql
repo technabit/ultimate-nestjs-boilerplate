@@ -11,6 +11,7 @@ type UserSchema {
 }
 
 type Query {
+  whoami: UserSchema!
   getUsers: [UserSchema!]!
   getUser(id: ID!): UserSchema!
 }
