@@ -22,6 +22,7 @@ import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app.config';
 import { type GlobalConfig } from './config/global-config.type';
 import { Environment } from './constants/app.constant';
+import { bullBoardAuthMiddleware } from './middlewares/bull-board-auth.middleware';
 import { RedisIoAdapter } from './shared/socket/redis.adapter';
 import { consoleLoggingConfig } from './tools/logger/logger-factory';
 import { SentryInterceptor } from './tools/sentry/sentry.interceptor';
@@ -50,6 +51,7 @@ async function bootstrap() {
       bufferLogs: true,
     },
   );
+
   const configService = app.get(ConfigService<GlobalConfig>);
 
   await app.register(fastifyCookie, {
@@ -121,6 +123,15 @@ async function bootstrap() {
   if (!isWorker) {
     app.useWebSocketAdapter(new RedisIoAdapter(app));
   }
+
+  app
+    .getHttpAdapter()
+    .getInstance()
+    .addHook('onRequest', async (req, reply) => {
+      if (req.url.startsWith('/queues')) {
+        await bullBoardAuthMiddleware(req, reply);
+      }
+    });
 
   await app.listen({
     port: isWorker
