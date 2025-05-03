@@ -14,5 +14,5 @@ export type AppConfig = {
   appLogging: boolean;
   logLevel: string;
   logService: string;
-  corsOrigin: boolean | string | RegExp | (string | RegExp)[];
+  corsOrigin: boolean | string[] | '*';
 };

@@ -2,6 +2,7 @@ import { type GlobalConfig } from '@/config/global-config.type';
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
+import * as swaggerStats from 'swagger-stats';
 
 function setupSwagger(app: INestApplication): OpenAPIObject {
   const configService = app.get(ConfigService<GlobalConfig>);
@@ -9,9 +10,8 @@ function setupSwagger(app: INestApplication): OpenAPIObject {
 
   const config = new DocumentBuilder()
     .setTitle(appName)
-    .setDescription('A boilerplate project')
+    .setDescription('Ultimate Nest.js Boilerplate')
     .setVersion('1.0')
-    .setContact('Company Name', 'https://example.com', 'contact@company.com')
     .addBearerAuth()
     .addApiKey({ type: 'apiKey', name: 'Api-Key', in: 'header' }, 'Api-Key')
     .addServer(
@@ -20,11 +20,29 @@ function setupSwagger(app: INestApplication): OpenAPIObject {
     )
     .addServer('https://example.com', 'Staging')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document, {
+  SwaggerModule.setup('swagger', app, document, {
     customSiteTitle: appName,
     jsonDocumentUrl: 'swagger/json',
   });
+
+  app.use(
+    swaggerStats.getMiddleware({
+      name: configService.getOrThrow('app.name', { infer: true }),
+      swaggerSpec: document,
+      authentication: true,
+      onAuthenticate(_, username: string, password: string) {
+        // We use grafana credentials for all stats related things
+        return (
+          username ===
+            configService.getOrThrow('grafana.username', { infer: true }) &&
+          password ===
+            configService.getOrThrow('grafana.password', { infer: true })
+        );
+      },
+    }),
+  );
   return document;
 }
 

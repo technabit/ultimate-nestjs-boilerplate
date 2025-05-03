@@ -1,6 +1,6 @@
-import { Uuid } from '@/common/types/common.type';
-import { CurrentUser } from '@/decorators/current-user.decorator';
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthGuard } from '@/auth/auth.guard';
+import { UserSession } from '@/auth/types';
+import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { UseGuards } from '@nestjs/common';
 import {
   Args,
@@ -10,7 +10,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CreateUserInput } from './schema/create-user.schema';
+import { DeleteUserInput } from './schema/delete-user.schema';
 import { GetUserArgs } from './schema/get-user.schema';
 import { UserSchema } from './schema/user.schema';
 import { UserService } from './user.service';
@@ -20,27 +20,27 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => UserSchema)
-  async whoami(@CurrentUser('sub') userId: Uuid) {
-    return this.userService.findOne(userId);
+  async whoami(@CurrentUserSession('user') user: UserSession['user']) {
+    return this.userService.findOneUser(user.id);
   }
 
   @Query(() => [UserSchema])
   async getUsers() {
-    return this.userService.getAll();
+    return this.userService.getAllUsers();
   }
 
   @Query(() => UserSchema)
   async getUser(@Args() { id }: GetUserArgs) {
-    return this.userService.findOne(id);
+    return this.userService.findOneUser(id);
   }
 
   @Mutation(() => UserSchema)
-  async createUser(@Args('input') userInput: CreateUserInput) {
-    return this.userService.create(userInput);
+  async deleteUser(@Args('input') userInput: DeleteUserInput) {
+    return this.userService.deleteUser(userInput.id);
   }
 
   @ResolveField(() => UserSchema)
   async self(@Parent() user: UserSchema) {
-    return this.userService.findOne(user.id);
+    return this.userService.findOneUser(user.id);
   }
 }

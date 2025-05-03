@@ -25,8 +25,10 @@ import { FastifyAdapter } from '@bull-board/fastify';
 import { JwtModule } from '@nestjs/jwt';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { ApiModule } from './api/api.module';
+import { AuthModule } from './auth/auth.module';
 import { default as useGraphqlFactory } from './graphql/graphql.factory';
 import { default as useI18nFactory } from './i18n/i18n.factory';
+import { BULL_BOARD_PATH } from './middlewares/bull-board-auth.middleware';
 import { default as awsConfig } from './services/aws/aws.config';
 import { CacheModule as CacheManagerModule } from './shared/cache/cache.module';
 import { MailModule } from './shared/mail/mail.module';
@@ -117,10 +119,11 @@ export class AppModule {
           useFactory: useThrottlerFactory,
         }),
         BullBoardModule.forRoot({
-          route: '/queues',
+          route: BULL_BOARD_PATH,
           adapter: FastifyAdapter,
         }),
         ApiModule,
+        AuthModule.forRoot(),
         SocketModule,
       ],
       providers: [

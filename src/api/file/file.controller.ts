@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { AuthGuard } from '@/auth/auth.guard';
 import {
   File,
   FileInterceptor,
@@ -10,6 +11,7 @@ import {
   Post,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -20,6 +22,7 @@ import { FileService } from './file.service';
   path: 'file',
   version: '1',
 })
+@UseGuards(AuthGuard)
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 

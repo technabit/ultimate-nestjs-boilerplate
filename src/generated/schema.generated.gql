@@ -17,11 +17,9 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput!): UserSchema!
+  deleteUser(input: DeleteUserInput!): UserSchema!
 }
 
-input CreateUserInput {
-  username: String!
-  email: String!
-  password: String!
+input DeleteUserInput {
+  id: String!
 }

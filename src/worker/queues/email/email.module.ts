@@ -1,4 +1,4 @@
-import { UserEntity } from '@/api/user/entities/user.entity';
+import { UserEntity } from '@/auth/entities/user.entity';
 import { Queue } from '@/constants/job.constant';
 import { JwtModule } from '@/shared/jwt/jwt.module';
 import { BullModule } from '@nestjs/bullmq';

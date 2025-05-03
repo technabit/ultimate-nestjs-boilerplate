@@ -1,3 +1,4 @@
+import { UserEntity } from '@/auth/entities/user.entity';
 import { CursorPaginationDto } from '@/common/dto/cursor-pagination/cursor-pagination.dto';
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
 import { OffsetPaginatedDto } from '@/common/dto/offset-pagination/paginated.dto';
@@ -5,22 +6,14 @@ import { Uuid } from '@/common/types/common.type';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { buildPaginator } from '@/utils/pagination/cursor-pagination';
 import { paginate } from '@/utils/pagination/offset-pagination';
-import {
-  ConflictException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToInstance } from 'class-transformer';
 import { I18nService } from 'nestjs-i18n';
 import { FindManyOptions, Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { ListUserDto } from './dto/list-user.dto';
 import { LoadMoreUsersDto } from './dto/load-more-users.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -30,36 +23,9 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async create(dto: CreateUserDto): Promise<UserDto> {
-    const { username, email, password } = dto;
-
-    const user = await this.userRepository.findOne({
-      where: [
-        {
-          username,
-        },
-        {
-          email,
-        },
-      ],
-    });
-
-    if (user) {
-      throw new ConflictException(
-        this.i18nService.t('user.sameUsernameOrEmailAlreadyExists'),
-      );
-    }
-
-    const newUser = this.userRepository.create({
-      username,
-      email,
-      password,
-    });
-
-    return await this.userRepository.save(newUser);
-  }
-
-  async findAll(reqDto: ListUserDto): Promise<OffsetPaginatedDto<UserDto>> {
+  async findAllUsers(
+    reqDto: ListUserDto,
+  ): Promise<OffsetPaginatedDto<UserDto>> {
     const query = this.userRepository
       .createQueryBuilder('user')
       .orderBy('user.createdAt', 'DESC');
@@ -98,7 +64,7 @@ export class UserService {
     return new CursorPaginatedDto(plainToInstance(UserDto, data), metaDto);
   }
 
-  async findOne(id: Uuid | string): Promise<UserDto> {
+  async findOneUser(id: Uuid | string): Promise<UserDto> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(this.i18nService.t('user.notFound'));
@@ -106,21 +72,13 @@ export class UserService {
     return user;
   }
 
-  async update(id: Uuid | string, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOneByOrFail({ id });
-
-    await this.userRepository.save(
-      this.userRepository.merge(user, updateUserDto),
-    );
-  }
-
-  async remove(id: Uuid | string) {
+  async deleteUser(id: Uuid | string) {
     await this.userRepository.findOneByOrFail({ id });
     await this.userRepository.softDelete(id);
     return HttpStatus.OK;
   }
 
-  async getAll(options?: FindManyOptions<UserEntity>) {
+  async getAllUsers(options?: FindManyOptions<UserEntity>) {
     return this.userRepository.find(options);
   }
 }

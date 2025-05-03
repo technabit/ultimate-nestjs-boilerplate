@@ -16,13 +16,15 @@ import {
 import * as Sentry from '@sentry/node';
 import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
-import * as swaggerStats from 'swagger-stats';
 
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app.config';
 import { type GlobalConfig } from './config/global-config.type';
 import { Environment } from './constants/app.constant';
-import { bullBoardAuthMiddleware } from './middlewares/bull-board-auth.middleware';
+import {
+  BULL_BOARD_PATH,
+  bullBoardAuthMiddleware,
+} from './middlewares/bull-board-auth.middleware';
 import { RedisIoAdapter } from './shared/socket/redis.adapter';
 import { consoleLoggingConfig } from './tools/logger/logger-factory';
 import { SentryInterceptor } from './tools/sentry/sentry.interceptor';
@@ -60,6 +62,8 @@ async function bootstrap() {
     }) as string,
   });
 
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -75,18 +79,17 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  Sentry.init({
-    dsn: configService.getOrThrow('sentry.dsn', { infer: true }),
-    tracesSampleRate: 1.0,
-    environment: configService.getOrThrow('app.nodeEnv', { infer: true }),
-  });
-
   app.enableCors({
     origin: configService.getOrThrow('app.corsOrigin', {
       infer: true,
     }),
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept',
+    methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+    ],
     credentials: true,
   });
 
@@ -94,27 +97,17 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
-  app.useGlobalInterceptors(new SentryInterceptor());
 
   const env = configService.getOrThrow('app.nodeEnv', { infer: true });
 
-  const document = setupSwagger(app);
+  setupSwagger(app);
 
-  app.use(
-    swaggerStats.getMiddleware({
-      name: configService.getOrThrow('app.name', { infer: true }),
-      swaggerSpec: document,
-      authentication: true,
-      onAuthenticate(_, username: string, password: string) {
-        return (
-          username ===
-            configService.getOrThrow('grafana.username', { infer: true }) &&
-          password ===
-            configService.getOrThrow('grafana.password', { infer: true })
-        );
-      },
-    }),
-  );
+  Sentry.init({
+    dsn: configService.getOrThrow('sentry.dsn', { infer: true }),
+    tracesSampleRate: 1.0,
+    environment: configService.getOrThrow('app.nodeEnv', { infer: true }),
+  });
+  app.useGlobalInterceptors(new SentryInterceptor());
 
   if (env !== 'local') {
     setupGracefulShutdown({ app });
@@ -128,7 +121,8 @@ async function bootstrap() {
     .getHttpAdapter()
     .getInstance()
     .addHook('onRequest', async (req, reply) => {
-      if (req.url.startsWith('/queues')) {
+      // Auth for bull-board
+      if (req.url.startsWith(`/api${BULL_BOARD_PATH}`)) {
         await bullBoardAuthMiddleware(req, reply);
       }
     });

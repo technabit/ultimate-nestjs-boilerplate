@@ -1,7 +1,8 @@
-import { AuthService } from '@/api/auth/auth.service';
+import { AuthGuard } from '@/auth/auth.guard';
+import { AuthService } from '@/auth/auth.service';
+import { UserSession } from '@/auth/types';
 import { getConfig as getAppConfig } from '@/config/app.config';
-import { CurrentUser } from '@/decorators/current-user.decorator';
-import { AuthGuard } from '@/guards/auth.guard';
+import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { Logger, UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
   ConnectedSocket,
@@ -13,6 +14,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { fromNodeHeaders } from 'better-auth/node';
 import 'dotenv/config';
 import ms from 'ms';
 import { Server, Socket } from 'socket.io';
@@ -23,8 +25,8 @@ const appConfig = getAppConfig();
 @WebSocketGateway(0, {
   cors: {
     origin: appConfig.corsOrigin,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Accept,Authorization,X-Requested-With',
     credentials: true,
   },
 })
@@ -39,8 +41,8 @@ export class SocketGateway
   private readonly clients: Map<string, Socket>;
 
   constructor(
-    private readonly authService: AuthService,
     private readonly cacheService: CacheService,
+    private readonly authService: AuthService,
   ) {
     this.clients = new Map();
   }
@@ -49,10 +51,20 @@ export class SocketGateway
     this.logger.log(`Websocket gateway initialized.`);
     this.server.use(async (socket: Socket, next) => {
       try {
-        socket['user'] = await this.authService.verifySocketAccessToken(socket);
+        const session = await this.authService.api.getSession({
+          headers: fromNodeHeaders(socket?.handshake?.headers),
+        });
+        if (!session) {
+          throw new Error();
+        }
+        socket['session'] = session;
         return next();
       } catch {
-        return next(new UnauthorizedException());
+        return next(
+          new UnauthorizedException({
+            code: 'UNAUTHORIZED',
+          }),
+        );
       }
     });
   }
@@ -105,11 +117,12 @@ export class SocketGateway
   handleMessage(
     @ConnectedSocket() socket: Socket,
     @MessageBody() _message: any,
-    @CurrentUser('sub') _userId: string,
+    @CurrentUserSession('user') _user: UserSession['user'],
   ) {
     // console.log(
-    //   `Received message from client: ${socket?.id}. User=${userId}`,
-    //   JSON.stringify(message, null, 2),
+    //   `Received message from client: ${socket?.id}.`,
+    //   JSON.stringify(_message, null, 2),
+    //   _user,
     // );
     socket.send('hello world');
   }

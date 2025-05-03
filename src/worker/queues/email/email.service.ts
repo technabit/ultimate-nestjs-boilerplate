@@ -1,4 +1,4 @@
-import { UserEntity } from '@/api/user/entities/user.entity';
+import { UserEntity } from '@/auth/entities/user.entity';
 import { JwtService } from '@/shared/jwt/jwt.service';
 import { MailService } from '@/shared/mail/mail.service';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';

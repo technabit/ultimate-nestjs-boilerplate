@@ -26,11 +26,11 @@ import ms from 'ms';
 import { I18nService } from 'nestjs-i18n';
 import { Repository } from 'typeorm';
 
+import { UserEntity } from '@/auth/entities/user.entity';
 import { AccessTokenPayload } from '@/shared/jwt/jwt.type';
 import { hashPassword } from '@/utils/password/password.util';
 import { VerifyEmailJob } from '@/worker/queues/email/email.type';
 import { Socket } from 'socket.io';
-import { UserEntity } from '../user/entities/user.entity';
 import { Role } from '../user/user.enum';
 import { AuthToken } from './auth.type';
 import { LoginReqDto } from './dto/login.req.dto';
@@ -60,11 +60,22 @@ export class AuthService {
     const { email, password } = dto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ['id', 'email', 'password'],
+      select: [
+        'id',
+        'email',
+        // TODO: UNDO
+        // 'password'
+      ],
     });
 
     const isPasswordValid =
-      user && (await verifyPassword(password, user.password));
+      user &&
+      (await verifyPassword(
+        password,
+        // TODO: UNDO
+        // user.password
+        '',
+      ));
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password.');
@@ -117,7 +128,7 @@ export class AuthService {
     const user = this.userRepository.create({
       username: dto.username,
       email: dto.email,
-      password: hashedPassword,
+      // password: hashedPassword,
     });
 
     await user.save({ transaction: false });

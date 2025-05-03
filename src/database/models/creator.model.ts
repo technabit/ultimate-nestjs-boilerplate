@@ -1,4 +1,4 @@
-import { UserEntity } from '@/api/user/entities/user.entity';
+import { UserEntity } from '@/auth/entities/user.entity';
 import { Column, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseModel } from './base.model';
 

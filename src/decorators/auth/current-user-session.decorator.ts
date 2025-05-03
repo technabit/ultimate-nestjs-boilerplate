@@ -1,4 +1,4 @@
-import { AccessTokenPayload } from '@/shared/jwt/jwt.type';
+import { UserSession as UserSessionType } from '@/auth/types';
 import {
   ContextType,
   createParamDecorator,
@@ -7,11 +7,11 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { type FastifyRequest } from 'fastify';
 
-export const CurrentUser = createParamDecorator(
-  (data: keyof AccessTokenPayload, ctx: ExecutionContext) => {
+export const CurrentUserSession = createParamDecorator(
+  (data: keyof UserSessionType, ctx: ExecutionContext): UserSessionType => {
     const contextType: ContextType & 'graphql' = ctx.getType();
 
-    let request: FastifyRequest;
+    let request: FastifyRequest & UserSessionType;
 
     if (contextType === 'graphql') {
       const gqlCtx = GqlExecutionContext.create(ctx);
@@ -20,7 +20,6 @@ export const CurrentUser = createParamDecorator(
       request = ctx.switchToHttp().getRequest();
     }
 
-    const user: AccessTokenPayload = request['user']; // request['user'] is set in the AuthGuard
-    return data ? user?.[data] : user;
+    return data == null ? request.session : request.session[data];
   },
 );

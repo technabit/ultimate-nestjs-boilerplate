@@ -1,16 +1,10 @@
+import { Role } from '@/api/user/user.enum';
 import { BaseModel } from '@/database/models/base.model';
 import { Column, Entity, Index } from 'typeorm';
-import { Role } from '../user.enum';
 
+// https://www.better-auth.com/docs/concepts/database#core-schema
 @Entity('user')
 export class UserEntity extends BaseModel {
-  @Column({
-    type: 'enum',
-    enum: Role,
-    default: Role.User,
-  })
-  role: Role;
-
   @Index({ unique: true, where: '"deletedAt" IS NULL' })
   @Column()
   username: string;
@@ -19,12 +13,19 @@ export class UserEntity extends BaseModel {
   @Column()
   email: string;
 
+  @Column({ type: 'boolean', default: false })
+  isEmailVerified: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.User,
+  })
+  role: Role;
+
   @Column({ nullable: true })
-  password?: string;
+  image?: string;
 
   @Column({ nullable: true })
   bio?: string;
-
-  @Column({ type: 'boolean', default: false })
-  isEmailVerified: boolean;
 }

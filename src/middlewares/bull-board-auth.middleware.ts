@@ -1,6 +1,8 @@
 import { getConfig } from '@/worker/queues/bull.config';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
+export const BULL_BOARD_PATH = '/queues';
+
 export async function bullBoardAuthMiddleware(
   req: FastifyRequest,
   reply: FastifyReply,

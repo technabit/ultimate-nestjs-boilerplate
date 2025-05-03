@@ -1,3 +1,4 @@
+import { UserEntity } from '@/auth/entities/user.entity';
 import { Queue } from '@/constants/job.constant';
 import { CacheModule } from '@/shared/cache/cache.module';
 import { JwtModule } from '@/shared/jwt/jwt.module';
@@ -6,7 +7,6 @@ import { BullBoardModule } from '@bull-board/nestjs';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '../user/entities/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 

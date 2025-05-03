@@ -56,10 +56,6 @@ class EnvironmentVariablesValidator {
 
   @IsString()
   @IsOptional()
-  API_PREFIX: string;
-
-  @IsString()
-  @IsOptional()
   APP_FALLBACK_LANGUAGE: string;
 
   @IsBoolean()
