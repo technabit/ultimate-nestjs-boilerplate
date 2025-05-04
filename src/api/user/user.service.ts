@@ -8,12 +8,13 @@ import { buildPaginator } from '@/utils/pagination/cursor-pagination';
 import { paginate } from '@/utils/pagination/offset-pagination';
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { plainToInstance } from 'class-transformer';
 import { I18nService } from 'nestjs-i18n';
 import { FindManyOptions, Repository } from 'typeorm';
-import { ListUserDto } from './dto/list-user.dto';
-import { LoadMoreUsersDto } from './dto/load-more-users.dto';
-import { UserDto } from './dto/user.dto';
+import {
+  QueryUsersCursorDto,
+  QueryUsersOffsetDto,
+  UserDto,
+} from './dto/user.dto';
 
 @Injectable()
 export class UserService {
@@ -24,20 +25,20 @@ export class UserService {
   ) {}
 
   async findAllUsers(
-    reqDto: ListUserDto,
+    dto: QueryUsersOffsetDto,
   ): Promise<OffsetPaginatedDto<UserDto>> {
     const query = this.userRepository
       .createQueryBuilder('user')
       .orderBy('user.createdAt', 'DESC');
-    const [users, metaDto] = await paginate<UserEntity>(query, reqDto, {
+    const [users, metaDto] = await paginate<UserEntity>(query, dto, {
       skipCount: false,
       takeAll: false,
     });
-    return new OffsetPaginatedDto(plainToInstance(UserDto, users), metaDto);
+    return new OffsetPaginatedDto(users, metaDto);
   }
 
-  async loadMoreUsers(
-    reqDto: LoadMoreUsersDto,
+  async findAllUsersCursor(
+    reqDto: QueryUsersCursorDto,
   ): Promise<CursorPaginatedDto<UserDto>> {
     const queryBuilder = this.userRepository.createQueryBuilder('user');
     const paginator = buildPaginator({
@@ -61,7 +62,7 @@ export class UserService {
       reqDto,
     );
 
-    return new CursorPaginatedDto(plainToInstance(UserDto, data), metaDto);
+    return new CursorPaginatedDto(data, metaDto);
   }
 
   async findOneUser(id: Uuid | string): Promise<UserDto> {

@@ -1,4 +1,4 @@
-import { IS_OPTIONAL_AUTH } from '@/auth/constants';
+import { IS_OPTIONAL_AUTH } from '@/constants/auth.constant';
 import { SetMetadata } from '@nestjs/common';
 
 /**

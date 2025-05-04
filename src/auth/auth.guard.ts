@@ -8,14 +8,14 @@ import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Socket } from 'socket.io';
 
-import type { Auth } from 'better-auth/auth';
-import { fromNodeHeaders } from 'better-auth/node';
-import { FastifyRequest } from 'fastify';
 import {
   AUTH_INSTANCE_KEY,
   IS_OPTIONAL_AUTH,
   IS_PUBLIC_AUTH,
-} from './constants';
+} from '@/constants/auth.constant';
+import type { Auth } from 'better-auth/auth';
+import { fromNodeHeaders } from 'better-auth/node';
+import { FastifyRequest } from 'fastify';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

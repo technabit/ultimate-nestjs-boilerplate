@@ -1,7 +1,6 @@
 import { UserEntity } from '@/auth/entities/user.entity';
-import { JwtService } from '@/shared/jwt/jwt.service';
 import { MailService } from '@/shared/mail/mail.service';
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VerifyEmailJob } from './email.type';
@@ -12,36 +11,20 @@ export class EmailQueueService {
 
   constructor(
     private readonly mailService: MailService,
-    private readonly jwtService: JwtService,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async sendEmailVerification(data: VerifyEmailJob): Promise<void> {
+  async verifyEmail(data: VerifyEmailJob): Promise<void> {
     const user = await this.userRepository.findOne({
-      where: {
-        id: data?.userId,
-      },
+      where: { id: data.userId },
     });
     if (!user) {
-      throw new NotFoundException('User not found.');
+      this.logger.error(`User id = ${data.userId} does not exist.`);
     }
-    if (user.isEmailVerified) {
-      this.logger.log(`Email is already verified for user id=${user?.id}`);
-      return;
-    }
-    const token = await this._createEmailVerificationToken(user?.id);
     await this.mailService.sendEmailVerificationMail({
       email: user.email,
-      token: token,
+      url: data.url,
     });
-  }
-
-  private async _createEmailVerificationToken(userId: string): Promise<string> {
-    const emailVerificationToken = await this.jwtService.createToken({
-      type: 'email-verification-token',
-      payload: { sub: userId },
-    });
-    return emailVerificationToken.token;
   }
 }

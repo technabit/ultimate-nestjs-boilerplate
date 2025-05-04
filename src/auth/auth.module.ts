@@ -1,3 +1,6 @@
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { BullBoardModule } from '@bull-board/nestjs';
+import { BullModule, getQueueToken } from '@nestjs/bullmq';
 import type {
   MiddlewareConsumer,
   NestModule,
@@ -11,7 +14,20 @@ import {
   MetadataScanner,
 } from '@nestjs/core';
 import { betterAuth, type Auth } from 'better-auth';
+import { Queue as BullMqQueue } from 'bullmq';
 
+import { GlobalConfig } from '@/config/config.type';
+import {
+  AFTER_HOOK_KEY,
+  AUTH_INSTANCE_KEY,
+  BEFORE_HOOK_KEY,
+  HOOK_KEY,
+} from '@/constants/auth.constant';
+import { Queue } from '@/constants/job.constant';
+import { CacheModule } from '@/shared/cache/cache.module';
+import { CacheService } from '@/shared/cache/cache.service';
+import { VerifyEmailJob } from '@/worker/queues/email/email.type';
+import { ConfigService } from '@nestjs/config';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {
   FastifyInstance,
@@ -20,12 +36,6 @@ import type {
 } from 'fastify';
 import { AuthService } from './auth.service';
 import { getConfig as getBetterAuthConfig } from './better-auth.config';
-import {
-  AFTER_HOOK_KEY,
-  AUTH_INSTANCE_KEY,
-  BEFORE_HOOK_KEY,
-  HOOK_KEY,
-} from './constants';
 
 const HOOKS = [
   { metadataKey: BEFORE_HOOK_KEY, hookType: 'before' as const },
@@ -137,31 +147,40 @@ export class AuthModule implements NestModule, OnModuleInit {
     }
   }
 
-  /**
-   * Static factory method to create and configure the AuthModule.
-   * @param auth - The Auth instance to use
-   * @param options - Configuration options for the module
-   */
-  static forRoot() {
-    const auth = betterAuth(getBetterAuthConfig());
-
+  static forRootAsync() {
     return {
       global: true,
       module: AuthModule,
+      imports: [
+        CacheModule,
+        BullModule.registerQueue({
+          name: Queue.Email,
+        }),
+        BullBoardModule.forFeature({
+          name: Queue.Email,
+          adapter: BullMQAdapter,
+        }),
+      ],
       providers: [
         {
           provide: AUTH_INSTANCE_KEY,
-          useValue: auth,
+          useFactory: async (
+            cacheService: CacheService,
+            configService: ConfigService<GlobalConfig>,
+            emailQueue: BullMqQueue<VerifyEmailJob, any, string>,
+          ) => {
+            const config = getBetterAuthConfig({
+              cacheService,
+              configService,
+              emailQueue,
+            });
+            return betterAuth(config);
+          },
+          inject: [CacheService, ConfigService, getQueueToken(Queue.Email)],
         },
         AuthService,
       ],
-      exports: [
-        {
-          provide: AUTH_INSTANCE_KEY,
-          useValue: auth,
-        },
-        AuthService,
-      ],
+      exports: [AUTH_INSTANCE_KEY, AuthService],
     };
   }
 }

@@ -1,8 +1,8 @@
-import authConfig from '@/api/auth/config/auth.config';
-import appConfig from '@/config/app.config';
-import databaseConfig from '@/database/config/database.config';
-import mailConfig from '@/shared/mail/config/mail.config';
-import redisConfig from '@/tools/redis/redis.config';
+import appConfig from '@/config/app/app.config';
+import authConfig from '@/config/auth/auth.config';
+import databaseConfig from '@/config/database/database.config';
+import mailConfig from '@/config/mail/mail.config';
+import redisConfig from '@/config/redis/redis.config';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { BullModule } from '@nestjs/bullmq';
@@ -22,25 +22,24 @@ import {
 import { LoggerModule } from 'nestjs-pino';
 
 import { FastifyAdapter } from '@bull-board/fastify';
-import { JwtModule } from '@nestjs/jwt';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { ApiModule } from './api/api.module';
 import { AuthModule } from './auth/auth.module';
+import { default as awsConfig } from './config/aws/aws.config';
+import { default as bullConfig } from './config/bull/bull.config';
+import { default as useBullFactory } from './config/bull/bull.factory';
+import grafanaConfig from './config/grafana/grafana.config';
+import { default as sentryConfig } from './config/sentry/sentry.config';
+import { default as throttlerConfig } from './config/throttler/throttler.config';
+import { default as useThrottlerFactory } from './config/throttler/throttler.factory';
+import { AppThrottlerGuard } from './config/throttler/throttler.guard';
 import { default as useGraphqlFactory } from './graphql/graphql.factory';
 import { default as useI18nFactory } from './i18n/i18n.factory';
 import { BULL_BOARD_PATH } from './middlewares/bull-board-auth.middleware';
-import { default as awsConfig } from './services/aws/aws.config';
 import { CacheModule as CacheManagerModule } from './shared/cache/cache.module';
 import { MailModule } from './shared/mail/mail.module';
 import { SocketModule } from './shared/socket/socket.module';
-import grafanaConfig from './tools/grafana/config/grafana.config';
 import { default as useLoggerFactory } from './tools/logger/logger-factory';
-import { default as sentryConfig } from './tools/sentry/sentry.config';
-import { default as throttlerConfig } from './tools/throttler/throttler.config';
-import { default as useThrottlerFactory } from './tools/throttler/throttler.factory';
-import { AppThrottlerGuard } from './tools/throttler/throttler.guard';
-import { default as bullConfig } from './worker/queues/bull.config';
-import { default as useBullFactory } from './worker/queues/bull.factory';
 import { WorkerModule } from './worker/worker.module';
 
 @Module({})
@@ -89,7 +88,6 @@ export class AppModule {
         PrometheusModule.register(),
         CacheManagerModule,
         MailModule,
-        JwtModule,
       ],
     };
   }
@@ -123,7 +121,7 @@ export class AppModule {
           adapter: FastifyAdapter,
         }),
         ApiModule,
-        AuthModule.forRoot(),
+        AuthModule.forRootAsync(),
         SocketModule,
       ],
       providers: [

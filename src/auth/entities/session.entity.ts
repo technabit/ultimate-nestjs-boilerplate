@@ -2,6 +2,7 @@ import { BaseModel } from '@/database/models/base.model';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
 
+// Although, we'll use Redis for storing sessions, we can fallback to this if you want to store sessions in database
 // https://www.better-auth.com/docs/concepts/database#core-schema
 @Entity('session')
 export class SessionEntity extends BaseModel {

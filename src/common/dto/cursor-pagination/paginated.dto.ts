@@ -3,9 +3,9 @@ import { Expose } from 'class-transformer';
 import { CursorPaginationDto } from './cursor-pagination.dto';
 
 export class CursorPaginatedDto<TData> {
-  @ApiProperty({ type: [Object] })
+  @ApiProperty({ type: [Object], isArray: true })
   @Expose()
-  readonly data: TData[];
+  data: TData[];
 
   @ApiProperty()
   @Expose()

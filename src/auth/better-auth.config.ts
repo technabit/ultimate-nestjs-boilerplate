@@ -1,18 +1,36 @@
-import { getConfig as getAppConfig } from '@/config/app.config';
-import { getConfig as getDatabaseConfig } from '@/database/config/database.config';
+import { GlobalConfig } from '@/config/config.type';
+import { Job } from '@/constants/job.constant';
+import { CacheService } from '@/shared/cache/cache.service';
+import { VerifyEmailJob } from '@/worker/queues/email/email.type';
+import { ConfigService } from '@nestjs/config';
 import { username as usernamePlugin } from 'better-auth/plugins';
 import { BetterAuthOptions } from 'better-auth/types';
+import { Queue as BullMqQueue } from 'bullmq';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
 
-export function getConfig(): BetterAuthOptions {
-  const appConfig = getAppConfig();
-  const databaseConfig = getDatabaseConfig();
+/**
+ * Better auth configuration
+ * Visit https://www.better-auth.com/docs/reference/options to see full options
+ */
+export function getConfig({
+  configService,
+  cacheService,
+  emailQueue,
+}: {
+  configService: ConfigService<GlobalConfig>;
+  cacheService: CacheService;
+  emailQueue: BullMqQueue<VerifyEmailJob, any, string>;
+}): BetterAuthOptions {
+  const appConfig = configService.getOrThrow('app', { infer: true });
+  const databaseConfig = configService.getOrThrow('database', { infer: true });
+  const authConfig = configService.getOrThrow('auth', { infer: true });
 
   return {
+    appName: appConfig.name,
+    secret: authConfig.authSecret,
     baseURL: appConfig.url,
     plugins: [usernamePlugin()],
-    trustedOrigins: appConfig.corsOrigin as string[],
     database: new Pool({
       database: databaseConfig.database,
       user: databaseConfig.username,
@@ -32,6 +50,8 @@ export function getConfig(): BetterAuthOptions {
     }),
     emailAndPassword: {
       enabled: true,
+      autoSignIn: false,
+      requireEmailVerification: true,
     },
     session: {
       freshAge: 10,
@@ -50,8 +70,13 @@ export function getConfig(): BetterAuthOptions {
     verification: {
       modelName: 'verification',
     },
+    emailVerification: {
+      sendVerificationEmail: async ({ user, url }) => {
+        await emailQueue.add(Job.EmailVerification, { url, userId: user.id });
+      },
+    },
+    trustedOrigins: appConfig.corsOrigin as string[],
     advanced: {
-      useSecureCookies: true,
       database: {
         generateId() {
           return uuid();
@@ -68,6 +93,28 @@ export function getConfig(): BetterAuthOptions {
             return { data: user };
           },
         },
+      },
+    },
+    // Use Redis for storing sessions
+    secondaryStorage: {
+      get: async (key) => {
+        return (
+          (await cacheService.get({ key: 'AccessToken', args: [key] })) ?? null
+        );
+      },
+      set: async (key, value, ttl) => {
+        await cacheService.set(
+          { key: 'AccessToken', args: [key] },
+          value,
+          ttl
+            ? {
+                ttl: ttl,
+              }
+            : {},
+        );
+      },
+      delete: async (key) => {
+        await cacheService.delete({ key: 'AccessToken', args: [key] });
       },
     },
   };

@@ -18,16 +18,16 @@ import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 
 import { AppModule } from './app.module';
-import { getConfig as getAppConfig } from './config/app.config';
-import { type GlobalConfig } from './config/global-config.type';
+import { getConfig as getAppConfig } from './config/app/app.config';
+import { type GlobalConfig } from './config/config.type';
 import { Environment } from './constants/app.constant';
+import { SentryInterceptor } from './interceptors/sentry.interceptor';
 import {
   BULL_BOARD_PATH,
   bullBoardAuthMiddleware,
 } from './middlewares/bull-board-auth.middleware';
 import { RedisIoAdapter } from './shared/socket/redis.adapter';
 import { consoleLoggingConfig } from './tools/logger/logger-factory';
-import { SentryInterceptor } from './tools/sentry/sentry.interceptor';
 import setupSwagger from './tools/swagger/swagger.setup';
 
 async function bootstrap() {
@@ -57,7 +57,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService<GlobalConfig>);
 
   await app.register(fastifyCookie, {
-    secret: configService.getOrThrow('auth.cookieSecret', {
+    secret: configService.getOrThrow('auth.authSecret', {
       infer: true,
     }) as string,
   });

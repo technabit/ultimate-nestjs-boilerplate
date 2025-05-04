@@ -1,6 +1,7 @@
 import { ErrorDto } from '@/common/dto/error.dto';
-import { GlobalConfig } from '@/config/global-config.type';
+import { GlobalConfig } from '@/config/config.type';
 import { Public } from '@/decorators/public.decorator';
+import { SWAGGER_PATH } from '@/tools/swagger/swagger.setup';
 import { Serialize } from '@/utils/interceptors/serialize';
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -41,8 +42,6 @@ export class HealthController {
   @Get()
   @HealthCheck()
   async check(): Promise<HealthCheckResult> {
-    const environment = this.configService.get('app.nodeEnv', { infer: true });
-
     const list = [
       () => this.db.pingCheck('database', { timeout: 5000 }),
       () =>
@@ -50,15 +49,11 @@ export class HealthController {
           transport: Transport.REDIS,
           options: this.configService.getOrThrow('redis'),
         }),
-      ...(environment === 'development' || environment === 'local'
-        ? [
-            () =>
-              this.http.pingCheck(
-                'api-docs',
-                `${this.configService.getOrThrow('app.url', { infer: true })}/api-docs`,
-              ),
-          ]
-        : []),
+      () =>
+        this.http.pingCheck(
+          'api-docs',
+          `${this.configService.getOrThrow('app.url', { infer: true })}/${SWAGGER_PATH}`,
+        ),
     ];
     return this.health.check(list);
   }

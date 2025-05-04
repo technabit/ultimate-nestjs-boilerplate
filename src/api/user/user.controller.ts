@@ -1,5 +1,5 @@
 import { AuthGuard } from '@/auth/auth.guard';
-import { UserSession } from '@/auth/types';
+import { UserSession } from '@/auth/auth.type';
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
 import { OffsetPaginatedDto } from '@/common/dto/offset-pagination/paginated.dto';
 import { Uuid } from '@/common/types/common.type';
@@ -15,9 +15,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
-import { ListUserDto } from './dto/list-user.dto';
-import { LoadMoreUsersDto } from './dto/load-more-users.dto';
-import { UserDto } from './dto/user.dto';
+import {
+  CursorPaginatedUserDto,
+  OffsetPaginatedUserDto,
+  QueryUsersCursorDto,
+  QueryUsersOffsetDto,
+  UserDto,
+} from './dto/user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('user')
@@ -42,27 +46,27 @@ export class UserController {
 
   @Get('/all')
   @ApiAuth({
-    type: UserDto,
-    summary: 'List users',
+    type: OffsetPaginatedUserDto,
+    summary: 'List users.',
     isPaginated: true,
   })
   async findAllUsers(
-    @Query() reqDto: ListUserDto,
+    @Query() dto: QueryUsersOffsetDto,
   ): Promise<OffsetPaginatedDto<UserDto>> {
-    return await this.userService.findAllUsers(reqDto);
+    return await this.userService.findAllUsers(dto);
   }
 
-  @Get('/load-more')
+  @Get('/all/cursor')
   @ApiAuth({
-    type: UserDto,
-    summary: 'Load more users',
+    type: CursorPaginatedUserDto,
+    summary: 'List users via cursor.',
     isPaginated: true,
     paginationType: 'cursor',
   })
-  async loadMoreUsers(
-    @Query() reqDto: LoadMoreUsersDto,
+  async findAllUsersCursor(
+    @Query() dto: QueryUsersCursorDto,
   ): Promise<CursorPaginatedDto<UserDto>> {
-    return await this.userService.loadMoreUsers(reqDto);
+    return await this.userService.findAllUsersCursor(dto);
   }
 
   @Get(':id')

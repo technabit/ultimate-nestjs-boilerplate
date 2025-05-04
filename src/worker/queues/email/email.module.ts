@@ -1,6 +1,5 @@
 import { UserEntity } from '@/auth/entities/user.entity';
 import { Queue } from '@/constants/job.constant';
-import { JwtModule } from '@/shared/jwt/jwt.module';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,7 +18,6 @@ import { EmailQueueService } from './email.service';
         },
       },
     }),
-    JwtModule,
   ],
   providers: [EmailQueueService, EmailProcessor, EmailQueueEvents],
 })

@@ -31,7 +31,7 @@ export class EmailProcessor extends WorkerHost {
 
     switch (job.name) {
       case JobName.EmailVerification:
-        return await this.emailQueueService.sendEmailVerification(job.data);
+        return await this.emailQueueService.verifyEmail(job.data);
       default:
         throw new Error(`Unknown job name: ${job.name}`);
     }

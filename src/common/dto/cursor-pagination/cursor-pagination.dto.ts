@@ -25,7 +25,7 @@ export class CursorPaginationDto {
     beforeCursor: string,
     pageOptions: PageOptionsDto,
   ) {
-    this.limit = pageOptions.limit;
+    this.limit = pageOptions?.limit;
     this.afterCursor = afterCursor;
     this.beforeCursor = beforeCursor;
     this.totalRecords = totalRecords;

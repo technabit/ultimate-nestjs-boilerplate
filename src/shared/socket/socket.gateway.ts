@@ -1,7 +1,7 @@
 import { AuthGuard } from '@/auth/auth.guard';
 import { AuthService } from '@/auth/auth.service';
-import { UserSession } from '@/auth/types';
-import { getConfig as getAppConfig } from '@/config/app.config';
+import { UserSession } from '@/auth/auth.type';
+import { getConfig as getAppConfig } from '@/config/app/app.config';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { Logger, UnauthorizedException, UseGuards } from '@nestjs/common';
 import {
@@ -21,6 +21,8 @@ import { Server, Socket } from 'socket.io';
 import { CacheService } from '../cache/cache.service';
 
 const appConfig = getAppConfig();
+
+type SocketWithUserSession = Socket & { session: UserSession };
 
 @WebSocketGateway(0, {
   cors: {
@@ -69,9 +71,9 @@ export class SocketGateway
     });
   }
 
-  async handleConnection(socket: Socket) {
+  async handleConnection(socket: SocketWithUserSession) {
     // console.log('New client connected: ', socket?.id);
-    const userId = socket?.['user']?.id as string;
+    const userId = socket?.session?.user?.id as string;
     if (!userId) {
       return;
     }
@@ -89,11 +91,11 @@ export class SocketGateway
     );
   }
 
-  async handleDisconnect(socket: Socket) {
+  async handleDisconnect(socket: SocketWithUserSession) {
     // console.log('Client disconnected: ', socket?.id);
 
     this.clients.delete(socket?.id);
-    const userId = socket?.['user']?.id as string;
+    const userId = socket?.session?.user?.id as string;
     if (!userId) {
       return;
     }
@@ -115,7 +117,7 @@ export class SocketGateway
   @UseGuards(AuthGuard)
   @SubscribeMessage('message')
   handleMessage(
-    @ConnectedSocket() socket: Socket,
+    @ConnectedSocket() socket: SocketWithUserSession,
     @MessageBody() _message: any,
     @CurrentUserSession('user') _user: UserSession['user'],
   ) {
@@ -128,7 +130,7 @@ export class SocketGateway
   }
 
   @SubscribeMessage('ping')
-  async handlePing(socket: Socket) {
+  async handlePing(socket: SocketWithUserSession) {
     socket.send('pong');
   }
 

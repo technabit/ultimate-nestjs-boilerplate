@@ -1,4 +1,4 @@
-import { UserSession as UserSessionType } from '@/auth/types';
+import { UserSession as UserSessionType } from '@/auth/auth.type';
 import {
   ContextType,
   createParamDecorator,

@@ -1,4 +1,4 @@
-import { GlobalConfig } from '@/config/global-config.type';
+import { GlobalConfig } from '@/config/config.type';
 import {
   PutObjectCommand,
   PutObjectCommandInput,
@@ -8,7 +8,10 @@ import { File } from '@nest-lab/fastify-multer';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuid } from 'uuid';
-import { AwsS3UploadOptions, AwsS3UploadResponse } from './aws.types';
+import {
+  AwsS3UploadOptions,
+  AwsS3UploadResponse,
+} from '../../config/aws/aws-config.types';
 
 @Injectable()
 export class AwsS3Service {

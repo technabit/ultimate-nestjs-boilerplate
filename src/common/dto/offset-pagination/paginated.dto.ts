@@ -3,11 +3,11 @@ import { Expose } from 'class-transformer';
 import { OffsetPaginationDto } from './offset-pagination.dto';
 
 export class OffsetPaginatedDto<TData> {
-  @ApiProperty({ type: [Object] })
+  @ApiProperty({ type: [Object], isArray: true })
   @Expose()
-  readonly data: TData[];
+  data: TData[];
 
-  @ApiProperty()
+  @ApiProperty({ type: OffsetPaginationDto })
   @Expose()
   pagination: OffsetPaginationDto;
 

@@ -1,8 +1,10 @@
-import { type GlobalConfig } from '@/config/global-config.type';
+import { type GlobalConfig } from '@/config/config.type';
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as swaggerStats from 'swagger-stats';
+
+export const SWAGGER_PATH = 'swagger';
 
 function setupSwagger(app: INestApplication): OpenAPIObject {
   const configService = app.get(ConfigService<GlobalConfig>);
@@ -18,11 +20,10 @@ function setupSwagger(app: INestApplication): OpenAPIObject {
       configService.getOrThrow('app.url', { infer: true }),
       'Development',
     )
-    .addServer('https://example.com', 'Staging')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document, {
+  SwaggerModule.setup(SWAGGER_PATH, app, document, {
     customSiteTitle: appName,
     jsonDocumentUrl: 'swagger/json',
   });

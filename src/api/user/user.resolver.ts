@@ -1,5 +1,5 @@
 import { AuthGuard } from '@/auth/auth.guard';
-import { UserSession } from '@/auth/types';
+import { UserSession } from '@/auth/auth.type';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { UseGuards } from '@nestjs/common';
 import {
