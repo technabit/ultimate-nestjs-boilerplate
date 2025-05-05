@@ -8,7 +8,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] PostgreSQL with TypeORM
 - [x] REST, GraphQL & WebSocket API
 - [x] Websocket using Socket.io via Redis Adapter(For future scalability with clusters)
-- [x] [Better Auth](https://www.better-auth.com/) for complete authentication. See client example [here](https://github.com/niraj-khatiwada/ultimate-nestjs-client) to see oAuth, Magic Link, etc. authentication types.
+- [x] [Better Auth](https://www.better-auth.com/) for complete authentication. See client example [here](https://github.com/niraj-khatiwada/ultimate-nestjs-client) to see OAuth, Magic Link, 2FA, etc. authentication types.
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend-)
 - [x] Offset and Cursor based Pagination
