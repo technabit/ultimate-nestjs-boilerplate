@@ -76,6 +76,26 @@ export function getConfig({
       },
     },
     trustedOrigins: appConfig.corsOrigin as string[],
+    socialProviders: {
+      ...(authConfig.oAuth.github?.clientId &&
+      authConfig.oAuth.github?.clientSecret
+        ? {
+            github: {
+              clientId: authConfig.oAuth.github?.clientId,
+              clientSecret: authConfig.oAuth.github?.clientSecret,
+              mapProfileToUser(profile) {
+                return {
+                  email: profile.email,
+                  name: profile.login,
+                  username: profile.login,
+                  emailVerified: true,
+                  image: profile.avatar_url,
+                };
+              },
+            },
+          }
+        : {}),
+    },
     advanced: {
       database: {
         generateId() {
