@@ -3,7 +3,7 @@ import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { EmailQueueService } from './email.service';
-import { VerifyEmailJob } from './email.type';
+import { EmailJob } from './email.type';
 
 @Processor(QueueName.Email, {
   concurrency: 1,
@@ -23,17 +23,16 @@ export class EmailProcessor extends WorkerHost {
   constructor(private readonly emailQueueService: EmailQueueService) {
     super();
   }
-  async process(
-    job: Job<VerifyEmailJob, any, string>,
-    _token?: string,
-  ): Promise<any> {
+  async process(job: EmailJob, _token?: string): Promise<any> {
     this.logger.debug(`Processing job ${job.id} of type ${job.name}.`);
 
     switch (job.name) {
       case JobName.EmailVerification:
         return await this.emailQueueService.verifyEmail(job.data);
+      case JobName.SignInMagicLink:
+        return await this.emailQueueService.sendMagicLink(job.data);
       default:
-        throw new Error(`Unknown job name: ${job.name}`);
+        throw new Error(`Unhandled job named: ${(job as any).name}`);
     }
   }
 

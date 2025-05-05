@@ -1,3 +1,4 @@
+import { MailTemplate } from '@/constants/mail.constant';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 
@@ -15,7 +16,19 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Email Verification',
-      template: 'email-verification',
+      template: MailTemplate.EmailVerification,
+      context: {
+        email: email,
+        url,
+      },
+    });
+  }
+
+  async sendAuthMagicLinkEmail({ email, url }: { email: string; url: string }) {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Magic Link',
+      template: MailTemplate.SignInMagicLink,
       context: {
         email: email,
         url,

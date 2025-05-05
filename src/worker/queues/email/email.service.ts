@@ -3,7 +3,7 @@ import { MailService } from '@/shared/mail/mail.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { VerifyEmailJob } from './email.type';
+import { EmailVerificationJob, SignInMagicLinkJob } from './email.type';
 
 @Injectable()
 export class EmailQueueService {
@@ -15,7 +15,7 @@ export class EmailQueueService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async verifyEmail(data: VerifyEmailJob): Promise<void> {
+  async verifyEmail(data: EmailVerificationJob['data']): Promise<void> {
     const user = await this.userRepository.findOne({
       where: { id: data.userId },
     });
@@ -23,6 +23,19 @@ export class EmailQueueService {
       this.logger.error(`User id = ${data.userId} does not exist.`);
     }
     await this.mailService.sendEmailVerificationMail({
+      email: user.email,
+      url: data.url,
+    });
+  }
+
+  async sendMagicLink(data: SignInMagicLinkJob['data']): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { email: data.email },
+    });
+    if (!user) {
+      return;
+    }
+    await this.mailService.sendAuthMagicLinkEmail({
       email: user.email,
       url: data.url,
     });

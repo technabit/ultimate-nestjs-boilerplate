@@ -1,11 +1,9 @@
 import { GlobalConfig } from '@/config/config.type';
-import { Job } from '@/constants/job.constant';
 import { CacheService } from '@/shared/cache/cache.service';
-import { VerifyEmailJob } from '@/worker/queues/email/email.type';
+import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
-import { username as usernamePlugin } from 'better-auth/plugins';
+import { magicLink, username } from 'better-auth/plugins';
 import { BetterAuthOptions } from 'better-auth/types';
-import { Queue as BullMqQueue } from 'bullmq';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
 
@@ -20,7 +18,7 @@ export function getConfig({
 }: {
   configService: ConfigService<GlobalConfig>;
   cacheService: CacheService;
-  emailQueue: BullMqQueue<VerifyEmailJob, any, string>;
+  emailQueue: EmailQueue;
 }): BetterAuthOptions {
   const appConfig = configService.getOrThrow('app', { infer: true });
   const databaseConfig = configService.getOrThrow('database', { infer: true });
@@ -30,7 +28,18 @@ export function getConfig({
     appName: appConfig.name,
     secret: authConfig.authSecret,
     baseURL: appConfig.url,
-    plugins: [usernamePlugin()],
+    plugins: [
+      username(),
+      magicLink({
+        disableSignUp: true,
+        async sendMagicLink({ email, url }) {
+          await emailQueue.add('signin-magic-link', {
+            email,
+            url,
+          });
+        },
+      }),
+    ],
     database: new Pool({
       database: databaseConfig.database,
       user: databaseConfig.username,
@@ -72,7 +81,10 @@ export function getConfig({
     },
     emailVerification: {
       sendVerificationEmail: async ({ user, url }) => {
-        await emailQueue.add(Job.EmailVerification, { url, userId: user.id });
+        await emailQueue.add('email-verification', {
+          url,
+          userId: user.id,
+        });
       },
     },
     trustedOrigins: appConfig.corsOrigin as string[],

@@ -14,7 +14,6 @@ import {
   MetadataScanner,
 } from '@nestjs/core';
 import { betterAuth, type Auth } from 'better-auth';
-import { Queue as BullMqQueue } from 'bullmq';
 
 import { GlobalConfig } from '@/config/config.type';
 import {
@@ -26,7 +25,7 @@ import {
 import { Queue } from '@/constants/job.constant';
 import { CacheModule } from '@/shared/cache/cache.module';
 import { CacheService } from '@/shared/cache/cache.service';
-import { VerifyEmailJob } from '@/worker/queues/email/email.type';
+import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {
@@ -167,7 +166,7 @@ export class AuthModule implements NestModule, OnModuleInit {
           useFactory: async (
             cacheService: CacheService,
             configService: ConfigService<GlobalConfig>,
-            emailQueue: BullMqQueue<VerifyEmailJob, any, string>,
+            emailQueue: EmailQueue,
           ) => {
             const config = getBetterAuthConfig({
               cacheService,

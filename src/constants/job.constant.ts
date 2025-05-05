@@ -1,7 +1,8 @@
-export enum Queue {
-  Email = 'email',
-}
+export const Queue = {
+  Email: 'email',
+} as const;
 
-export enum Job {
-  EmailVerification = 'email-verification',
-}
+export const Job = {
+  EmailVerification: 'email-verification',
+  SignInMagicLink: 'signin-magic-link',
+} as const;
