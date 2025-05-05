@@ -8,7 +8,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] PostgreSQL with TypeORM
 - [x] REST, GraphQL & WebSocket API
 - [x] Websocket using Socket.io via Redis Adapter(For future scalability with clusters)
-- [x] [Better Auth](https://www.better-auth.com/) for complete authentication. See client example [here](https://github.com/niraj-khatiwada/tanstack-router)
+- [x] [Better Auth](https://www.better-auth.com/) for complete authentication. See client example [here](https://github.com/niraj-khatiwada/ultimate-nestjs-client)
 - [x] Swagger Documentation and API versioning for REST API
 - [x] Automatic API generation on the frontend using OpenAPI Codegen [Learn More](#1-automatic-api-generation-on-the-frontend-)
 - [x] Offset and Cursor based Pagination
@@ -34,7 +34,7 @@ Advanced Nest.js boilerplate for scalable startups.
 
 ### 1. Automatic API generation on the Frontend 🚀
 
-You can automatically generate and use all of your backend API in frontend in just one command, thanks to Swagger and OpenAPI spec. Running `pnpm codegen` on the frontend (example [repo](https://github.com/niraj-khatiwada/openapi-codegen)) will automatically generate all API's bootstrapped with [Tanstack Query](https://tanstack.com/query/latest) ready to be used with just one import. See complete example [here](https://github.com/niraj-khatiwada/openapi-codegen)
+You can automatically generate and use all of your backend API in frontend in just one command, thanks to Swagger and OpenAPI spec. Running `pnpm codegen` on the frontend (example [repo](https://github.com/niraj-khatiwada/ultimate-nestjs-client)) will automatically generate all API's bootstrapped with [Tanstack Query](https://tanstack.com/query/latest) ready to be used with just one import. See complete example [here](https://github.com/niraj-khatiwada/ultimate-nestjs-client)
 <img src="./github-assets/openapi-codegen.png" style="border: 5px solid teal;" />
 
 ### 2. Dependency Graph 📈
