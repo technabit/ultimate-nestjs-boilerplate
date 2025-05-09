@@ -17,5 +17,5 @@ export type AwsS3UploadResponse = {
   size?: number;
   mimetype?: string;
   filename?: string;
-  originalFilename?: string;
+  originalname?: string;
 };
