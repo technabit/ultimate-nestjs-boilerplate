@@ -1,10 +1,5 @@
-/* eslint-disable no-console */
 import { AuthGuard } from '@/auth/auth.guard';
-import {
-  File,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nest-lab/fastify-multer';
+import { File } from '@nest-lab/fastify-multer';
 import {
   BadRequestException,
   Controller,
@@ -15,6 +10,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import FileUploadInterceptor from '@/interceptors/file-upload.interceptor';
 import { FileService } from './file.service';
 
 @ApiTags('file')
@@ -40,7 +37,7 @@ export class FileController {
     },
   })
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10e6 } }))
+  @UseInterceptors(FileUploadInterceptor('file'))
   @Post('/upload/single')
   uploadFile(@UploadedFile() file: File) {
     if (!file) {
@@ -51,7 +48,7 @@ export class FileController {
 
   @ApiConsumes('multipart/form-data')
   @ApiOperation({ summary: 'Uploads multiple files' })
-  @UseInterceptors(FilesInterceptor('files', 4, { limits: { fileSize: 10e6 } }))
+  @UseInterceptors(FileUploadInterceptor('files', { multiple: true }))
   @ApiBody({
     required: true,
     schema: {
@@ -73,6 +70,6 @@ export class FileController {
       throw new BadRequestException('Files are required.');
     }
 
-    return console.log(files);
+    return this.fileService.uploadMultipleFiles(files);
   }
 }

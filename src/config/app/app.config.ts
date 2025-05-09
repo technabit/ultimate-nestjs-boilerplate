@@ -77,6 +77,10 @@ class EnvironmentVariablesValidator {
   )
   @IsOptional()
   APP_CORS_ORIGIN: string;
+
+  @IsBoolean()
+  @IsOptional()
+  APP_LOCAL_FILE_UPLOAD: boolean;
 }
 
 export function getConfig(): AppConfig {
@@ -97,6 +101,7 @@ export function getConfig(): AppConfig {
     logLevel: process.env.APP_LOG_LEVEL || 'warn',
     logService: process.env.APP_LOG_SERVICE || LogService.Console,
     corsOrigin: getCorsOrigin(),
+    localFileUpload: process.env.APP_LOCAL_FILE_UPLOAD === 'true',
   };
 }
 

@@ -7,8 +7,24 @@ export class FileService {
   constructor(private readonly awsS3Service: AwsS3Service) {}
 
   async uploadFile(file: File) {
-    return this.awsS3Service.uploadFile(file, {
+    if (file.destination) {
+      return file;
+    }
+    return await this.awsS3Service.uploadFile(file, {
       filename: file.originalname,
     });
+  }
+
+  async uploadMultipleFiles(files: File[]) {
+    if (files[0].destination) {
+      return files;
+    }
+    return await Promise.all(
+      files.map((file) =>
+        this.awsS3Service.uploadFile(file, {
+          filename: file.originalname,
+        }),
+      ),
+    );
   }
 }

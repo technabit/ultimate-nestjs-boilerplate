@@ -67,3 +67,6 @@ docs/.vuepress/dist
 
 .docker/**/*
 !.docker/.gitkeep
+
+src/tmp/**/*
+!src/tmp/.gitkeep

@@ -15,4 +15,5 @@ export type AppConfig = {
   logLevel: string;
   logService: string;
   corsOrigin: boolean | string[] | '*';
+  localFileUpload: boolean;
 };

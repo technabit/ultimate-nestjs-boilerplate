@@ -20,7 +20,7 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Graceful Shutdown
 - [x] Server & Database monitoring with Prometheus & Grafana [Learn More](#4-server--database-monitoring-)
 - [x] API Monitoring with Swagger Stats [Learn More](#5-api-monitoring-)
-- [x] File Uploads using AWS S3
+- [x] Local or Remote File Uploads (AWS S3)
 - [x] Sentry
 - [x] Testing with Jest
 - [x] Internationalization using i18n
