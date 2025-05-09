@@ -9,9 +9,11 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
+import { ApiAuth } from '@/decorators/http.decorators';
 import FileUploadInterceptor from '@/interceptors/file-upload.interceptor';
+import { FileDto } from './dto/file.dto';
 import { FileService } from './file.service';
 
 @ApiTags('file')
@@ -23,7 +25,7 @@ import { FileService } from './file.service';
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @ApiOperation({ summary: 'Uploads a single file' })
+  @ApiAuth({ summary: 'Uploads a single file', type: FileDto })
   @ApiBody({
     required: true,
     schema: {
@@ -46,8 +48,8 @@ export class FileController {
     return this.fileService.uploadFile(file);
   }
 
+  @ApiAuth({ summary: 'Uploads multiple files', type: FileDto })
   @ApiConsumes('multipart/form-data')
-  @ApiOperation({ summary: 'Uploads multiple files' })
   @UseInterceptors(FileUploadInterceptor('files', { multiple: true }))
   @ApiBody({
     required: true,

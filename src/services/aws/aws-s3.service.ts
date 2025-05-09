@@ -70,7 +70,7 @@ export class AwsS3Service {
       path,
       size: res.Size,
       filename,
-      originalFilename: config.filename,
+      originalname: config.filename,
     };
   }
 
