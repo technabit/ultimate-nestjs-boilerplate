@@ -1,8 +1,10 @@
-import { Job as JobName } from '@/constants/job.constant';
-import { Job, Queue } from 'bullmq';
+import { Job as AllJobs } from '@/constants/job.constant';
+import { Job, JobsOptions, Queue } from 'bullmq';
+
+const EmailJob = AllJobs.Email;
 
 export interface EmailVerificationJob {
-  name: typeof JobName.EmailVerification;
+  name: typeof EmailJob.EmailVerification;
   data: {
     userId: string;
     url: string;
@@ -10,16 +12,25 @@ export interface EmailVerificationJob {
 }
 
 export interface SignInMagicLinkJob {
-  name: typeof JobName.SignInMagicLink;
+  name: typeof EmailJob.SignInMagicLink;
   data: {
     email: string;
     url: string;
   };
 }
 
+export interface ResetPasswordJob {
+  name: typeof EmailJob.ResetPassword;
+  data: {
+    userId: string;
+    url: string;
+  };
+}
+
 type JobDataMap = {
-  [JobName.EmailVerification]: EmailVerificationJob['data'];
-  [JobName.SignInMagicLink]: SignInMagicLinkJob['data'];
+  [EmailJob.EmailVerification]: EmailVerificationJob['data'];
+  [EmailJob.SignInMagicLink]: SignInMagicLinkJob['data'];
+  [EmailJob.ResetPassword]: ResetPasswordJob['data'];
 };
 
 type QueueJob<N extends keyof JobDataMap> = {
@@ -27,10 +38,15 @@ type QueueJob<N extends keyof JobDataMap> = {
   data: JobDataMap[N];
 };
 
-export type EmailQueue = Queue<QueueJob<keyof JobDataMap>> & {
-  add<N extends keyof JobDataMap>(name: N, data: JobDataMap[N]): Promise<void>;
+export type EmailQueue = Omit<Queue<QueueJob<keyof JobDataMap>>, 'add'> & {
+  add<N extends keyof JobDataMap>(
+    name: N,
+    data: JobDataMap[N],
+    options?: JobsOptions,
+  ): Promise<void>;
 };
 
 export type EmailJob =
-  | Job<EmailVerificationJob['data'], any, typeof JobName.EmailVerification>
-  | Job<SignInMagicLinkJob['data'], any, typeof JobName.SignInMagicLink>;
+  | Job<EmailVerificationJob['data'], any, typeof EmailJob.EmailVerification>
+  | Job<SignInMagicLinkJob['data'], any, typeof EmailJob.SignInMagicLink>
+  | Job<ResetPasswordJob['data'], any, typeof EmailJob.ResetPassword>;

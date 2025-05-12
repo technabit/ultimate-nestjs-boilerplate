@@ -24,11 +24,23 @@ export class MailService {
     });
   }
 
-  async sendAuthMagicLinkEmail({ email, url }: { email: string; url: string }) {
+  async sendAuthMagicLinkMail({ email, url }: { email: string; url: string }) {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Magic Link',
       template: MailTemplate.SignInMagicLink,
+      context: {
+        email: email,
+        url,
+      },
+    });
+  }
+
+  async sendResetPasswordMail({ email, url }: { email: string; url: string }) {
+    await this.mailerService.sendMail({
+      to: email,
+      subject: 'Reset Password',
+      template: MailTemplate.ResetPassword,
       context: {
         email: email,
         url,

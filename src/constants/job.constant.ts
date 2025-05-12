@@ -3,6 +3,9 @@ export const Queue = {
 } as const;
 
 export const Job = {
-  EmailVerification: 'email-verification',
-  SignInMagicLink: 'signin-magic-link',
-} as const;
+  Email: {
+    EmailVerification: 'email-verification',
+    SignInMagicLink: 'signin-magic-link',
+    ResetPassword: 'reset-password',
+  },
+} as const satisfies Record<keyof typeof Queue, Record<string, string>>;

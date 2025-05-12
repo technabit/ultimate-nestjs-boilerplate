@@ -61,6 +61,12 @@ export function getConfig({
       enabled: true,
       autoSignIn: false,
       requireEmailVerification: true,
+      sendResetPassword: async ({ url, user }) => {
+        await emailQueue.add('reset-password', {
+          url,
+          userId: user.id,
+        });
+      },
     },
     session: {
       freshAge: 10,

@@ -3,7 +3,11 @@ import { MailService } from '@/shared/mail/mail.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EmailVerificationJob, SignInMagicLinkJob } from './email.type';
+import {
+  EmailVerificationJob,
+  ResetPasswordJob,
+  SignInMagicLinkJob,
+} from './email.type';
 
 @Injectable()
 export class EmailQueueService {
@@ -35,7 +39,20 @@ export class EmailQueueService {
     if (!user) {
       return;
     }
-    await this.mailService.sendAuthMagicLinkEmail({
+    await this.mailService.sendAuthMagicLinkMail({
+      email: user.email,
+      url: data.url,
+    });
+  }
+
+  async resetPassword(data: ResetPasswordJob['data']): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: data.userId },
+    });
+    if (!user) {
+      return;
+    }
+    await this.mailService.sendResetPasswordMail({
       email: user.email,
       url: data.url,
     });
