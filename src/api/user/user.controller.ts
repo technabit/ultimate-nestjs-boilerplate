@@ -6,15 +6,18 @@ import { Uuid } from '@/common/types/common.type';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { ApiAuth } from '@/decorators/http.decorators';
 import {
+  Body,
   Controller,
   Delete,
   Get,
   Param,
   ParseUUIDPipe,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import {
   CursorPaginatedUserDto,
   OffsetPaginatedUserDto,
@@ -39,7 +42,7 @@ export class UserController {
   })
   @Get('whoami')
   async getCurrentUser(
-    @CurrentUserSession('user') user: UserSession['user'],
+    @CurrentUserSession('user') user: CurrentUserSession['user'],
   ): Promise<UserDto> {
     return await this.userService.findOneUser(user.id);
   }
@@ -84,5 +87,19 @@ export class UserController {
   @ApiParam({ name: 'id', type: 'String' })
   deleteUser(@Param('id', ParseUUIDPipe) id: Uuid) {
     return this.userService.deleteUser(id);
+  }
+
+  @ApiAuth({
+    summary: "Update user's profile",
+    type: UserDto,
+  })
+  @Patch('profile')
+  updateUserProfile(
+    @Body() dto: UpdateUserProfileDto,
+    @CurrentUserSession() userSession: CurrentUserSession,
+  ) {
+    return this.userService.updateUserProfile(userSession.user.id, dto, {
+      headers: userSession.headers,
+    });
   }
 }

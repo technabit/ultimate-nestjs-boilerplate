@@ -71,7 +71,6 @@
     "@sentry/tracing": "^7.29.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@willsoto/nestjs-prometheus": "^6.0.1",
-    "argon2": "^0.41.1",
     "axios": "^1.7.7",
     "better-auth": "^1.2.7",
     "bufferutil": "^4.0.8",

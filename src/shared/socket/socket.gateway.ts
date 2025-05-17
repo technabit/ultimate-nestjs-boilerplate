@@ -1,6 +1,5 @@
 import { AuthGuard } from '@/auth/auth.guard';
 import { AuthService } from '@/auth/auth.service';
-import { UserSession } from '@/auth/auth.type';
 import { getConfig as getAppConfig } from '@/config/app/app.config';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { Logger, UnauthorizedException, UseGuards } from '@nestjs/common';
@@ -22,7 +21,7 @@ import { CacheService } from '../cache/cache.service';
 
 const appConfig = getAppConfig();
 
-type SocketWithUserSession = Socket & { session: UserSession };
+type SocketWithUserSession = Socket & { session: CurrentUserSession };
 
 @WebSocketGateway(0, {
   cors: {
@@ -119,7 +118,7 @@ export class SocketGateway
   handleMessage(
     @ConnectedSocket() socket: SocketWithUserSession,
     @MessageBody() _message: any,
-    @CurrentUserSession('user') _user: UserSession['user'],
+    @CurrentUserSession('user') _user: CurrentUserSession['user'],
   ) {
     // console.log(
     //   `Received message from client: ${socket?.id}.`,

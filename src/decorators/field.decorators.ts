@@ -17,7 +17,6 @@ import {
   IsString,
   IsUrl,
   IsUUID,
-  Matches,
   Max,
   MaxLength,
   Min,
@@ -118,7 +117,7 @@ export function StringField(
     );
   }
 
-  const minLength = options.minLength || 1;
+  const minLength = options.minLength ?? 1;
 
   decorators.push(MinLength(minLength, { each: options.each }));
 
@@ -163,7 +162,7 @@ export function StringFieldOptional(
 ): PropertyDecorator {
   return applyDecorators(
     IsOptional({ each: options.each }),
-    StringField({ required: false, ...options }),
+    StringField({ required: false, minLength: 0, ...options }),
   );
 }
 
@@ -415,29 +414,4 @@ export function ClassFieldOptional<TClass extends Constructor>(
     IsOptional({ each: options.each }),
     ClassField(getClass, { required: false, ...options }),
   );
-}
-
-export function UsernameField(
-  options: Omit<ApiPropertyOptions, 'type'> & IStringFieldOptions = {},
-): PropertyDecorator {
-  const decorators = [
-    StringField({ minLength: 3, maxLength: 30, toLowerCase: true, ...options }),
-    IsNotEmpty,
-    Matches(/^([\w.]*)$/, {
-      message:
-        'Invalid username. Make sure username do not have any whitespace and any special symbols except underscore(`_`) and period(`.`).',
-    }),
-  ];
-
-  if (options.nullable) {
-    decorators.push(IsNullable());
-  } else {
-    decorators.push(NotEquals(null));
-  }
-
-  if (options.swagger !== false) {
-    decorators.push(ApiProperty({ type: String, ...options }));
-  }
-
-  return applyDecorators(...decorators);
 }

@@ -9,6 +9,10 @@ export class UserEntity extends BaseModel {
   @Column()
   username: string;
 
+  @Index({ where: '"deletedAt" IS NULL' })
+  @Column({ nullable: true })
+  displayUsername: string;
+
   @Index({ unique: true, where: '"deletedAt" IS NULL' })
   @Column()
   email: string;
@@ -22,6 +26,12 @@ export class UserEntity extends BaseModel {
     default: Role.User,
   })
   role: Role;
+
+  @Column({ nullable: true })
+  firstName?: string;
+
+  @Column({ nullable: true })
+  lastName?: string;
 
   @Column({ nullable: true })
   image?: string;

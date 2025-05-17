@@ -32,6 +32,18 @@ export class UserDto {
   @Expose()
   email: string;
 
+  @StringFieldOptional()
+  @Expose()
+  firstName?: string;
+
+  @StringFieldOptional()
+  @Expose()
+  lastName?: string;
+
+  @StringFieldOptional()
+  @Expose()
+  image?: string;
+
   @ClassField(() => Date)
   @Expose()
   createdAt: Date;

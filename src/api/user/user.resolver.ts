@@ -1,5 +1,4 @@
 import { AuthGuard } from '@/auth/auth.guard';
-import { UserSession } from '@/auth/auth.type';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { UseGuards } from '@nestjs/common';
 import {
@@ -14,13 +13,14 @@ import { DeleteUserInput } from './schema/delete-user.schema';
 import { GetUserArgs } from './schema/get-user.schema';
 import { UserSchema } from './schema/user.schema';
 import { UserService } from './user.service';
+
 @UseGuards(AuthGuard)
 @Resolver(() => UserSchema)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => UserSchema)
-  async whoami(@CurrentUserSession('user') user: UserSession['user']) {
+  async whoami(@CurrentUserSession('user') user: CurrentUserSession['user']) {
     return this.userService.findOneUser(user.id);
   }
 

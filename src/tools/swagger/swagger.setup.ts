@@ -12,7 +12,10 @@ function setupSwagger(app: INestApplication): OpenAPIObject {
 
   const config = new DocumentBuilder()
     .setTitle(appName)
-    .setDescription('Ultimate Nest.js Boilerplate')
+    .setDescription(
+      `<p>Ultimate Nest.js Boilerplate.</p>
+      <p>Click <a href="/api/auth/reference">here</a> to see authentication API's.</p>`,
+    )
     .setVersion('1.0')
     .addBearerAuth()
     .addApiKey({ type: 'apiKey', name: 'Api-Key', in: 'header' }, 'Api-Key')

@@ -1,15 +1,17 @@
 import { GlobalConfig } from '@/config/config.type';
 import { CacheService } from '@/shared/cache/cache.service';
+import { validateUsername } from '@/utils/validators/username';
 import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
-import { magicLink, username } from 'better-auth/plugins';
+import { magicLink, openAPI, username } from 'better-auth/plugins';
 import { BetterAuthOptions } from 'better-auth/types';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
 
 /**
- * Better auth configuration
+ * Better Auth Configuration
  * Visit https://www.better-auth.com/docs/reference/options to see full options
+ * Visit `/api/auth/reference` to see all the API references integrated in this better auth instance
  */
 export function getConfig({
   configService,
@@ -29,7 +31,7 @@ export function getConfig({
     secret: authConfig.authSecret,
     baseURL: appConfig.url,
     plugins: [
-      username(),
+      username({ usernameValidator: validateUsername }),
       magicLink({
         disableSignUp: true,
         async sendMagicLink({ email, url }) {
@@ -39,6 +41,7 @@ export function getConfig({
           });
         },
       }),
+      openAPI(),
     ],
     database: new Pool({
       database: databaseConfig.database,
@@ -120,18 +123,7 @@ export function getConfig({
           return uuid();
         },
       },
-    },
-    databaseHooks: {
-      user: {
-        create: {
-          before: async (user) => {
-            if ('displayUsername' in user) {
-              delete user.displayUsername;
-            }
-            return { data: user };
-          },
-        },
-      },
+      cookiePrefix: 'TmVzdEpTIEJvaWxlcnBsYXRl',
     },
     // Use Redis for storing sessions
     secondaryStorage: {
@@ -146,7 +138,7 @@ export function getConfig({
           value,
           ttl
             ? {
-                ttl: ttl,
+                ttl: ttl * 1000,
               }
             : {},
         );

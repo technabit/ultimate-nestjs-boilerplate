@@ -1,15 +1,18 @@
+import { AuthService } from '@/auth/auth.service';
 import { UserEntity } from '@/auth/entities/user.entity';
 import { CursorPaginationDto } from '@/common/dto/cursor-pagination/cursor-pagination.dto';
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
 import { OffsetPaginatedDto } from '@/common/dto/offset-pagination/paginated.dto';
 import { Uuid } from '@/common/types/common.type';
+import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { buildPaginator } from '@/utils/pagination/cursor-pagination';
 import { paginate } from '@/utils/pagination/offset-pagination';
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { I18nService } from 'nestjs-i18n';
-import { FindManyOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import {
   QueryUsersCursorDto,
   QueryUsersOffsetDto,
@@ -22,6 +25,7 @@ export class UserService {
     private readonly i18nService: I18nService<I18nTranslations>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly authService: AuthService,
   ) {}
 
   async findAllUsers(
@@ -65,8 +69,14 @@ export class UserService {
     return new CursorPaginatedDto(data, metaDto);
   }
 
-  async findOneUser(id: Uuid | string): Promise<UserDto> {
-    const user = await this.userRepository.findOne({ where: { id } });
+  async findOneUser(
+    id: Uuid | string,
+    options?: FindOneOptions<UserEntity>,
+  ): Promise<UserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id, ...(options?.where ?? {}) },
+      ...(options ?? {}),
+    });
     if (!user) {
       throw new NotFoundException(this.i18nService.t('user.notFound'));
     }
@@ -81,5 +91,35 @@ export class UserService {
 
   async getAllUsers(options?: FindManyOptions<UserEntity>) {
     return this.userRepository.find(options);
+  }
+
+  async updateUserProfile(
+    userId: string,
+    dto: UpdateUserProfileDto,
+    options: { headers: CurrentUserSession['headers'] },
+  ) {
+    let shouldChangeUsername = !(dto.username == null);
+
+    if (shouldChangeUsername) {
+      const user = await this.findOneUser(userId, {
+        select: { id: true, username: true },
+      });
+      shouldChangeUsername = user?.username !== dto.username;
+    }
+
+    await this.authService.api.updateUser({
+      body: {
+        image: dto.image,
+        ...(shouldChangeUsername ? { username: dto.username } : {}),
+      },
+      headers: options?.headers as any,
+    });
+
+    // Update rest of the fields manually
+    await this.userRepository.update(userId, {
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+    });
+    return await this.findOneUser(userId);
   }
 }

@@ -7,8 +7,15 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { type FastifyRequest } from 'fastify';
 
+export type CurrentUserSession = UserSessionType & {
+  headers: FastifyRequest['headers'];
+};
+
 export const CurrentUserSession = createParamDecorator(
-  (data: keyof UserSessionType, ctx: ExecutionContext): UserSessionType => {
+  (
+    data: keyof UserSessionType | 'headers',
+    ctx: ExecutionContext,
+  ): CurrentUserSession => {
     const contextType: ContextType & 'graphql' = ctx.getType();
 
     let request: FastifyRequest & UserSessionType;
@@ -20,6 +27,11 @@ export const CurrentUserSession = createParamDecorator(
       request = ctx.switchToHttp().getRequest();
     }
 
-    return data == null ? request.session : request.session[data];
+    return data == null
+      ? {
+          ...request?.session,
+          headers: request?.headers,
+        }
+      : request.session?.[data];
   },
 );

@@ -17,6 +17,7 @@ import * as Sentry from '@sentry/node';
 import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 
+import path from 'path';
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app/app.config';
 import { type GlobalConfig } from './config/config.type';
@@ -93,7 +94,36 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: [
+            "'self'",
+            'https://cdn.jsdelivr.net/npm/@scalar/api-reference', // For Better Auth API Reference.
+          ],
+        },
+      },
+    }),
+  );
+
+  // Static files
+  app.useStaticAssets({
+    root: path.join(__dirname, '..', 'src', 'tmp', 'file-uploads'),
+    prefix: '/public',
+    setHeaders(res: any) {
+      res.setHeader(
+        'Access-Control-Allow-Origin',
+        configService.getOrThrow('app.corsOrigin', {
+          infer: true,
+        }),
+      );
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS');
+      res.setHeader('cross-origin-resource-policy', 'cross-origin');
+    },
+  });
 
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
