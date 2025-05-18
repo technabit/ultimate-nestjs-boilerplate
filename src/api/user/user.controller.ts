@@ -1,5 +1,4 @@
 import { AuthGuard } from '@/auth/auth.guard';
-import { UserSession } from '@/auth/auth.type';
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
 import { OffsetPaginatedDto } from '@/common/dto/offset-pagination/paginated.dto';
 import { Uuid } from '@/common/types/common.type';

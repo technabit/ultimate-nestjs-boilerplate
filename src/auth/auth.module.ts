@@ -15,6 +15,7 @@ import {
 } from '@nestjs/core';
 import { betterAuth, type Auth } from 'better-auth';
 
+import { getConfig as getBetterAuthConfig } from '@/config/auth/better-auth.config';
 import { GlobalConfig } from '@/config/config.type';
 import {
   AFTER_HOOK_KEY,
@@ -34,7 +35,6 @@ import type {
   FastifyRequest as Request,
 } from 'fastify';
 import { AuthService } from './auth.service';
-import { getConfig as getBetterAuthConfig } from './better-auth.config';
 
 const HOOKS = [
   { metadataKey: BEFORE_HOOK_KEY, hookType: 'before' as const },

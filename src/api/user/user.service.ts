@@ -109,7 +109,7 @@ export class UserService {
 
     await this.authService.api.updateUser({
       body: {
-        image: dto.image,
+        ...(dto.image !== undefined ? { image: dto.image } : {}),
         ...(shouldChangeUsername ? { username: dto.username } : {}),
       },
       headers: options?.headers as any,

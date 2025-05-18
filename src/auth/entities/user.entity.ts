@@ -38,4 +38,7 @@ export class UserEntity extends BaseModel {
 
   @Column({ nullable: true })
   bio?: string;
+
+  @Column({ type: 'boolean', default: false })
+  twoFactorEnabled: boolean;
 }

@@ -3,7 +3,7 @@ import { CacheService } from '@/shared/cache/cache.service';
 import { validateUsername } from '@/utils/validators/username';
 import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
-import { magicLink, openAPI, username } from 'better-auth/plugins';
+import { magicLink, openAPI, twoFactor, username } from 'better-auth/plugins';
 import { BetterAuthOptions } from 'better-auth/types';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
@@ -41,6 +41,7 @@ export function getConfig({
           });
         },
       }),
+      twoFactor({}),
       openAPI(),
     ],
     database: new Pool({
@@ -78,7 +79,7 @@ export function getConfig({
     user: {
       modelName: 'user',
       fields: {
-        name: 'username',
+        name: 'firstName',
         emailVerified: 'isEmailVerified',
       },
     },
