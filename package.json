@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-boilerplate",
+  "name": "ultimate-nestjs-boilerplate",
   "version": "0.0.0",
-  "description": "NestJS Boilerplate",
+  "description": "Ultimate Nest.js Boilerplate",
   "author": "codeforreal",
   "private": true,
   "license": "MIT",
@@ -29,14 +29,14 @@
     "docker:dev:down": "docker compose --env-file .env --env-file .env.docker -f docker-compose.yml -f docker-compose.dev.yml down",
     "docker:prod:up": "docker compose --env-file .env --env-file .env.docker -f docker-compose.yml -f docker-compose.prod.yml up -d --build",
     "docker:prod:down": "docker compose --env-file .env --env-file .env.docker -f docker-compose.yml -f docker-compose.prod.yml down",
+    "email:dev": "email dev --dir ./src/shared/mail/templates --port 3002",
+    "email:build": "ts-node ./src/shared/mail/mail.build.tsx",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prepare": "husky || true",
     "graph:app": "madge ./src/main.ts --image ./.tmp/graph.png",
     "graph:circular": "madge --circular ./src/main.ts --image ./.tmp/circular.png",
-    "erd:generate": "ts-node ./scripts/erd-generator.ts",
-    "email:dev": "email dev --dir ./src/shared/mail/templates --port 3002",
-    "email:build": "ts-node ./src/shared/mail/mail.build.tsx"
+    "erd:generate": "ts-node ./scripts/erd-generator.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.11.2",
