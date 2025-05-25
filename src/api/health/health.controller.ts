@@ -1,3 +1,4 @@
+import { AuthService } from '@/auth/auth.service';
 import { ErrorDto } from '@/common/dto/error.dto';
 import { GlobalConfig } from '@/config/config.type';
 import { Public } from '@/decorators/public.decorator';
@@ -21,11 +22,12 @@ import { HealthCheckDto } from './dto/health.dto';
 @Controller('health')
 export class HealthController {
   constructor(
-    private configService: ConfigService<GlobalConfig>,
-    private health: HealthCheckService,
-    private http: HttpHealthIndicator,
-    private db: TypeOrmHealthIndicator,
-    private microservice: MicroserviceHealthIndicator,
+    private readonly configService: ConfigService<GlobalConfig>,
+    private readonly health: HealthCheckService,
+    private readonly http: HttpHealthIndicator,
+    private readonly db: TypeOrmHealthIndicator,
+    private readonly microservice: MicroserviceHealthIndicator,
+    private readonly authService: AuthService,
   ) {}
 
   @Public()
@@ -49,12 +51,17 @@ export class HealthController {
           transport: Transport.REDIS,
           options: this.configService.getOrThrow('redis'),
         }),
-      () =>
-        this.http.pingCheck(
-          'api-docs',
-          `${this.configService.getOrThrow('app.url', { infer: true })}/${SWAGGER_PATH}`,
-        ),
     ];
+    if (
+      this.configService.get('app.nodeEnv', { infer: true }) !== 'production'
+    ) {
+      list.push(() => {
+        const url = `${this.configService.getOrThrow('app.url', { infer: true })}${SWAGGER_PATH}`;
+        return this.http.pingCheck('api-docs', url, {
+          headers: this.authService.createBasicAuthHeaders(),
+        });
+      });
+    }
     return this.health.check(list);
   }
 }

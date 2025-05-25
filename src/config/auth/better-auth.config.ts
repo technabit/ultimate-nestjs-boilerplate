@@ -1,10 +1,11 @@
+import { AuthService } from '@/auth/auth.service';
 import { GlobalConfig } from '@/config/config.type';
 import { CacheService } from '@/shared/cache/cache.service';
 import { validateUsername } from '@/utils/validators/username';
-import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
 import { magicLink, openAPI, twoFactor, username } from 'better-auth/plugins';
-import { BetterAuthOptions } from 'better-auth/types';
+import { passkey } from 'better-auth/plugins/passkey';
+import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth/types';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
 
@@ -16,34 +17,42 @@ import { v4 as uuid } from 'uuid';
 export function getConfig({
   configService,
   cacheService,
-  emailQueue,
+  authService,
 }: {
   configService: ConfigService<GlobalConfig>;
   cacheService: CacheService;
-  emailQueue: EmailQueue;
+  authService: AuthService;
 }): BetterAuthOptions {
   const appConfig = configService.getOrThrow('app', { infer: true });
   const databaseConfig = configService.getOrThrow('database', { infer: true });
   const authConfig = configService.getOrThrow('auth', { infer: true });
 
+  // Core plugins
+  const plugins: BetterAuthPlugin[] = [
+    username({ usernameValidator: validateUsername }),
+    magicLink({
+      disableSignUp: true,
+      async sendMagicLink({ email, url }) {
+        await authService.sendMagicLink({ email, url });
+      },
+    }),
+    twoFactor(),
+    passkey({
+      rpName: appConfig.name,
+    }),
+  ];
+
+  // Plugins for development only
+  const nonProdPlugins = [openAPI()];
+  if (appConfig.nodeEnv !== 'production') {
+    plugins.push(...nonProdPlugins);
+  }
+
   return {
     appName: appConfig.name,
     secret: authConfig.authSecret,
     baseURL: appConfig.url,
-    plugins: [
-      username({ usernameValidator: validateUsername }),
-      magicLink({
-        disableSignUp: true,
-        async sendMagicLink({ email, url }) {
-          await emailQueue.add('signin-magic-link', {
-            email,
-            url,
-          });
-        },
-      }),
-      twoFactor({}),
-      openAPI(),
-    ],
+    plugins,
     database: new Pool({
       database: databaseConfig.database,
       user: databaseConfig.username,
@@ -66,14 +75,11 @@ export function getConfig({
       autoSignIn: false,
       requireEmailVerification: true,
       sendResetPassword: async ({ url, user }) => {
-        await emailQueue.add('reset-password', {
-          url,
-          userId: user.id,
-        });
+        await authService.resetPassword({ url, userId: user.id });
       },
     },
     session: {
-      freshAge: 10,
+      freshAge: 0,
       modelName: 'session',
     },
     user: {
@@ -91,10 +97,7 @@ export function getConfig({
     },
     emailVerification: {
       sendVerificationEmail: async ({ user, url }) => {
-        await emailQueue.add('email-verification', {
-          url,
-          userId: user.id,
-        });
+        await authService.verifyEmail({ url, userId: user.id });
       },
     },
     trustedOrigins: appConfig.corsOrigin as string[],

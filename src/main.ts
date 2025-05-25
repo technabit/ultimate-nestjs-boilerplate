@@ -127,7 +127,9 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
-  setupSwagger(app);
+  if (env !== 'production') {
+    setupSwagger(app);
+  }
 
   Sentry.init({
     dsn: configService.getOrThrow('sentry.dsn', { infer: true }),

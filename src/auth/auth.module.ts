@@ -1,6 +1,6 @@
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { BullBoardModule } from '@bull-board/nestjs';
-import { BullModule, getQueueToken } from '@nestjs/bullmq';
+import { BullModule } from '@nestjs/bullmq';
 import type {
   MiddlewareConsumer,
   NestModule,
@@ -26,7 +26,6 @@ import {
 import { Queue } from '@/constants/job.constant';
 import { CacheModule } from '@/shared/cache/cache.module';
 import { CacheService } from '@/shared/cache/cache.service';
-import { EmailQueue } from '@/worker/queues/email/email.type';
 import { ConfigService } from '@nestjs/config';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {
@@ -35,6 +34,7 @@ import type {
   FastifyRequest as Request,
 } from 'fastify';
 import { AuthService } from './auth.service';
+import { BetterAuthService } from './better-auth.service';
 
 const HOOKS = [
   { metadataKey: BEFORE_HOOK_KEY, hookType: 'before' as const },
@@ -43,7 +43,18 @@ const HOOKS = [
 
 @Global()
 @Module({
-  imports: [DiscoveryModule],
+  imports: [
+    DiscoveryModule,
+    BullModule.registerQueue({
+      name: Queue.Email,
+    }),
+    BullBoardModule.forFeature({
+      name: Queue.Email,
+      adapter: BullMQAdapter,
+    }),
+  ],
+  providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule implements NestModule, OnModuleInit {
   private logger = new Logger(this.constructor.name);
@@ -150,36 +161,27 @@ export class AuthModule implements NestModule, OnModuleInit {
     return {
       global: true,
       module: AuthModule,
-      imports: [
-        CacheModule,
-        BullModule.registerQueue({
-          name: Queue.Email,
-        }),
-        BullBoardModule.forFeature({
-          name: Queue.Email,
-          adapter: BullMQAdapter,
-        }),
-      ],
+      imports: [CacheModule],
       providers: [
         {
           provide: AUTH_INSTANCE_KEY,
           useFactory: async (
             cacheService: CacheService,
             configService: ConfigService<GlobalConfig>,
-            emailQueue: EmailQueue,
+            authService: AuthService,
           ) => {
             const config = getBetterAuthConfig({
               cacheService,
               configService,
-              emailQueue,
+              authService,
             });
             return betterAuth(config);
           },
-          inject: [CacheService, ConfigService, getQueueToken(Queue.Email)],
+          inject: [CacheService, ConfigService, AuthService],
         },
-        AuthService,
+        BetterAuthService,
       ],
-      exports: [AUTH_INSTANCE_KEY, AuthService],
+      exports: [AUTH_INSTANCE_KEY, BetterAuthService],
     };
   }
 }

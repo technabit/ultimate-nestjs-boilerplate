@@ -45,7 +45,7 @@ Rolling our own auth is doable but maintaining all kinds of authentication types
 - Session Management
 
 You can find the frontend client setup [here](https://github.com/niraj-khatiwada/ultimate-nestjs-client). You can find your auth API documentation by visiting `/api/auth/reference`
-
+<img src="./github-assets/better-auth-client.png" />
 <img src="./github-assets/better-auth.png" />
 
 ### Automatic API Generation on the Frontend 🚀
@@ -109,10 +109,22 @@ Let's face it, it is not practical to just create some random html email templat
 
 <b>NOTE</b>: We use React Email only in local development. We don't ship React and it's packages in production at all(<i>you can see that all of the React packages are dev only</i>). After our email templates have been created, we convert the `.tsx` files into static html files at build time and NodeMailer uses that html file from our backend. All of these things are handled automatically, you don't have to do any extra setup.
 
-- Run the React Email dev server:
+- React Email dev server: See all of your email templates in Web UI.
 
 ```
 pnpm email:dev
+```
+
+- Build email templates(Handled): Convert `.tsx` templates file into html(`.hbs`). This is already handled in post build (`build` script).
+
+```
+pnpm email: build
+```
+
+- Watch Email(Handled): Watch your `.tsx` email files inside `templates/` folder and convert them to html(`.hbs`). This is already handled when you run your Nest.js server (in `start:dev` script).
+
+```
+pnpm email:watch
 ```
 
 <img src="./github-assets/react-email.png" />

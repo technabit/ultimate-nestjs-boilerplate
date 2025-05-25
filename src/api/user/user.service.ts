@@ -1,4 +1,4 @@
-import { AuthService } from '@/auth/auth.service';
+import { BetterAuthService } from '@/auth/better-auth.service';
 import { UserEntity } from '@/auth/entities/user.entity';
 import { CursorPaginationDto } from '@/common/dto/cursor-pagination/cursor-pagination.dto';
 import { CursorPaginatedDto } from '@/common/dto/cursor-pagination/paginated.dto';
@@ -25,7 +25,7 @@ export class UserService {
     private readonly i18nService: I18nService<I18nTranslations>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly authService: AuthService,
+    private readonly betterAuthService: BetterAuthService,
   ) {}
 
   async findAllUsers(
@@ -107,7 +107,7 @@ export class UserService {
       shouldChangeUsername = user?.username !== dto.username;
     }
 
-    await this.authService.api.updateUser({
+    await this.betterAuthService.api.updateUser({
       body: {
         ...(dto.image !== undefined ? { image: dto.image } : {}),
         ...(shouldChangeUsername ? { username: dto.username } : {}),

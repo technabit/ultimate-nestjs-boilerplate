@@ -1,5 +1,5 @@
 import { AuthGuard } from '@/auth/auth.guard';
-import { AuthService } from '@/auth/auth.service';
+import { BetterAuthService } from '@/auth/better-auth.service';
 import { getConfig as getAppConfig } from '@/config/app/app.config';
 import { CurrentUserSession } from '@/decorators/auth/current-user-session.decorator';
 import { Logger, UnauthorizedException, UseGuards } from '@nestjs/common';
@@ -43,7 +43,7 @@ export class SocketGateway
 
   constructor(
     private readonly cacheService: CacheService,
-    private readonly authService: AuthService,
+    private readonly betterAuthService: BetterAuthService,
   ) {
     this.clients = new Map();
   }
@@ -52,7 +52,7 @@ export class SocketGateway
     this.logger.log(`Websocket gateway initialized.`);
     this.server.use(async (socket: Socket, next) => {
       try {
-        const session = await this.authService.api.getSession({
+        const session = await this.betterAuthService.api.getSession({
           headers: fromNodeHeaders(socket?.handshake?.headers),
         });
         if (!session) {
