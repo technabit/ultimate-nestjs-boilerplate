@@ -34,7 +34,7 @@ Advanced Nest.js boilerplate for scalable startups.
 
 ### Better Auth🔒
 
-Rolling our own auth is doable but maintaining all kinds of authentication types ourselves has been found out to be a challenging tasks. Moreover, rolling our own auth poses security risks. That's why this boilerplate uses [Better Auth](https://www.better-auth.com/) for everything related to authentication. All of the industry standard authentication kinds are ready to be used out of the box so that you focus on building features rather than worrying about auth shenanigans:
+Rolling our own auth is doable but maintaining all kinds of authentication types ourselves has been found out to be a challenging task. Moreover, rolling our own auth poses security risks. That's why this boilerplate uses [Better Auth](https://www.better-auth.com/) for everything related to authentication. All of the industry standard authentication kinds are ready to be used out of the box so that you focus on building features rather than worrying about auth shenanigans:
 
 - Email/Password
 - OAuth
