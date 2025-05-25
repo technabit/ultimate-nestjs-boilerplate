@@ -16,6 +16,7 @@
   "testEnvironment": "node",
   "moduleNameMapper": {
     "^@/api(.*)$": "<rootDir>/api$1",
+    "^@/auth(.*)$": "<rootDir>/auth$1",
     "^@/background(.*)$": "<rootDir>/background$1",
     "^@/common(.*)$": "<rootDir>/common$1",
     "^@/config(.*)$": "<rootDir>/config$1",
