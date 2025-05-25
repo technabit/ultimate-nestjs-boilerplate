@@ -160,7 +160,7 @@ pnpm graph:circular
 ```
 
 <figure>
-<img src="./github-assets/graph.png" style="border: 5px solid teal" />
+<img src="./github-assets/graph.png" />
 </figure>
 
 ### Database Entity Relationship Diagram🛢️
@@ -172,7 +172,7 @@ pnpm erd:generate
 ```
 
 <figure>
-<img src="./github-assets/erd.png" style="border: 5px solid teal; height: 1080px;" />
+<img src="./github-assets/erd.png"  />
 </figure>
 
 This boilerplate is extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
