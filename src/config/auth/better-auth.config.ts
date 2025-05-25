@@ -3,6 +3,7 @@ import { GlobalConfig } from '@/config/config.type';
 import { CacheService } from '@/shared/cache/cache.service';
 import { validateUsername } from '@/utils/validators/username';
 import { ConfigService } from '@nestjs/config';
+import { APIError } from 'better-auth/api';
 import { magicLink, openAPI, twoFactor, username } from 'better-auth/plugins';
 import { passkey } from 'better-auth/plugins/passkey';
 import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth/types';
@@ -33,7 +34,14 @@ export function getConfig({
     magicLink({
       disableSignUp: true,
       async sendMagicLink({ email, url }) {
-        await authService.sendMagicLink({ email, url });
+        try {
+          await authService.sendSigninMagicLink({ email, url });
+        } catch (error: any) {
+          throw new APIError(error.status, {
+            status: error.status,
+            message: error.message,
+          });
+        }
       },
     }),
     twoFactor(),
@@ -75,11 +83,18 @@ export function getConfig({
       autoSignIn: false,
       requireEmailVerification: true,
       sendResetPassword: async ({ url, user }) => {
-        await authService.resetPassword({ url, userId: user.id });
+        try {
+          await authService.resetPassword({ url, userId: user.id });
+        } catch (error: any) {
+          throw new APIError(error.status, {
+            status: error.status,
+            message: error.message,
+          });
+        }
       },
     },
     session: {
-      freshAge: 0,
+      freshAge: 0, // We perform every sensitive operation via our own API so this is irrelevant.
       modelName: 'session',
     },
     user: {
@@ -97,7 +112,14 @@ export function getConfig({
     },
     emailVerification: {
       sendVerificationEmail: async ({ user, url }) => {
-        await authService.verifyEmail({ url, userId: user.id });
+        try {
+          await authService.verifyEmail({ url, userId: user.id });
+        } catch (error: any) {
+          throw new APIError(error.status, {
+            status: error.status,
+            message: error.message,
+          });
+        }
       },
     },
     trustedOrigins: appConfig.corsOrigin as string[],

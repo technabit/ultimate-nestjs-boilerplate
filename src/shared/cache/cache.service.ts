@@ -19,6 +19,26 @@ export class CacheService {
     return this.cacheManager.get<T>(this._constructCacheKey(keyParams));
   }
 
+  /**
+   * Return remaining ttl of a key if it was set.
+   * By default -1 and -2 cases are obfuscated to avoid confusion but if `disableResponseFilter = true`:
+   * -1: If key exists but has no expiry
+   * -2: If key does not exist at all
+   */
+  async getTtl(
+    keyParams: CacheParam,
+    options?: { disableResponseFilter?: false },
+  ): Promise<number | null> {
+    const ttl = await this.cacheManager.store.ttl(
+      this._constructCacheKey(keyParams),
+    );
+
+    if (!options?.disableResponseFilter && [-1, -2].includes(ttl)) {
+      return null;
+    }
+    return ttl ?? null;
+  }
+
   async set(
     keyParams: CacheParam,
     value: unknown,

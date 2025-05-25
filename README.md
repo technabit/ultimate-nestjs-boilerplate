@@ -32,6 +32,28 @@ Advanced Nest.js boilerplate for scalable startups.
 - [x] Dependency Graph Visualizer [Learn More](#dependency-graph-)
 - [x] Database Entity Relationship Diagram Generator [Learn More](#database-entity-relationship-diagram️)
 
+## Development:
+
+- Make `.env` files ready:
+
+```
+cp ./.env.example ./.env
+cp ./.env.docker.example ./.env.docker
+```
+
+- Start Docker containers:
+
+```
+pnpm docker:dev:up
+```
+
+- Run migrations:
+
+```
+docker exec -it nestjs-boilerplate-server sh
+pnpm migration:up
+```
+
 ### Better Auth🔒
 
 Rolling our own auth is doable but maintaining all kinds of authentication types ourselves has been found out to be a challenging task. Moreover, rolling our own auth poses security risks. That's why this boilerplate uses [Better Auth](https://www.better-auth.com/) for everything related to authentication. All of the industry standard authentication kinds are ready to be used out of the box so that you focus on building features rather than worrying about auth shenanigans:

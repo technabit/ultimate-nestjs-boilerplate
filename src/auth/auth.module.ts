@@ -27,6 +27,7 @@ import { Queue } from '@/constants/job.constant';
 import { CacheModule } from '@/shared/cache/cache.module';
 import { CacheService } from '@/shared/cache/cache.service';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {
   FastifyInstance,
@@ -35,6 +36,7 @@ import type {
 } from 'fastify';
 import { AuthService } from './auth.service';
 import { BetterAuthService } from './better-auth.service';
+import { UserEntity } from './entities/user.entity';
 
 const HOOKS = [
   { metadataKey: BEFORE_HOOK_KEY, hookType: 'before' as const },
@@ -52,6 +54,7 @@ const HOOKS = [
       name: Queue.Email,
       adapter: BullMQAdapter,
     }),
+    TypeOrmModule.forFeature([UserEntity]),
   ],
   providers: [AuthService],
   exports: [AuthService],
@@ -124,7 +127,14 @@ export class AuthModule implements NestModule, OnModuleInit {
 
           reply.status(response.status);
           response.headers.forEach((value, key) => reply.header(key, value));
-          reply.send(response.body ? await response.text() : null);
+          reply.send(
+            response.body
+              ? await response.text()
+              : {
+                  status: response.status,
+                  message: response.statusText,
+                },
+          );
         } catch (error) {
           this.logger.fatal(`Better auth error ${String(error)}`);
           reply.status(500).send({
