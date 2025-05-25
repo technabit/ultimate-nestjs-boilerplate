@@ -26,7 +26,10 @@ import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { ApiModule } from './api/api.module';
 import { AuthModule } from './auth/auth.module';
 import { default as awsConfig } from './config/aws/aws.config';
-import { default as bullConfig } from './config/bull/bull.config';
+import {
+  BULL_BOARD_PATH,
+  default as bullConfig,
+} from './config/bull/bull.config';
 import { default as useBullFactory } from './config/bull/bull.factory';
 import grafanaConfig from './config/grafana/grafana.config';
 import { default as sentryConfig } from './config/sentry/sentry.config';
@@ -35,7 +38,6 @@ import { default as useThrottlerFactory } from './config/throttler/throttler.fac
 import { AppThrottlerGuard } from './config/throttler/throttler.guard';
 import { default as useGraphqlFactory } from './graphql/graphql.factory';
 import { default as useI18nFactory } from './i18n/i18n.factory';
-import { BULL_BOARD_PATH } from './middlewares/bull-board-auth.middleware';
 import { CacheModule as CacheManagerModule } from './shared/cache/cache.module';
 import { MailModule } from './shared/mail/mail.module';
 import { SocketModule } from './shared/socket/socket.module';

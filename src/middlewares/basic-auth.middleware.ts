@@ -1,9 +1,7 @@
-import { getConfig } from '@/config/bull/bull.config';
+import { getConfig } from '@/config/auth/auth.config';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-export const BULL_BOARD_PATH = '/queues';
-
-export async function bullBoardAuthMiddleware(
+export async function basicAuthMiddleware(
   req: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -23,8 +21,8 @@ export async function bullBoardAuthMiddleware(
   const config = getConfig();
 
   if (
-    username === config.bullBoard.username &&
-    password === config.bullBoard.password
+    username === config.basicAuth.username &&
+    password === config.basicAuth.password
   ) {
     return;
   }

@@ -2,9 +2,8 @@ import { type GlobalConfig } from '@/config/config.type';
 import { type INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
-import * as swaggerStats from 'swagger-stats';
 
-export const SWAGGER_PATH = 'swagger';
+export const SWAGGER_PATH = '/swagger';
 
 function setupSwagger(app: INestApplication): OpenAPIObject {
   const configService = app.get(ConfigService<GlobalConfig>);
@@ -31,22 +30,6 @@ function setupSwagger(app: INestApplication): OpenAPIObject {
     jsonDocumentUrl: 'swagger/json',
   });
 
-  app.use(
-    swaggerStats.getMiddleware({
-      name: configService.getOrThrow('app.name', { infer: true }),
-      swaggerSpec: document,
-      authentication: true,
-      onAuthenticate(_, username: string, password: string) {
-        // We use grafana credentials for all stats related things
-        return (
-          username ===
-            configService.getOrThrow('grafana.username', { infer: true }) &&
-          password ===
-            configService.getOrThrow('grafana.password', { infer: true })
-        );
-      },
-    }),
-  );
   return document;
 }
 

@@ -1,4 +1,4 @@
-// SignInMagicLink.tsx
+// EmailVerification.tsx
 import {
   Body,
   Button,
@@ -11,38 +11,38 @@ import {
 } from '@react-email/components';
 import * as React from 'react';
 
-interface SignInMagicLinkProps {
+interface EmailVerificationProps {
   email: string;
   url: string;
 }
 
-export const SignInMagicLink = ({
+export const EmailVerification = ({
   email = '{{email}}',
   url = '{{url}}',
-}: SignInMagicLinkProps) => {
+}: EmailVerificationProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Sign in to your account</Preview>
+      <Preview>Verify your Email</Preview>
       <Tailwind>
         <Body className="bg-[#f4f4f7] font-sans">
           <Container className="bg-white max-w-xl mx-auto p-6 rounded-lg">
             <Text className="text-xl font-semibold mb-4">Hi {email},</Text>
             <Text className="text-base mb-2">
-              You requested to sign in using a magic link.
+              Thank you for registering. Please verify your email address by
+              clicking the button below:{' '}
             </Text>
             <Text className="text-base mb-4">
-              Click the button below to access your account:
+              Click the button below to proceed to reset it:
             </Text>
             <Button
               href={url}
               className="bg-blue-600 text-white font-bold py-3 px-5 rounded-md no-underline inline-block mb-4"
             >
-              Sign in
+              Verify
             </Button>
-            <Text className="text-base mt-4">
-              If you did not request this email, you can safely ignore this
-              email.
+            <Text className="text-xs text-gray-500 text-center mt-6">
+              If you did not request this, you can safely ignore this email.
             </Text>
             <Text className="text-xs text-gray-500 text-center mt-6">
               This link will expire shortly for security reasons.
@@ -54,4 +54,4 @@ export const SignInMagicLink = ({
   );
 };
 
-export default SignInMagicLink;
+export default EmailVerification;

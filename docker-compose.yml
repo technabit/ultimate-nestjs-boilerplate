@@ -32,7 +32,7 @@ services:
   redis:
     image: redis:7.0.1-alpine
     container_name: nestjs-boilerplate-redis
-    restart: always
+    restart: unless-stopped
     ports:
       - '${DOCKER_REDIS_PORT}:6379'
     environment:

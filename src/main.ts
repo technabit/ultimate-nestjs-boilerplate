@@ -20,16 +20,14 @@ import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 import path from 'path';
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app/app.config';
+import { BULL_BOARD_PATH } from './config/bull/bull.config';
 import { type GlobalConfig } from './config/config.type';
 import { Environment } from './constants/app.constant';
 import { SentryInterceptor } from './interceptors/sentry.interceptor';
-import {
-  BULL_BOARD_PATH,
-  bullBoardAuthMiddleware,
-} from './middlewares/bull-board-auth.middleware';
+import { basicAuthMiddleware } from './middlewares/basic-auth.middleware';
 import { RedisIoAdapter } from './shared/socket/redis.adapter';
 import { consoleLoggingConfig } from './tools/logger/logger-factory';
-import setupSwagger from './tools/swagger/swagger.setup';
+import setupSwagger, { SWAGGER_PATH } from './tools/swagger/swagger.setup';
 
 async function bootstrap() {
   const envToLogger: Record<`${Environment}`, any> = {
@@ -94,6 +92,8 @@ async function bootstrap() {
     credentials: true,
   });
 
+  const env = configService.getOrThrow('app.nodeEnv', { infer: true });
+
   app.use(
     helmet({
       contentSecurityPolicy: {
@@ -107,7 +107,6 @@ async function bootstrap() {
       },
     }),
   );
-
   // Static files
   app.useStaticAssets({
     root: path.join(__dirname, '..', 'src', 'tmp', 'file-uploads'),
@@ -121,21 +120,19 @@ async function bootstrap() {
       );
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS');
-      res.setHeader('cross-origin-resource-policy', 'cross-origin');
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     },
   });
 
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
 
-  const env = configService.getOrThrow('app.nodeEnv', { infer: true });
-
   setupSwagger(app);
 
   Sentry.init({
     dsn: configService.getOrThrow('sentry.dsn', { infer: true }),
     tracesSampleRate: 1.0,
-    environment: configService.getOrThrow('app.nodeEnv', { infer: true }),
+    environment: env,
   });
   app.useGlobalInterceptors(new SentryInterceptor());
 
@@ -151,9 +148,13 @@ async function bootstrap() {
     .getHttpAdapter()
     .getInstance()
     .addHook('onRequest', async (req, reply) => {
-      // Auth for bull-board
-      if (req.url.startsWith(`/api${BULL_BOARD_PATH}`)) {
-        await bullBoardAuthMiddleware(req, reply);
+      const pathsToIntercept = [
+        `/api${BULL_BOARD_PATH}`, // Bull-Board
+        SWAGGER_PATH, // Swagger Docs
+        `/api/auth/reference`, // Better Auth Docs
+      ];
+      if (pathsToIntercept.some((path) => req.url.startsWith(path))) {
+        await basicAuthMiddleware(req, reply);
       }
     });
 

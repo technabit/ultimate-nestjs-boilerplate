@@ -10,6 +10,14 @@ class EnvironmentVariablesValidator {
 
   @IsString()
   @IsOptional()
+  BASIC_AUTH_USERNAME: string;
+
+  @IsString()
+  @IsNotEmpty()
+  BASIC_AUTH_PASSWORD: string;
+
+  @IsString()
+  @IsNotEmpty()
   GITHUB_CLIENT_ID: string;
 
   @IsString()
@@ -20,6 +28,10 @@ class EnvironmentVariablesValidator {
 export function getConfig(): AuthConfig {
   return {
     authSecret: process.env.AUTH_SECRET,
+    basicAuth: {
+      username: process.env.BASIC_AUTH_USERNAME,
+      password: process.env.BASIC_AUTH_PASSWORD,
+    },
     oAuth: {
       github: {
         clientId: process.env.GITHUB_CLIENT_ID,

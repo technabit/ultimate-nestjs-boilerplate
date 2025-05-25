@@ -24,6 +24,8 @@ export class InitialSeed1732461424212 implements Seeder {
           isEmailVerified: true,
         }),
       );
+      // For security reasons, admin password is not set here.
+      // Use reset password feature to set password for this account.
       await $accountRepository.save(
         $accountRepository.create({
           accountId: user.id,

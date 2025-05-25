@@ -3,8 +3,10 @@ import { RedisConfig } from '@/config/redis/redis-config.type';
 import redisConfig from '@/config/redis/redis.config';
 import validateConfig from '@/utils/config/validate-config';
 import { registerAs } from '@nestjs/config';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { BullConfig } from './bull-config.type';
+
+export const BULL_BOARD_PATH = '/queues';
 
 class EnvironmentVariablesValidator {
   @IsBoolean()
@@ -14,14 +16,6 @@ class EnvironmentVariablesValidator {
   @IsNumber()
   @IsOptional()
   RETRY_ATTEMPTS_ON_FAIL: number;
-
-  @IsString()
-  @IsOptional()
-  BULL_BOARD_USERNAME: string;
-
-  @IsString()
-  @IsOptional()
-  BULL_BOARD_PASSWORD: string;
 }
 
 export function getConfig(): BullConfig {
@@ -39,10 +33,6 @@ export function getConfig(): BullConfig {
         type: 'exponential', // With an exponential backoff, it will retry after 2 ^ attempts * delay milliseconds
         delay: 1000,
       },
-    },
-    bullBoard: {
-      username: process.env.BULL_BOARD_USERNAME,
-      password: process.env.BULL_BOARD_PASSWORD,
     },
   };
 }

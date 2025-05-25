@@ -20,7 +20,8 @@ const UPLOAD_DESTINATION = path.join(
   __dirname,
   '..',
   '..',
-  'src/tmp/file-uploads',
+  process.env.NODE_ENV === 'production' ? 'dist' : 'src',
+  'tmp/file-uploads',
 );
 
 type FileInterceptorParameters = Parameters<typeof FileInterceptor>;
@@ -51,7 +52,7 @@ function FileUploadInterceptor(
               storage: diskStorage({
                 destination: function (_, _2, cb) {
                   if (!fs.existsSync(UPLOAD_DESTINATION)) {
-                    fs.mkdirSync(UPLOAD_DESTINATION);
+                    fs.mkdirSync(UPLOAD_DESTINATION, { recursive: true });
                   }
                   cb(null, UPLOAD_DESTINATION);
                 },

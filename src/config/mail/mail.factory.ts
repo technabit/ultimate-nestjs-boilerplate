@@ -24,7 +24,7 @@ async function useMailFactory(
       from: `"${config.get('mail.defaultName', { infer: true })}" <${config.get('mail.defaultEmail', { infer: true })}>`,
     },
     template: {
-      dir: path.join(__dirname, '..', '..', '/shared/mail/templates'),
+      dir: path.join(__dirname, '..', '..', 'shared/mail/templates'),
       adapter: new HandlebarsAdapter(),
       options: {
         strict: true,

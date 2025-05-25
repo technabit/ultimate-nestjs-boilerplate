@@ -15,7 +15,7 @@ export class MailService {
   }) {
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Email Verification',
+      subject: 'Verify your Email',
       template: MailTemplate.EmailVerification,
       context: {
         email: email,
