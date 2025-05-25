@@ -1,3 +1,4 @@
+import { AuthService } from '@/auth/auth.service';
 import { GlobalConfig } from '@/config/config.type';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -23,6 +24,7 @@ describe('HealthController', () => {
   let microServiceValue: Partial<
     Record<keyof MicroserviceHealthIndicator, jest.Mock>
   >;
+  let authServiceValue: Partial<Record<keyof AuthService, jest.Mock>>;
 
   beforeAll(async () => {
     configServiceValue = {
@@ -43,6 +45,10 @@ describe('HealthController', () => {
 
     microServiceValue = {
       pingCheck: jest.fn(),
+    };
+
+    authServiceValue = {
+      createBasicAuthHeaders: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -67,6 +73,10 @@ describe('HealthController', () => {
         {
           provide: MicroserviceHealthIndicator,
           useValue: microServiceValue,
+        },
+        {
+          provide: AuthService,
+          useValue: authServiceValue,
         },
       ],
     }).compile();
