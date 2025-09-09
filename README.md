@@ -115,6 +115,8 @@ pnpm docker:prod:up
 pnpm docker:prod:down
 ```
 
+Note: The docker scripts are Podman-compatible. The wrapper at `bin/compose.mjs` auto-detects `docker compose`, `podman compose`, or `podman-compose` and loads both `.env` and `.env.docker` so you can use Podman with Docker compatibility on your machine without changing commands.
+
 ##### Deployment:
 
 ```

@@ -15,18 +15,34 @@ import {
 
 @Injectable()
 export class AwsS3Service {
-  private s3Client: S3Client;
+  private _s3Client?: S3Client;
 
-  constructor(private readonly configService: ConfigService<GlobalConfig>) {
-    this.s3Client = new S3Client({
-      region: this.configService.get('aws.region', { infer: true }),
-      credentials: {
-        accessKeyId: this.configService.get('aws.accessKey', { infer: true }),
-        secretAccessKey: this.configService.get('aws.secretKey', {
-          infer: true,
-        }),
-      },
-    });
+  constructor(private readonly configService: ConfigService<GlobalConfig>) {}
+
+  private get s3Client(): S3Client {
+    if (!this._s3Client) {
+      const region = this.configService.get('aws.region', { infer: true });
+      const accessKeyId = this.configService.get('aws.accessKey', {
+        infer: true,
+      });
+      const secretAccessKey = this.configService.get('aws.secretKey', {
+        infer: true,
+      });
+
+      // Defer construction until actually needed; throw only if methods are used without config
+      if (!region) {
+        throw new Error('AWS region is not configured');
+      }
+
+      this._s3Client = new S3Client({
+        region,
+        // credentials may be sourced from env/instance role; only set when both provided
+        ...(accessKeyId && secretAccessKey
+          ? { credentials: { accessKeyId, secretAccessKey } }
+          : {}),
+      });
+    }
+    return this._s3Client;
   }
 
   /**

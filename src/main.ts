@@ -22,6 +22,10 @@ import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app/app.config';
 import { BULL_BOARD_PATH } from './config/bull/bull.config';
 import { type GlobalConfig } from './config/config.type';
+import {
+  getCorsOptions,
+  getHelmetOptions,
+} from './config/security/security.config';
 import { Environment } from './constants/app.constant';
 import { SentryInterceptor } from './interceptors/sentry.interceptor';
 import { basicAuthMiddleware } from './middlewares/basic-auth.middleware';
@@ -78,35 +82,10 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  app.enableCors({
-    origin: configService.getOrThrow('app.corsOrigin', {
-      infer: true,
-    }),
-    methods: ['GET', 'PATCH', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'Accept',
-    ],
-    credentials: true,
-  });
+  app.enableCors(getCorsOptions(configService));
 
+  app.use(helmet(getHelmetOptions(configService)));
   const env = configService.getOrThrow('app.nodeEnv', { infer: true });
-
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          scriptSrc: [
-            "'self'",
-            'https://cdn.jsdelivr.net/npm/@scalar/api-reference', // For Better Auth API Reference.
-          ],
-        },
-      },
-    }),
-  );
   // Static files
   app.useStaticAssets({
     root: path.join(__dirname, '..', 'src', 'tmp', 'file-uploads'),

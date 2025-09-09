@@ -1,24 +1,32 @@
 import { ApiModule } from '@/api/api.module';
 import { GlobalConfig } from '@/config/config.type';
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigService } from '@nestjs/config';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
 
 function useGraphqlFactory(
   configService: ConfigService<GlobalConfig>,
 ): ApolloDriverConfig {
   const env = configService.get('app.nodeEnv', { infer: true });
-  const isDevelopment = env === 'development' || env === 'local';
+  const isDevLike = env === 'development' || env === 'local' || env === 'test';
   return {
-    playground: isDevelopment,
+    playground: false,
+    introspection: isDevLike,
+    plugins: isDevLike
+      ? [ApolloServerPluginLandingPageLocalDefault({ embed: true })]
+      : [ApolloServerPluginLandingPageProductionDefault()],
     autoSchemaFile: path.join(
       __dirname,
       '../../src/generated/schema.generated.gql',
     ),
     formatError: (...params: Parameters<ApolloDriverConfig['formatError']>) => {
       const [err] = params;
-      if (!isDevelopment) {
+      if (!isDevLike) {
         if ('stacktrace' in err.extensions) {
           err.extensions.stacktrace = null;
         }
@@ -26,7 +34,10 @@ function useGraphqlFactory(
       return err;
     },
     include: [ApiModule],
-    context: (req: FastifyRequest, res: FastifyReply) => ({ req, res }),
+    context: ({ req, res }: { req: FastifyRequest; res: FastifyReply }) => ({
+      req,
+      res,
+    }),
   };
 }
 
