@@ -1,4 +1,5 @@
 {
   "sameUsernameOrEmailAlreadyExists": "User with same username or email already exists.",
-  "notFound": "User not found"
+  "notFound": "User not found",
+  "sayFoo": "Say foo!"
 }

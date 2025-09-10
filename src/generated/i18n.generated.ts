@@ -11,6 +11,7 @@ export type I18nTranslations = {
     "user": {
         "sameUsernameOrEmailAlreadyExists": string;
         "notFound": string;
+        "sayFoo": string;
     };
 };
 /* prettier-ignore */

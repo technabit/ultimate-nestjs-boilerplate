@@ -36,11 +36,11 @@ import { default as sentryConfig } from './config/sentry/sentry.config';
 import { default as throttlerConfig } from './config/throttler/throttler.config';
 import { default as useThrottlerFactory } from './config/throttler/throttler.factory';
 import { AppThrottlerGuard } from './config/throttler/throttler.guard';
-import { default as useGraphqlFactory } from './graphql/graphql.factory';
+import { default as useGraphqlFactory } from './graphql/graphql-fastify.factory';
 import { default as useI18nFactory } from './i18n/i18n.factory';
 import { CacheModule as CacheManagerModule } from './shared/cache/cache.module';
 import { MailModule } from './shared/mail/mail.module';
-import { SocketModule } from './shared/socket/socket.module';
+// import { SocketModule } from './shared/socket/socket.module';
 import { default as useLoggerFactory } from './tools/logger/logger-factory';
 import { WorkerModule } from './worker/worker.module';
 
@@ -101,8 +101,8 @@ export class AppModule {
         I18nModule.forRootAsync({
           resolvers: [
             { use: QueryResolver, options: ['lang'] },
-            AcceptLanguageResolver,
             new HeaderResolver(['x-lang']),
+            AcceptLanguageResolver,
           ],
           inject: [ConfigService],
           useFactory: useI18nFactory,
@@ -124,7 +124,7 @@ export class AppModule {
         }),
         ApiModule,
         AuthModule.forRootAsync(),
-        SocketModule,
+        // SocketModule,
       ],
       providers: [
         {

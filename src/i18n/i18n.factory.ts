@@ -16,6 +16,7 @@ function useI18nFactory(
     loaderOptions: {
       path: path.join(__dirname, './translations/'),
       watch: isLocal,
+      includeSubfolders: true,
     },
     typesOutputPath: path.join(
       __dirname,

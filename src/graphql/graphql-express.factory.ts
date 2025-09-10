@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
 
-function useGraphqlFactory(
+function useGraphqlExpressFactory(
   configService: ConfigService<GlobalConfig>,
 ): ApolloDriverConfig {
   const env = configService.get('app.nodeEnv', { infer: true });
@@ -41,4 +41,4 @@ function useGraphqlFactory(
   };
 }
 
-export default useGraphqlFactory;
+export default useGraphqlExpressFactory;

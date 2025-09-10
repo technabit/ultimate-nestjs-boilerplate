@@ -16,8 +16,8 @@ import {
 import * as Sentry from '@sentry/node';
 import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
-
 import path from 'path';
+
 import { AppModule } from './app.module';
 import { getConfig as getAppConfig } from './config/app/app.config';
 import { BULL_BOARD_PATH } from './config/bull/bull.config';

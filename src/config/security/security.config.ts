@@ -45,6 +45,7 @@ export function getCorsOptions(
       'Authorization',
       'X-Requested-With',
       'Accept',
+      'x-lang',
     ],
     credentials: true,
   };
