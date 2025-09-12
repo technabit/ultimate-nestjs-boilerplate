@@ -72,8 +72,8 @@ services:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
-      - ./src/tools/grafana/provisioning:/etc/grafana/provisioning
-      - ./src/tools/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./src/core/tools/grafana/provisioning:/etc/grafana/provisioning
+      - ./src/core/tools/grafana/dashboards:/var/lib/grafana/dashboards
     networks:
       - nestjs-boilerplate-network
     profiles:

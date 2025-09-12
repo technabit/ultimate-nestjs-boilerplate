@@ -19,19 +19,19 @@ import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 import path from 'path';
 
 import { AppModule } from './app.module';
-import { getConfig as getAppConfig } from './config/app/app.config';
-import { BULL_BOARD_PATH } from './config/bull/bull.config';
-import { type GlobalConfig } from './config/config.type';
+import { getConfig as getAppConfig } from './core/config/app/app.config';
+import { BULL_BOARD_PATH } from './core/config/bull/bull.config';
+import { type GlobalConfig } from './core/config/config.type';
 import {
   getCorsOptions,
   getHelmetOptions,
-} from './config/security/security.config';
-import { Environment } from './constants/app.constant';
-import { SentryInterceptor } from './interceptors/sentry.interceptor';
-import { basicAuthMiddleware } from './middlewares/basic-auth.middleware';
-import { RedisIoAdapter } from './shared/socket/redis.adapter';
-import { consoleLoggingConfig } from './tools/logger/logger-factory';
-import setupSwagger, { SWAGGER_PATH } from './tools/swagger/swagger.setup';
+} from './core/config/security/security.config';
+import { Environment } from './core/constants/app.constant';
+import { SentryInterceptor } from './core/interceptors/sentry.interceptor';
+import { basicAuthMiddleware } from './core/middlewares/basic-auth.middleware';
+import { RedisIoAdapter } from './core/shared/socket/redis.adapter';
+import { consoleLoggingConfig } from './core/tools/logger/logger-factory';
+import setupSwagger, { SWAGGER_PATH } from './core/tools/swagger/swagger.setup';
 
 async function bootstrap() {
   const envToLogger: Record<`${Environment}`, any> = {
@@ -48,6 +48,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create<NestFastifyApplication>(
     isWorker ? AppModule.worker() : AppModule.main(),
+
     new FastifyAdapter({
       logger: appConfig.appLogging ? envToLogger[appConfig.nodeEnv] : false,
       trustProxy: appConfig.isHttps,
@@ -78,6 +79,7 @@ async function bootstrap() {
       },
     }),
   );
+
   app.enableVersioning({
     type: VersioningType.URI,
   });
@@ -86,6 +88,7 @@ async function bootstrap() {
 
   app.use(helmet(getHelmetOptions(configService)));
   const env = configService.getOrThrow('app.nodeEnv', { infer: true });
+
   // Static files
   app.useStaticAssets({
     root: path.join(__dirname, '..', 'src', 'tmp', 'file-uploads'),

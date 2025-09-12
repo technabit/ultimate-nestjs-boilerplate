@@ -14,7 +14,11 @@ import path from 'path';
 import React from 'react';
 
 const projectRootDir = path.join(__dirname, '..');
-const templatesDir = path.join(__dirname, '..', 'src/shared/mail/templates');
+const templatesDir = path.join(
+  __dirname,
+  '..',
+  'src/core/shared/mail/templates',
+);
 const outDir = templatesDir.replace('/src/', '/dist/');
 
 if (!fs.existsSync(outDir)) {

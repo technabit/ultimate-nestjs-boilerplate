@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { TypeormMarkdownGenerator } from 'typeorm-markdown-generator';
-import DataSource from '../src/database/data-source';
+import DataSource from '../src/core/database/data-source';
 
 const generateErd = async () => {
   try {
