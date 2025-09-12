@@ -25,6 +25,7 @@ import { default as useThrottlerFactory } from '@/core/config/throttler/throttle
 import { AppThrottlerGuard } from '@/core/config/throttler/throttler.guard';
 import { default as useGraphqlFactory } from '@/core/graphql/graphql-fastify.factory';
 import { default as useI18nFactory } from '@/core/i18n/i18n.factory';
+import { CoreQueuesModule } from '@/core/queues/queues.module';
 import { CacheModule as CacheManagerModule } from '@/core/shared/cache/cache.module';
 import { MailModule } from '@/core/shared/mail/mail.module';
 import { default as useLoggerFactory } from '@/core/tools/logger/logger-factory';
@@ -81,6 +82,7 @@ export class CoreModule {
           useFactory: useBullFactory,
         }),
         PrometheusModule.register(),
+        CoreQueuesModule,
         CacheManagerModule,
         MailModule,
         // i18n

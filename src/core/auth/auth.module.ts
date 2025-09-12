@@ -1,4 +1,3 @@
-import { BullModule } from '@nestjs/bullmq';
 import type {
   MiddlewareConsumer,
   NestModule,
@@ -21,7 +20,6 @@ import {
   BEFORE_HOOK_KEY,
   HOOK_KEY,
 } from '@/core/constants/auth.constant';
-import { Queue } from '@/core/constants/job.constant';
 import { CacheModule } from '@/core/shared/cache/cache.module';
 import { CacheService } from '@/core/shared/cache/cache.service';
 import { ConfigService } from '@nestjs/config';
@@ -43,13 +41,7 @@ const HOOKS = [
 
 @Global()
 @Module({
-  imports: [
-    DiscoveryModule,
-    BullModule.registerQueue({
-      name: Queue.Email,
-    }),
-    TypeOrmModule.forFeature([UserEntity]),
-  ],
+  imports: [DiscoveryModule, TypeOrmModule.forFeature([UserEntity])],
   providers: [AuthService],
   exports: [AuthService],
 })
