@@ -1,4 +1,4 @@
-import { Role } from '@/application/api/user/user.enum';
+import { Role } from '@/apps/api/user/user.enum';
 import { AccountEntity } from '@/core/auth/entities/account.entity';
 import { UserEntity } from '@/core/auth/entities/user.entity';
 import { DataSource } from 'typeorm';

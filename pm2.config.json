@@ -10,6 +10,18 @@
       "env": {
         "NODE_ENV": "production"
       }
+    },
+    {
+      "name": "nestjs-boilerplate-worker",
+      "script": "dist/worker.js",
+      "instances": 1,
+      "autorestart": true,
+      "watch": false,
+      "time": true,
+      "env": {
+        "NODE_ENV": "production",
+        "IS_WORKER": "true"
+      }
     }
   ]
 }

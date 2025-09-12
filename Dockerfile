@@ -67,4 +67,4 @@ COPY --chown=node:node --from=development /app/pm2.config.json ./
 
 USER node
 
-CMD ["pm2-runtime", "start", "pm2.config.json"]
+CMD ["sh", "-lc", "pm2-runtime start pm2.config.json --only ${PM2_ONLY:-nestjs-boilerplate}"]

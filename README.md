@@ -117,6 +117,16 @@ pnpm docker:prod:down
 
 Note: The docker scripts are Podman-compatible. The wrapper at `bin/compose.mjs` auto-detects `docker compose`, `podman compose`, or `podman-compose` and loads both `.env` and `.env.docker` so you can use Podman with Docker compatibility on your machine without changing commands.
 
+The Docker image runs using PM2 and supports launching either the API or the Worker process via the `PM2_ONLY` env var (configured in `docker-compose.yml`).
+
+```
+# API only
+docker run -e PM2_ONLY=nestjs-boilerplate your-image
+
+# Worker only
+docker run -e PM2_ONLY=nestjs-boilerplate-worker your-image
+```
+
 ##### Deployment:
 
 ```
@@ -190,6 +200,24 @@ pnpm graph:circular
 ### Database Entity Relationship Diagram🛢️
 
 Visualize your database entities and their relationships.
+### Running API and Worker
+
+Run the API and Worker separately during development:
+
+```
+# API
+pnpm start:api
+pnpm start:api:dev
+
+# Worker
+pnpm start:worker
+pnpm start:worker:dev
+```
+
+The default entry files are `src/main.ts` (API) and `src/worker.ts` (worker).
+
+Shared logic lives under `src/core/*` and is wired via `CoreModule` and helper functions in `src/core/bootstrap/bootstrap.ts`.
+
 
 ```
 pnpm erd:generate

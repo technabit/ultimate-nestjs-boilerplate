@@ -1,4 +1,4 @@
-import { Role } from '@/application/api/user/user.enum';
+import { Role } from '@/apps/api/user/user.enum';
 import { BaseModel } from '@/core/database/models/base.model';
 import { Column, Entity, Index } from 'typeorm';
 

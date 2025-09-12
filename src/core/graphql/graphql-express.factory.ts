@@ -1,4 +1,4 @@
-import { ApiModule } from '@/application/api/api.module';
+import { ApiModule } from '@/apps/api/api.module';
 import { GlobalConfig } from '@/core/config/config.type';
 import {
   ApolloServerPluginLandingPageLocalDefault,

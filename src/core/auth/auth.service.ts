@@ -2,7 +2,7 @@ import { GlobalConfig } from '@/core/config/config.type';
 import { Queue } from '@/core/constants/job.constant';
 import { CacheService } from '@/core/shared/cache/cache.service';
 import { CacheParam } from '@/core/shared/cache/cache.type';
-import { EmailQueue } from '@/application/worker/queues/email/email.type';
+import { EmailQueue } from '@/apps/worker/queues/email/email.type';
 import { InjectQueue } from '@nestjs/bullmq';
 import {
   HttpException,

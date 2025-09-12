@@ -1,5 +1,3 @@
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-import { BullBoardModule } from '@bull-board/nestjs';
 import { BullModule } from '@nestjs/bullmq';
 import type {
   MiddlewareConsumer,
@@ -49,10 +47,6 @@ const HOOKS = [
     DiscoveryModule,
     BullModule.registerQueue({
       name: Queue.Email,
-    }),
-    BullBoardModule.forFeature({
-      name: Queue.Email,
-      adapter: BullMQAdapter,
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],

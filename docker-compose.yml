@@ -7,6 +7,7 @@ services:
       - .env
     environment:
       - IS_WORKER=false
+      - PM2_ONLY=nestjs-boilerplate
     ports:
       - '${APP_PORT}:${APP_PORT}'
     networks:
@@ -22,6 +23,7 @@ services:
       - .env
     environment:
       - IS_WORKER=true
+      - PM2_ONLY=nestjs-boilerplate-worker
     ports:
       - '${APP_WORKER_PORT}:${APP_WORKER_PORT}'
     networks:

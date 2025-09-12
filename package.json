@@ -8,6 +8,10 @@
   "scripts": {
     "start:app": "nest start",
     "start:app:dev": "nest start --watch",
+    "start:api": "cross-env IS_WORKER=false nest start --entryFile main",
+    "start:api:dev": "cross-env IS_WORKER=false nest start --entryFile main --watch",
+    "start:worker": "cross-env IS_WORKER=true nest start --entryFile worker",
+    "start:worker:dev": "cross-env IS_WORKER=true nest start --entryFile worker --watch",
     "start": "concurrently -n api,email -c cyan,green 'nest start' 'pnpm email:build'",
     "start:dev": "concurrently -n api,email -c cyan,green 'nest start --watch' 'pnpm email:watch'",
     "start:debug": "concurrently -n api,email -c cyan,green 'nest start --debug --watch' 'pnpm email:watch'",

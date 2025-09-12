@@ -21,3 +21,34 @@ jobs:
           script: |
             cd ~/nestjs-boilerplate
             ./bin/deploy.sh
+            # Load env for ports
+            set -a; . ./.env; set +a
+            echo "Checking API health at http://localhost:${APP_PORT}/api/health"
+            api_ok=0
+            for i in {1..30}; do
+              if curl -sS http://localhost:${APP_PORT}/api/health > /dev/null; then
+                echo "API is responding"; api_ok=1; break;
+              fi
+              echo "Waiting for API... ($i)"; sleep 2;
+            done
+            if [ "$api_ok" != "1" ]; then
+              echo "API failed to respond";
+              docker logs nestjs-boilerplate-server || true
+              exit 1
+            fi
+
+            echo "Checking Worker on port ${APP_WORKER_PORT}"
+            worker_ok=0
+            for i in {1..30}; do
+              if curl -sS http://localhost:${APP_WORKER_PORT}/ > /dev/null; then
+                echo "Worker is responding"; worker_ok=1; break;
+              fi
+              echo "Waiting for Worker... ($i)"; sleep 2;
+            done
+            if [ "$worker_ok" != "1" ]; then
+              echo "Worker failed to respond";
+              docker logs nestjs-boilerplate-worker || true
+              exit 1
+            fi
+
+            docker ps
