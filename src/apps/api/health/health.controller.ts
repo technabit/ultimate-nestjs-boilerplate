@@ -1,9 +1,12 @@
 import { AuthService } from '@/core/auth/auth.service';
 import { ErrorDto } from '@/core/common/dto/error.dto';
+import { BULL_BOARD_PATH } from '@/core/config/bull/bull.config';
 import { GlobalConfig } from '@/core/config/config.type';
+import { Queue } from '@/core/constants/job.constant';
 import { Public } from '@/core/decorators/public.decorator';
 import { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
 import { Serialize } from '@/core/utils/interceptors/serialize';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RedisOptions, Transport } from '@nestjs/microservices';
@@ -16,7 +19,8 @@ import {
   MicroserviceHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
-import { HealthCheckDto } from './dto/health.dto';
+import type { Queue as BullQueue } from 'bullmq';
+import { HealthCheckDto, QueueOverviewDto } from './dto/health.dto';
 
 @ApiTags('health')
 @Controller('health')
@@ -28,6 +32,9 @@ export class HealthController {
     private readonly db: TypeOrmHealthIndicator,
     private readonly microservice: MicroserviceHealthIndicator,
     private readonly authService: AuthService,
+
+    @InjectQueue(Queue.Email)
+    private readonly emailQueue: BullQueue,
   ) {}
 
   @Public()
@@ -63,5 +70,32 @@ export class HealthController {
       });
     }
     return this.health.check(list);
+  }
+
+  @Public()
+  @ApiOperation({ summary: 'Queues overview' })
+  @ApiResponse({ status: HttpStatus.OK, type: [QueueOverviewDto] })
+  @Get('queues')
+  async queues(): Promise<QueueOverviewDto[]> {
+    const result: QueueOverviewDto[] = [];
+    const queues: { name: string; q: BullQueue }[] = [
+      { name: Queue.Email, q: this.emailQueue },
+    ];
+
+    for (const { name, q } of queues) {
+      const counts = await q.getJobCounts(
+        'waiting',
+        'active',
+        'completed',
+        'failed',
+        'delayed',
+        'paused',
+        'waiting-children',
+      );
+      const baseUrl = this.configService.getOrThrow('app.url', { infer: true });
+      const bullBoardUrl = `${baseUrl}/api${BULL_BOARD_PATH}`;
+      result.push({ name, counts: counts as any, bullBoardUrl });
+    }
+    return result;
   }
 }

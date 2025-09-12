@@ -17,3 +17,47 @@ export class HealthCheckDto implements HealthCheckResult {
   @ApiProperty()
   details: HealthIndicatorResult;
 }
+
+export class QueueCountsDto {
+  @Expose()
+  @ApiProperty()
+  waiting: number;
+
+  @Expose()
+  @ApiProperty()
+  active: number;
+
+  @Expose()
+  @ApiProperty()
+  completed: number;
+
+  @Expose()
+  @ApiProperty()
+  failed: number;
+
+  @Expose()
+  @ApiProperty()
+  delayed: number;
+
+  @Expose()
+  @ApiProperty()
+  paused: number;
+
+  @Expose()
+  @ApiProperty({ name: 'waiting-children' })
+  waitingChildren: number;
+}
+
+export class QueueOverviewDto {
+  @Expose()
+  @ApiProperty()
+  name: string;
+
+  @Expose()
+  @ApiProperty({ type: QueueCountsDto })
+  counts: QueueCountsDto;
+
+  @Expose()
+  @ApiProperty()
+  bullBoardUrl: string;
+}
