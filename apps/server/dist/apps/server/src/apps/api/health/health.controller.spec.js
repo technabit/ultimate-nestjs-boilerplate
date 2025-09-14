@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = require("../../../core/auth/auth.service");
-const prisma_health_1 = require("../../../core/health/prisma.health");
+const nest_core_1 = require("@app/nest-core");
 const config_1 = require("@nestjs/config");
 const terminus_1 = require("@nestjs/terminus");
 const testing_1 = require("@nestjs/testing");
@@ -49,13 +48,13 @@ describe('HealthController', () => {
                     provide: terminus_1.HttpHealthIndicator,
                     useValue: httpUseValue,
                 },
-                { provide: prisma_health_1.PrismaHealthIndicator, useValue: dbUseValue },
+                { provide: nest_core_1.PrismaHealthIndicator, useValue: dbUseValue },
                 {
                     provide: terminus_1.MicroserviceHealthIndicator,
                     useValue: microServiceValue,
                 },
                 {
-                    provide: auth_service_1.AuthService,
+                    provide: nest_core_1.AuthService,
                     useValue: authServiceValue,
                 },
             ],

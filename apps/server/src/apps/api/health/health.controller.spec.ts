@@ -1,6 +1,4 @@
-import { AuthService } from '@/core/auth/auth.service';
-import { GlobalConfig } from '@/core/config/config.type';
-import { PrismaHealthIndicator } from '@/core/health/prisma.health';
+import { AuthService, GlobalConfig, PrismaHealthIndicator } from '@app/nest-core';
 import { ConfigService } from '@nestjs/config';
 import {
   HealthCheckService,

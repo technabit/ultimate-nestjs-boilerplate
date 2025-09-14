@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileService = void 0;
 const tslib_1 = require("tslib");
-const aws_s3_service_1 = require("../../../core/services/aws/aws-s3.service");
+const nest_core_1 = require("@app/nest-core");
 const common_1 = require("@nestjs/common");
 let FileService = class FileService {
     awsS3Service;
@@ -29,6 +29,6 @@ let FileService = class FileService {
 exports.FileService = FileService;
 exports.FileService = FileService = tslib_1.__decorate([
     (0, common_1.Injectable)(),
-    tslib_1.__metadata("design:paramtypes", [aws_s3_service_1.AwsS3Service])
+    tslib_1.__metadata("design:paramtypes", [nest_core_1.AwsS3Service])
 ], FileService);
 //# sourceMappingURL=file.service.js.map

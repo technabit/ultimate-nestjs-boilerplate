@@ -2,9 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const tslib_1 = require("tslib");
-const auth_guard_1 = require("../../../core/auth/auth.guard");
-const current_user_session_decorator_1 = require("../../../core/decorators/auth/current-user-session.decorator");
-const http_decorators_1 = require("../../../core/decorators/http.decorators");
+const nest_core_1 = require("@app/nest-core");
+const nest_core_2 = require("@app/nest-core");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const update_user_profile_dto_1 = require("./dto/update-user-profile.dto");
@@ -38,19 +37,19 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 tslib_1.__decorate([
-    (0, http_decorators_1.ApiAuth)({
+    (0, nest_core_2.ApiAuth)({
         summary: 'Get current user',
         type: user_dto_1.UserDto,
     }),
     (0, common_1.Get)('whoami'),
-    tslib_1.__param(0, (0, current_user_session_decorator_1.CurrentUserSession)('user')),
+    tslib_1.__param(0, (0, nest_core_2.CurrentUserSession)('user')),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], UserController.prototype, "getCurrentUser", null);
 tslib_1.__decorate([
     (0, common_1.Get)('/all'),
-    (0, http_decorators_1.ApiAuth)({
+    (0, nest_core_2.ApiAuth)({
         type: user_dto_1.OffsetPaginatedUserDto,
         summary: 'List users.',
         isPaginated: true,
@@ -62,7 +61,7 @@ tslib_1.__decorate([
 ], UserController.prototype, "findAllUsers", null);
 tslib_1.__decorate([
     (0, common_1.Get)('/all/cursor'),
-    (0, http_decorators_1.ApiAuth)({
+    (0, nest_core_2.ApiAuth)({
         type: user_dto_1.CursorPaginatedUserDto,
         summary: 'List users via cursor.',
         isPaginated: true,
@@ -75,7 +74,7 @@ tslib_1.__decorate([
 ], UserController.prototype, "findAllUsersCursor", null);
 tslib_1.__decorate([
     (0, common_1.Get)(':id'),
-    (0, http_decorators_1.ApiAuth)({ summary: 'Find user by id', type: user_dto_1.UserDto }),
+    (0, nest_core_2.ApiAuth)({ summary: 'Find user by id', type: user_dto_1.UserDto }),
     (0, swagger_1.ApiParam)({ name: 'id', type: 'string' }),
     tslib_1.__param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     tslib_1.__metadata("design:type", Function),
@@ -84,7 +83,7 @@ tslib_1.__decorate([
 ], UserController.prototype, "findUser", null);
 tslib_1.__decorate([
     (0, common_1.Delete)(':id'),
-    (0, http_decorators_1.ApiAuth)({
+    (0, nest_core_2.ApiAuth)({
         summary: 'Delete a user',
         errorResponses: [400, 401, 403, 404, 500],
     }),
@@ -95,13 +94,13 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], UserController.prototype, "deleteUser", null);
 tslib_1.__decorate([
-    (0, http_decorators_1.ApiAuth)({
+    (0, nest_core_2.ApiAuth)({
         summary: "Update user's profile",
         type: user_dto_1.UserDto,
     }),
     (0, common_1.Patch)('profile'),
     tslib_1.__param(0, (0, common_1.Body)()),
-    tslib_1.__param(1, (0, current_user_session_decorator_1.CurrentUserSession)()),
+    tslib_1.__param(1, (0, nest_core_2.CurrentUserSession)()),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [update_user_profile_dto_1.UpdateUserProfileDto, Object]),
     tslib_1.__metadata("design:returntype", void 0)
@@ -112,7 +111,7 @@ exports.UserController = UserController = tslib_1.__decorate([
         path: 'user',
         version: '1',
     }),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(nest_core_1.AuthGuard),
     tslib_1.__metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

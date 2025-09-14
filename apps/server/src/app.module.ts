@@ -5,11 +5,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 
-import {
-  BULL_BOARD_PATH,
-  CoreModule,
-  useGraphqlFactory,
-} from '@/core/core.module';
+import { BULL_BOARD_PATH, CoreModule, useGraphqlFactory } from '@app/nest-core';
 import { FastifyAdapter } from '@bull-board/fastify';
 
 import { Queue } from '@core/constants/job';

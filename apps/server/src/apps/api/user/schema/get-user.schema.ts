@@ -1,5 +1,5 @@
 import { Uuid } from '@core/types/common';
-import { UUIDField } from '@/core/decorators/field.decorators';
+import { UUIDField } from '@app/nest-core';
 import { ArgsType, Field, ID } from '@nestjs/graphql';
 
 @ArgsType()

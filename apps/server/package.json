@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "ts-node ./scripts/i18n.copy.ts",
+    "predev": "pnpm --filter @app/nest-core build && ts-node ./scripts/i18n.copy.ts",
     "build": "nest build",
     "postbuild": "pnpm -w email:build && copyfiles -f ./src/generated/*.gql ./dist/generated",
     "dev": "nest start --watch",
@@ -12,6 +12,7 @@
     "lint": "pnpm -w lint"
   },
   "dependencies": {
-    "@app/core": "workspace:*"
+    "@app/core": "workspace:*",
+    "@app/nest-core": "workspace:*"
   }
 }

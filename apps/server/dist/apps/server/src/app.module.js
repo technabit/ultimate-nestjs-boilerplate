@@ -9,7 +9,7 @@ const apollo_1 = require("@nestjs/apollo");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const graphql_1 = require("@nestjs/graphql");
-const core_module_1 = require("./core/core.module");
+const nest_core_1 = require("@app/nest-core");
 const fastify_1 = require("@bull-board/fastify");
 const job_1 = require("../../../packages/core/src/constants/job");
 const api_module_1 = require("./apps/api/api.module");
@@ -23,15 +23,15 @@ let AppModule = AppModule_1 = class AppModule {
         return {
             module: AppModule_1,
             imports: [
-                ...core_module_1.CoreModule.common().imports,
+                ...nest_core_1.CoreModule.common().imports,
                 graphql_1.GraphQLModule.forRootAsync({
                     driver: apollo_1.ApolloDriver,
                     imports: [config_1.ConfigModule],
                     inject: [config_1.ConfigService],
-                    useFactory: core_module_1.useGraphqlFactory,
+                    useFactory: nest_core_1.useGraphqlFactory,
                 }),
                 nestjs_1.BullBoardModule.forRoot({
-                    route: core_module_1.BULL_BOARD_PATH,
+                    route: nest_core_1.BULL_BOARD_PATH,
                     adapter: fastify_1.FastifyAdapter,
                 }),
                 nestjs_1.BullBoardModule.forFeature(...BULL_BOARD_FEATURES),
@@ -42,7 +42,7 @@ let AppModule = AppModule_1 = class AppModule {
     static worker() {
         return {
             module: AppModule_1,
-            imports: [...core_module_1.CoreModule.common().imports, worker_module_1.WorkerModule],
+            imports: [...nest_core_1.CoreModule.common().imports, worker_module_1.WorkerModule],
         };
     }
 };

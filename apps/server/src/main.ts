@@ -1,9 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 
 import { AppModule } from '@/app.module';
 import {
@@ -11,23 +8,23 @@ import {
   configureCommon,
   configureSwaggerIfNeeded,
   getFastifyLoggerOption,
-} from '@/core/bootstrap/bootstrap';
-import { getConfig as getAppConfig } from '@/core/config/app/app.config';
-import { type GlobalConfig } from '@/core/config/config.type';
+  getAppConfig,
+  type GlobalConfig,
+} from '@app/nest-core';
 
 const appConfig = getAppConfig();
 
 async function bootstrap() {
   const isWorker = false;
 
-  const app = await NestFactory.create<NestFastifyApplication>(
+  const app = (await NestFactory.create(
     AppModule.main(),
-    new FastifyAdapter({
+    new (FastifyAdapter as any)({
       logger: getFastifyLoggerOption(appConfig),
       trustProxy: appConfig.isHttps,
-    }),
+    }) as any,
     { bufferLogs: true },
-  );
+  )) as any;
 
   await configureCommon(app, { isWorker });
 

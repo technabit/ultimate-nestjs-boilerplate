@@ -1,4 +1,4 @@
-import { AwsModule } from '@/core/services/aws/aws.module';
+import { AwsModule } from '@app/nest-core';
 import { FastifyMulterModule } from '@nest-lab/fastify-multer';
 import { Module } from '@nestjs/common';
 import { FileController } from './file.controller';

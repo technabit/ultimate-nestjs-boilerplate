@@ -1,5 +1,4 @@
-import { PrismaHealthIndicator } from '@/core/health/prisma.health';
-import { SocketModule } from '@/core/shared/socket/socket.module';
+import { PrismaHealthIndicator, SocketModule } from '@app/nest-core';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';

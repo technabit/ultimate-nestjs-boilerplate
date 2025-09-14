@@ -1,7 +1,6 @@
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import { CursorPaginatedDto, OffsetPaginatedDto } from '@app/nest-core';
 import { Uuid } from '@core/types/common';
-import { CurrentUserSession } from '@/core/decorators/auth/current-user-session.decorator';
+import { CurrentUserSession } from '@app/nest-core';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import { QueryUsersCursorDto, QueryUsersOffsetDto, UserDto } from './dto/user.dto';
 import { UserService } from './user.service';

@@ -1,4 +1,4 @@
-import { StringField } from '@/core/decorators/field.decorators';
+import { StringField } from '@app/nest-core';
 import { Exclude, Expose } from 'class-transformer';
 
 // Must be same as AwsS3UploadResponse

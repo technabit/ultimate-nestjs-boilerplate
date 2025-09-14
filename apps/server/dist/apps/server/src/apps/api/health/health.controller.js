@@ -2,14 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HealthController = void 0;
 const tslib_1 = require("tslib");
-const auth_service_1 = require("../../../core/auth/auth.service");
-const error_dto_1 = require("../../../core/common/dto/error.dto");
-const bull_config_1 = require("../../../core/config/bull/bull.config");
+const nest_core_1 = require("@app/nest-core");
+const nest_core_2 = require("@app/nest-core");
 const job_1 = require("../../../../../../packages/core/src/constants/job");
-const public_decorator_1 = require("../../../core/decorators/public.decorator");
-const prisma_health_1 = require("../../../core/health/prisma.health");
-const swagger_setup_1 = require("../../../core/tools/swagger/swagger.setup");
-const serialize_1 = require("../../../core/utils/interceptors/serialize");
+const nest_core_3 = require("@app/nest-core");
 const bullmq_1 = require("@nestjs/bullmq");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
@@ -44,7 +40,7 @@ let HealthController = class HealthController {
         ];
         if (this.configService.get('app.nodeEnv', { infer: true }) !== 'production') {
             list.push(() => {
-                const url = `${this.configService.getOrThrow('app.url', { infer: true })}${swagger_setup_1.SWAGGER_PATH}`;
+                const url = `${this.configService.getOrThrow('app.url', { infer: true })}${nest_core_3.SWAGGER_PATH}`;
                 return this.http.pingCheck('api-docs', url, {
                     headers: this.authService.createBasicAuthHeaders(),
                 });
@@ -60,7 +56,7 @@ let HealthController = class HealthController {
         for (const { name, q } of queues) {
             const counts = await q.getJobCounts('waiting', 'active', 'completed', 'failed', 'delayed', 'paused', 'waiting-children');
             const baseUrl = this.configService.getOrThrow('app.url', { infer: true });
-            const bullBoardUrl = `${baseUrl}/api${bull_config_1.BULL_BOARD_PATH}`;
+            const bullBoardUrl = `${baseUrl}/api${nest_core_2.BULL_BOARD_PATH}`;
             result.push({ name, counts: counts, bullBoardUrl });
         }
         return result;
@@ -68,7 +64,7 @@ let HealthController = class HealthController {
 };
 exports.HealthController = HealthController;
 tslib_1.__decorate([
-    (0, public_decorator_1.Public)(),
+    (0, nest_core_3.Public)(),
     (0, swagger_1.ApiOperation)({ summary: 'Health check' }),
     (0, swagger_1.ApiResponse)({
         status: common_1.HttpStatus.OK,
@@ -76,9 +72,9 @@ tslib_1.__decorate([
     }),
     (0, swagger_1.ApiResponse)({
         status: common_1.HttpStatus.NOT_FOUND,
-        type: error_dto_1.ErrorDto,
+        type: nest_core_1.ErrorDto,
     }),
-    (0, serialize_1.Serialize)(health_dto_1.HealthCheckDto),
+    (0, nest_core_3.Serialize)(health_dto_1.HealthCheckDto),
     (0, common_1.Get)(),
     (0, terminus_1.HealthCheck)(),
     tslib_1.__metadata("design:type", Function),
@@ -86,7 +82,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", Promise)
 ], HealthController.prototype, "check", null);
 tslib_1.__decorate([
-    (0, public_decorator_1.Public)(),
+    (0, nest_core_3.Public)(),
     (0, swagger_1.ApiOperation)({ summary: 'Queues overview' }),
     (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.OK, type: [health_dto_1.QueueOverviewDto] }),
     (0, common_1.Get)('queues'),
@@ -101,8 +97,8 @@ exports.HealthController = HealthController = tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [config_1.ConfigService,
         terminus_1.HealthCheckService,
         terminus_1.HttpHealthIndicator,
-        prisma_health_1.PrismaHealthIndicator,
+        nest_core_3.PrismaHealthIndicator,
         terminus_1.MicroserviceHealthIndicator,
-        auth_service_1.AuthService, Function])
+        nest_core_1.AuthService, Function])
 ], HealthController);
 //# sourceMappingURL=health.controller.js.map

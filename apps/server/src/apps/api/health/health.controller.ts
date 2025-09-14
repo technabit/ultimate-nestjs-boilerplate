@@ -1,12 +1,7 @@
-import { AuthService } from '@/core/auth/auth.service';
-import { ErrorDto } from '@/core/common/dto/error.dto';
-import { BULL_BOARD_PATH } from '@/core/config/bull/bull.config';
-import { GlobalConfig } from '@/core/config/config.type';
+import { AuthService, ErrorDto } from '@app/nest-core';
+import { BULL_BOARD_PATH, GlobalConfig } from '@app/nest-core';
 import { Queue } from '@core/constants/job';
-import { Public } from '@/core/decorators/public.decorator';
-import { PrismaHealthIndicator } from '@/core/health/prisma.health';
-import { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
-import { Serialize } from '@/core/utils/interceptors/serialize';
+import { Public, PrismaHealthIndicator, SWAGGER_PATH, Serialize } from '@app/nest-core';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

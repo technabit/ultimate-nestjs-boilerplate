@@ -1,5 +1,5 @@
-import { MailService } from '@/core/shared/mail/mail.service';
-import { PrismaService } from '@/core/database/prisma/prisma.service';
+import { MailService } from '@app/nest-core';
+import { PrismaService } from '@app/nest-core';
 import { EmailVerificationJob, ResetPasswordJob, SignInMagicLinkJob } from './email.type';
 export declare class EmailQueueService {
     private readonly mailService;

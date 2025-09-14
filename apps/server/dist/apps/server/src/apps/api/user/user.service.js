@@ -2,13 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const tslib_1 = require("tslib");
-const better_auth_service_1 = require("../../../core/auth/better-auth.service");
-const cursor_pagination_dto_1 = require("../../../core/common/dto/cursor-pagination/cursor-pagination.dto");
-const paginated_dto_1 = require("../../../core/common/dto/cursor-pagination/paginated.dto");
-const paginated_dto_2 = require("../../../core/common/dto/offset-pagination/paginated.dto");
-const prisma_service_1 = require("../../../core/database/prisma/prisma.service");
-const prisma_cursor_pagination_1 = require("../../../core/utils/pagination/prisma-cursor-pagination");
-const prisma_offset_pagination_1 = require("../../../core/utils/pagination/prisma-offset-pagination");
+const nest_core_1 = require("@app/nest-core");
+const nest_core_2 = require("@app/nest-core");
 const common_1 = require("@nestjs/common");
 const nestjs_i18n_1 = require("nestjs-i18n");
 let UserService = class UserService {
@@ -21,14 +16,14 @@ let UserService = class UserService {
         this.betterAuthService = betterAuthService;
     }
     async findAllUsers(dto) {
-        const [users, metaDto] = await (0, prisma_offset_pagination_1.paginateOffsetPrisma)(this.prisma.user, {
+        const [users, metaDto] = await (0, nest_core_2.paginateOffsetPrisma)(this.prisma.user, {
             where: { deletedAt: null },
             orderBy: { createdAt: 'desc' },
         }, dto, { skipCount: false, takeAll: false });
-        return new paginated_dto_2.OffsetPaginatedDto(users, metaDto);
+        return new nest_core_1.OffsetPaginatedDto(users, metaDto);
     }
     async findAllUsersCursor(reqDto) {
-        const { data, cursor } = await (0, prisma_cursor_pagination_1.paginateCursorPrisma)({
+        const { data, cursor } = await (0, nest_core_2.paginateCursorPrisma)({
             delegate: this.prisma.user,
             where: { deletedAt: null },
             paginationKeys: ['createdAt', 'id'],
@@ -39,8 +34,8 @@ let UserService = class UserService {
                 beforeCursor: reqDto.beforeCursor,
             },
         });
-        const metaDto = new cursor_pagination_dto_1.CursorPaginationDto(data.length, cursor.afterCursor, cursor.beforeCursor, reqDto);
-        return new paginated_dto_1.CursorPaginatedDto(data, metaDto);
+        const metaDto = new nest_core_1.CursorPaginationDto(data.length, cursor.afterCursor, cursor.beforeCursor, reqDto);
+        return new nest_core_1.CursorPaginatedDto(data, metaDto);
     }
     async findOneUser(id) {
         const user = await this.prisma.user.findFirst({
@@ -101,7 +96,7 @@ exports.UserService = UserService;
 exports.UserService = UserService = tslib_1.__decorate([
     (0, common_1.Injectable)(),
     tslib_1.__metadata("design:paramtypes", [nestjs_i18n_1.I18nService,
-        prisma_service_1.PrismaService,
-        better_auth_service_1.BetterAuthService])
+        nest_core_2.PrismaService,
+        nest_core_1.BetterAuthService])
 ], UserService);
 //# sourceMappingURL=user.service.js.map

@@ -25,7 +25,11 @@
     "importHelpers": true,
     "paths": {
       "@/*": ["apps/server/src/*", "src/*"],
-      "@core/*": ["packages/core/src/*"]
+      "@core/*": ["packages/core/src/*"],
+      "@app/nest-core": ["packages/nest-core/src/index.ts"],
+      "@app/nest-core/*": ["packages/nest-core/src/*"],
+      "@/core/*": ["packages/nest-core/src/*"],
+      "rxjs": ["node_modules/rxjs"]
     }
   }
 }

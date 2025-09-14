@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileController = void 0;
 const tslib_1 = require("tslib");
-const auth_guard_1 = require("../../../core/auth/auth.guard");
+const nest_core_1 = require("@app/nest-core");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
-const http_decorators_1 = require("../../../core/decorators/http.decorators");
-const file_upload_interceptor_1 = tslib_1.__importDefault(require("../../../core/interceptors/file-upload.interceptor"));
+const nest_core_2 = require("@app/nest-core");
+const nest_core_3 = require("@app/nest-core");
 const file_dto_1 = require("./dto/file.dto");
 const file_service_1 = require("./file.service");
 let FileController = class FileController {
@@ -29,7 +29,7 @@ let FileController = class FileController {
 };
 exports.FileController = FileController;
 tslib_1.__decorate([
-    (0, http_decorators_1.ApiAuth)({ summary: 'Uploads a single file', type: file_dto_1.FileDto }),
+    (0, nest_core_2.ApiAuth)({ summary: 'Uploads a single file', type: file_dto_1.FileDto }),
     (0, swagger_1.ApiBody)({
         required: true,
         schema: {
@@ -43,7 +43,7 @@ tslib_1.__decorate([
         },
     }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, file_upload_interceptor_1.default)('file')),
+    (0, common_1.UseInterceptors)((0, nest_core_3.FileUploadInterceptor)('file')),
     (0, common_1.Post)('/upload/single'),
     tslib_1.__param(0, (0, common_1.UploadedFile)()),
     tslib_1.__metadata("design:type", Function),
@@ -51,9 +51,9 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", void 0)
 ], FileController.prototype, "uploadFile", null);
 tslib_1.__decorate([
-    (0, http_decorators_1.ApiAuth)({ summary: 'Uploads multiple files', type: file_dto_1.FileDto }),
+    (0, nest_core_2.ApiAuth)({ summary: 'Uploads multiple files', type: file_dto_1.FileDto }),
     (0, swagger_1.ApiConsumes)('multipart/form-data'),
-    (0, common_1.UseInterceptors)((0, file_upload_interceptor_1.default)('files', { multiple: true })),
+    (0, common_1.UseInterceptors)((0, nest_core_3.FileUploadInterceptor)('files', { multiple: true })),
     (0, swagger_1.ApiBody)({
         required: true,
         schema: {
@@ -81,7 +81,7 @@ exports.FileController = FileController = tslib_1.__decorate([
         path: 'file',
         version: '1',
     }),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(nest_core_1.AuthGuard),
     tslib_1.__metadata("design:paramtypes", [file_service_1.FileService])
 ], FileController);
 //# sourceMappingURL=file.controller.js.map

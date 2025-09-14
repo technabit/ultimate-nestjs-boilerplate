@@ -1,9 +1,6 @@
-import { AuthGuard } from '@/core/auth/auth.guard';
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import { AuthGuard, CursorPaginatedDto, OffsetPaginatedDto } from '@app/nest-core';
 import { Uuid } from '@core/types/common';
-import { CurrentUserSession } from '@/core/decorators/auth/current-user-session.decorator';
-import { ApiAuth } from '@/core/decorators/http.decorators';
+import { CurrentUserSession, ApiAuth } from '@app/nest-core';
 import {
   Body,
   Controller,

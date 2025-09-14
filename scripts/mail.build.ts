@@ -14,14 +14,13 @@ import path from 'path';
 import React from 'react';
 
 const projectRootDir = path.join(__dirname, '..');
-// New monorepo location for email templates under apps/server
+// New monorepo location for email templates under packages/nest-core
 const templatesDir = path.join(
   __dirname,
   '..',
-  'apps',
-  'server',
+  'packages',
+  'nest-core',
   'src',
-  'core',
   'shared',
   'mail',
   'templates',

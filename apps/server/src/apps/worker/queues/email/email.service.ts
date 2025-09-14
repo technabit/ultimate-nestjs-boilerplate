@@ -1,6 +1,6 @@
-import { MailService } from '@/core/shared/mail/mail.service';
+import { MailService } from '@app/nest-core';
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '@/core/database/prisma/prisma.service';
+import { PrismaService } from '@app/nest-core';
 import {
   EmailVerificationJob,
   ResetPasswordJob,

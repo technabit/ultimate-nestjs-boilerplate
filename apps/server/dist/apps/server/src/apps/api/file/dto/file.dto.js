@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileDto = void 0;
 const tslib_1 = require("tslib");
-const field_decorators_1 = require("../../../../core/decorators/field.decorators");
+const nest_core_1 = require("@app/nest-core");
 const class_transformer_1 = require("class-transformer");
 let FileDto = class FileDto {
     originalname;
@@ -13,27 +13,27 @@ let FileDto = class FileDto {
 };
 exports.FileDto = FileDto;
 tslib_1.__decorate([
-    (0, field_decorators_1.StringField)(),
+    (0, nest_core_1.StringField)(),
     (0, class_transformer_1.Expose)(),
     tslib_1.__metadata("design:type", String)
 ], FileDto.prototype, "originalname", void 0);
 tslib_1.__decorate([
-    (0, field_decorators_1.StringField)(),
+    (0, nest_core_1.StringField)(),
     (0, class_transformer_1.Expose)(),
     tslib_1.__metadata("design:type", String)
 ], FileDto.prototype, "filename", void 0);
 tslib_1.__decorate([
-    (0, field_decorators_1.StringField)(),
+    (0, nest_core_1.StringField)(),
     (0, class_transformer_1.Expose)(),
     tslib_1.__metadata("design:type", String)
 ], FileDto.prototype, "mimetype", void 0);
 tslib_1.__decorate([
-    (0, field_decorators_1.StringField)(),
+    (0, nest_core_1.StringField)(),
     (0, class_transformer_1.Expose)(),
     tslib_1.__metadata("design:type", String)
 ], FileDto.prototype, "size", void 0);
 tslib_1.__decorate([
-    (0, field_decorators_1.StringField)(),
+    (0, nest_core_1.StringField)(),
     (0, class_transformer_1.Expose)(),
     tslib_1.__metadata("design:type", String)
 ], FileDto.prototype, "path", void 0);

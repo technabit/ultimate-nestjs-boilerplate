@@ -1,12 +1,6 @@
-import { BetterAuthService } from '@/core/auth/better-auth.service';
-import { CursorPaginationDto } from '@/core/common/dto/cursor-pagination/cursor-pagination.dto';
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import { BetterAuthService, CursorPaginationDto, CursorPaginatedDto, OffsetPaginatedDto } from '@app/nest-core';
 import { Uuid } from '@core/types/common';
-import { PrismaService } from '@/core/database/prisma/prisma.service';
-import { CurrentUserSession } from '@/core/decorators/auth/current-user-session.decorator';
-import { paginateCursorPrisma } from '@/core/utils/pagination/prisma-cursor-pagination';
-import { paginateOffsetPrisma } from '@/core/utils/pagination/prisma-offset-pagination';
+import { PrismaService, CurrentUserSession, paginateCursorPrisma, paginateOffsetPrisma } from '@app/nest-core';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';

@@ -4,8 +4,7 @@ exports.UserResolver = void 0;
 const tslib_1 = require("tslib");
 const common_1 = require("@nestjs/common");
 const nestjs_i18n_1 = require("nestjs-i18n");
-const auth_guard_1 = require("../../../core/auth/auth.guard");
-const current_user_session_decorator_1 = require("../../../core/decorators/auth/current-user-session.decorator");
+const nest_core_1 = require("@app/nest-core");
 const graphql_1 = require("@nestjs/graphql");
 const nestjs_i18n_2 = require("nestjs-i18n");
 const delete_user_schema_1 = require("./schema/delete-user.schema");
@@ -43,7 +42,7 @@ let UserResolver = class UserResolver {
 exports.UserResolver = UserResolver;
 tslib_1.__decorate([
     (0, graphql_1.Query)(() => user_schema_1.UserSchema),
-    tslib_1.__param(0, (0, current_user_session_decorator_1.CurrentUserSession)('user')),
+    tslib_1.__param(0, (0, nest_core_1.CurrentUserSession)('user')),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object]),
     tslib_1.__metadata("design:returntype", Promise)
@@ -77,14 +76,14 @@ tslib_1.__decorate([
 ], UserResolver.prototype, "self", null);
 tslib_1.__decorate([
     (0, graphql_1.ResolveField)(() => String),
-    tslib_1.__param(0, (0, current_user_session_decorator_1.CurrentUserSession)()),
+    tslib_1.__param(0, (0, nest_core_1.CurrentUserSession)()),
     tslib_1.__param(1, (0, nestjs_i18n_1.I18n)()),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Object, nestjs_i18n_1.I18nContext]),
     tslib_1.__metadata("design:returntype", Promise)
 ], UserResolver.prototype, "foo", null);
 exports.UserResolver = UserResolver = tslib_1.__decorate([
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(nest_core_1.AuthGuard),
     (0, graphql_1.Resolver)(() => user_schema_1.UserSchema),
     tslib_1.__metadata("design:paramtypes", [user_service_1.UserService,
         nestjs_i18n_2.I18nService])

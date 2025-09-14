@@ -1,6 +1,6 @@
-import { AuthService } from '@/core/auth/auth.service';
-import { GlobalConfig } from '@/core/config/config.type';
-import { PrismaHealthIndicator } from '@/core/health/prisma.health';
+import { AuthService } from '@app/nest-core';
+import { GlobalConfig } from '@app/nest-core';
+import { PrismaHealthIndicator } from '@app/nest-core';
 import { ConfigService } from '@nestjs/config';
 import { HealthCheckResult, HealthCheckService, HttpHealthIndicator, MicroserviceHealthIndicator } from '@nestjs/terminus';
 import type { Queue as BullQueue } from 'bullmq';

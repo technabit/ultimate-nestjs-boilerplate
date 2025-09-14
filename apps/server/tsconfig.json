@@ -6,7 +6,8 @@
   },
   "include": [
     "src/**/*",
-    "../../packages/core/src/**/*.ts"
+    "../../packages/core/src/**/*.ts",
+    "../../packages/nest-core/src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

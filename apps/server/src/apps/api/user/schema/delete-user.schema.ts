@@ -1,4 +1,4 @@
-import { UUIDField } from '@/core/decorators/field.decorators';
+import { UUIDField } from '@app/nest-core';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()

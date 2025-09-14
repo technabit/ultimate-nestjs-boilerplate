@@ -1,15 +1,17 @@
-import { CursorPaginationDto } from '@/core/common/dto/cursor-pagination/cursor-pagination.dto';
-import { PageOptionsDto as CursorPageOptions } from '@/core/common/dto/cursor-pagination/page-options.dto';
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginationDto } from '@/core/common/dto/offset-pagination/offset-pagination.dto';
-import { PageOptionsDto as OffsetPageOptions } from '@/core/common/dto/offset-pagination/page-options.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import {
+  CursorPaginationDto,
+  CursorPageOptionsDto as CursorPageOptions,
+  CursorPaginatedDto,
+  OffsetPaginationDto,
+  OffsetPageOptionsDto as OffsetPageOptions,
+  OffsetPaginatedDto,
+} from '@app/nest-core';
 import {
   ClassField,
   EnumField,
   StringField,
   StringFieldOptional,
-} from '@/core/decorators/field.decorators';
+} from '@app/nest-core';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { Role } from '../user.enum';

@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailQueueService = void 0;
 const tslib_1 = require("tslib");
-const mail_service_1 = require("../../../../core/shared/mail/mail.service");
+const nest_core_1 = require("@app/nest-core");
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../../../../core/database/prisma/prisma.service");
+const nest_core_2 = require("@app/nest-core");
 let EmailQueueService = class EmailQueueService {
     mailService;
     prisma;
@@ -47,7 +47,7 @@ let EmailQueueService = class EmailQueueService {
 exports.EmailQueueService = EmailQueueService;
 exports.EmailQueueService = EmailQueueService = tslib_1.__decorate([
     (0, common_1.Injectable)(),
-    tslib_1.__metadata("design:paramtypes", [mail_service_1.MailService,
-        prisma_service_1.PrismaService])
+    tslib_1.__metadata("design:paramtypes", [nest_core_1.MailService,
+        nest_core_2.PrismaService])
 ], EmailQueueService);
 //# sourceMappingURL=email.service.js.map

@@ -1,5 +1,5 @@
 import { I18nContext } from 'nestjs-i18n';
-import { CurrentUserSession } from '@/core/decorators/auth/current-user-session.decorator';
+import { CurrentUserSession } from '@app/nest-core';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { I18nService } from 'nestjs-i18n';
 import { DeleteUserInput } from './schema/delete-user.schema';
@@ -13,19 +13,19 @@ export declare class UserResolver {
     constructor(userService: UserService, i18nService: I18nService<I18nTranslations>);
     whoami(user: CurrentUserSession['user']): Promise<import("./dto/user.dto").UserDto>;
     getUsers(): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date | null;
-        username: string;
-        displayUsername: string | null;
         email: string;
-        isEmailVerified: boolean;
-        role: import("@prisma/client").$Enums.Role;
+        username: string;
         firstName: string | null;
         lastName: string | null;
         image: string | null;
+        id: string;
+        role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
         bio: string | null;
+        deletedAt: Date | null;
+        displayUsername: string | null;
+        isEmailVerified: boolean;
         twoFactorEnabled: boolean;
     }[]>;
     getUser({ id }: GetUserArgs): Promise<import("./dto/user.dto").UserDto>;

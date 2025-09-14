@@ -1,9 +1,6 @@
-import { BetterAuthService } from '@/core/auth/better-auth.service';
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import { BetterAuthService, CursorPaginatedDto, OffsetPaginatedDto } from '@app/nest-core';
 import { Uuid } from '@core/types/common';
-import { PrismaService } from '@/core/database/prisma/prisma.service';
-import { CurrentUserSession } from '@/core/decorators/auth/current-user-session.decorator';
+import { PrismaService, CurrentUserSession } from '@app/nest-core';
 import { I18nTranslations } from '@/generated/i18n.generated';
 import { HttpStatus } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
@@ -19,19 +16,19 @@ export declare class UserService {
     findOneUser(id: Uuid | string): Promise<UserDto>;
     deleteUser(id: Uuid | string): Promise<HttpStatus>;
     getAllUsers(): Promise<{
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        deletedAt: Date | null;
-        username: string;
-        displayUsername: string | null;
         email: string;
-        isEmailVerified: boolean;
-        role: import("@prisma/client").$Enums.Role;
+        username: string;
         firstName: string | null;
         lastName: string | null;
         image: string | null;
+        id: string;
+        role: import("@prisma/client").$Enums.Role;
+        createdAt: Date;
+        updatedAt: Date;
         bio: string | null;
+        deletedAt: Date | null;
+        displayUsername: string | null;
+        isEmailVerified: boolean;
         twoFactorEnabled: boolean;
     }[]>;
     updateUserProfile(userId: string, dto: UpdateUserProfileDto, options: {

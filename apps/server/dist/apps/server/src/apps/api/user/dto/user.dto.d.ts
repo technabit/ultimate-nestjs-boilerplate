@@ -1,9 +1,4 @@
-import { CursorPaginationDto } from '@/core/common/dto/cursor-pagination/cursor-pagination.dto';
-import { PageOptionsDto as CursorPageOptions } from '@/core/common/dto/cursor-pagination/page-options.dto';
-import { CursorPaginatedDto } from '@/core/common/dto/cursor-pagination/paginated.dto';
-import { OffsetPaginationDto } from '@/core/common/dto/offset-pagination/offset-pagination.dto';
-import { PageOptionsDto as OffsetPageOptions } from '@/core/common/dto/offset-pagination/page-options.dto';
-import { OffsetPaginatedDto } from '@/core/common/dto/offset-pagination/paginated.dto';
+import { CursorPaginationDto, CursorPageOptionsDto as CursorPageOptions, CursorPaginatedDto, OffsetPaginationDto, OffsetPageOptionsDto as OffsetPageOptions, OffsetPaginatedDto } from '@app/nest-core';
 import { Role } from '../user.enum';
 export declare class UserDto {
     id: string;

@@ -1,4 +1,4 @@
-import { StringFieldOptional } from '@/core/decorators/field.decorators';
+import { StringFieldOptional } from '@app/nest-core';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()

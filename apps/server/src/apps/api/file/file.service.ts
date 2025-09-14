@@ -1,4 +1,4 @@
-import { AwsS3Service } from '@/core/services/aws/aws-s3.service';
+import { AwsS3Service } from '@app/nest-core';
 import { File } from '@nest-lab/fastify-multer';
 import { Injectable } from '@nestjs/common';
 
