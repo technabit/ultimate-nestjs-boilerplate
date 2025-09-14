@@ -8,13 +8,14 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Reflector } from '@nestjs/core';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import * as Sentry from '@sentry/node';
 import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 import path from 'path';
 
+import type { AppConfig } from '@/core/config/app/app-config.type';
 import { BULL_BOARD_PATH } from '@/core/config/bull/bull.config';
 import { type GlobalConfig } from '@/core/config/config.type';
 import {
@@ -25,9 +26,8 @@ import { Environment } from '@/core/constants/app.constant';
 import { SentryInterceptor } from '@/core/interceptors/sentry.interceptor';
 import { basicAuthMiddleware } from '@/core/middlewares/basic-auth.middleware';
 import { RedisIoAdapter } from '@/core/shared/socket/redis.adapter';
-import setupSwagger, { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
 import { consoleLoggingConfig } from '@/core/tools/logger/logger-factory';
-import type { AppConfig } from '@/core/config/app/app-config.type';
+import setupSwagger, { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
 
 export async function configureCommon(
   app: NestFastifyApplication,
