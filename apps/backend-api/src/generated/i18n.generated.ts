@@ -4,6 +4,21 @@
 /* prettier-ignore */
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
-export type I18nTranslations = {};
+export type I18nTranslations = {
+    "app-dummy": {
+        "appLevelDummy": string;
+    };
+    "common": {
+        "hello": string;
+    };
+    "core": {
+        "nest-core-dummy": string;
+    };
+    "user": {
+        "sameUsernameOrEmailAlreadyExists": string;
+        "notFound": string;
+        "sayFoo": string;
+    };
+};
 /* prettier-ignore */
 export type I18nPath = Path<I18nTranslations>;

@@ -16,7 +16,11 @@ function walkAndClean(dir: string) {
   for (const e of entries) {
     const full = path.join(dir, e.name);
     if (e.isDirectory()) {
-      if (e.name === 'node_modules' || e.name === 'dist' || e.name.startsWith('.')) {
+      if (
+        e.name === 'node_modules' ||
+        e.name === 'dist' ||
+        e.name.startsWith('.')
+      ) {
         continue;
       }
       if (e.name === 'src') {
@@ -52,7 +56,9 @@ function cleanSrc(srcDir: string) {
     }
   }
   if (removed > 0) {
-    console.info(`Cleaned ${removed} files under ${path.relative(projectRoot, srcDir)}`);
+    console.info(
+      `Cleaned ${removed} files under ${path.relative(projectRoot, srcDir)}`,
+    );
   }
 }
 
@@ -63,4 +69,3 @@ for (const base of TARGET_DIRS) {
 }
 
 console.info('Done cleaning src build artifacts.');
-

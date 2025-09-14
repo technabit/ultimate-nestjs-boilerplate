@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "ts-node ./scripts/i18n.copy.ts",
-    "prebuild": "pnpm -w repo:clean:src",
+    "predev": "pnpm -w -F @technabit/nest-core build && ts-node ./scripts/i18n.prebuild.ts",
+    "prebuild": "pnpm -w repo:clean:src && ts-node ./scripts/i18n.prebuild.ts",
     "build": "nest build",
     "postbuild": "copyfiles -f ./src/generated/*.gql ./dist/generated",
     "dev": "nest start --watch",

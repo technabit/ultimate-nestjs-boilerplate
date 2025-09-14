@@ -16,11 +16,12 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "postbuild": "pnpm -w email:build",
+    "postbuild": "pnpm -w email:build && copyfiles -u 3 'src/i18n/translations/**/*' 'dist/i18n/translations'",
     "dev": "tsup --watch",
     "lint": "eslint 'src/**/*.ts' --fix",
     "test": "echo 'no tests in nest-core yet'"
   },
+  "i18nTranslations": "dist/i18n/translations",
   "dependencies": {
     "tslib": "^2.7.0"
   },

@@ -3,6 +3,7 @@ export { BULL_BOARD_PATH } from './config/bull/bull.config';
 export { default as useThrottlerFactory } from './config/throttler/throttler.factory';
 export { AppThrottlerGuard } from './config/throttler/throttler.guard';
 export { CoreModule } from './core.module';
+export type { CoreI18nOptions } from './core.module';
 export { default as useGraphqlFactory } from './graphql/graphql-fastify.factory';
 export { default as useI18nFactory } from './i18n/i18n.factory';
 

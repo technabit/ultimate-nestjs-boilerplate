@@ -27,7 +27,12 @@ export class AppModule {
     return {
       module: AppModule,
       imports: [
-        ...CoreModule.common().imports,
+        ...CoreModule.common({
+          i18n: {
+            extraTranslationPaths: ['./src/i18n/translations'],
+            typesOutputPath: './src/generated',
+          },
+        }).imports,
         GraphQLModule.forRootAsync<ApolloDriverConfig>({
           driver: ApolloDriver,
           imports: [ConfigModule],

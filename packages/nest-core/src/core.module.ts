@@ -39,9 +39,18 @@ import {
   QueryResolver,
 } from 'nestjs-i18n';
 
+export type CoreI18nOptions = {
+  i18n?: {
+    // Additional translation roots relative to app cwd or absolute
+    extraTranslationPaths?: string[];
+    // Where to write generated i18n typings (file path). Default: src/generated/i18n.generated.ts
+    typesOutputPath?: string;
+  };
+};
+
 @Module({})
 export class CoreModule {
-  static common(): DynamicModule {
+  static common(options?: CoreI18nOptions): DynamicModule {
     const imports: any[] = [
       ConfigModule.forRoot({
         isGlobal: true,
@@ -90,7 +99,8 @@ export class CoreModule {
           AcceptLanguageResolver,
         ],
         inject: [ConfigService],
-        useFactory: useI18nFactory,
+        useFactory: (configService: ConfigService) =>
+          useI18nFactory(configService, options?.i18n),
       }),
       // Rate limiter
       ThrottlerModule.forRootAsync({
