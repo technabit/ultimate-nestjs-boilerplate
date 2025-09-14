@@ -9,6 +9,7 @@
     "dev": "turbo run dev --parallel",
     "dev:server": "pnpm --filter @technabit/backend-api dev",
     "start:server": "pnpm --filter @technabit/backend-api start",
+    "repo:clean:src": "ts-node ./scripts/clean-src-build.ts",
     "build:server": "turbo run build --filter=@technabit/backend-api",
     "build": "turbo run build",
     "lint:all": "turbo run lint --parallel",

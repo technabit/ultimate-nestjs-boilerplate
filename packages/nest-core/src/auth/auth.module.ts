@@ -4,6 +4,7 @@ import type {
   OnModuleInit,
 } from '@nestjs/common';
 import { Global, Inject, Logger, Module } from '@nestjs/common';
+import { getQueueToken } from '@nestjs/bullmq';
 import {
   DiscoveryModule,
   DiscoveryService,

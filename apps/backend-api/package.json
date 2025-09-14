@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "ts-node ./scripts/i18n.copy.ts",
+    "prebuild": "pnpm -w repo:clean:src",
     "build": "nest build",
     "postbuild": "copyfiles -f ./src/generated/*.gql ./dist/generated",
     "dev": "nest start --watch",

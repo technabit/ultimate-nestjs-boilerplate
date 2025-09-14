@@ -1,4 +1,3 @@
-import { AuthGuard } from '@technabit/nest-core';
 import { File } from '@nest-lab/fastify-multer';
 import {
   BadRequestException,
@@ -10,9 +9,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@technabit/nest-core';
 
-import { ApiAuth } from '@technabit/nest-core';
-import { FileUploadInterceptor } from '@technabit/nest-core';
+import { ApiAuth, FileUploadInterceptor } from '@technabit/nest-core';
 import { FileDto } from './dto/file.dto';
 import { FileService } from './file.service';
 

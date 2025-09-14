@@ -1,10 +1,10 @@
-import { Queue } from '@technabit/nest-core';
 import {
   OnQueueEvent,
   QueueEventsHost,
   QueueEventsListener,
 } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import { Queue } from '@technabit/nest-core';
 
 @QueueEventsListener(Queue.Email, { blockingTimeout: 300000 })
 export class EmailQueueEvents extends QueueEventsHost {

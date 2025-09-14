@@ -24,7 +24,7 @@
       "@/*": ["apps/backend-api/src/*", "src/*"],
       "@core/*": ["packages/nest-core/dist/*"],
       "@/core/*": ["packages/nest-core/dist/*"],
-      "@technabit/nest-core": ["packages/nest-core/dist/index.js"],
+      "@technabit/nest-core": ["packages/nest-core/dist/index.d.ts"],
       "@technabit/nest-core/*": ["packages/nest-core/dist/*"],
       "rxjs": ["node_modules/rxjs"]
     }

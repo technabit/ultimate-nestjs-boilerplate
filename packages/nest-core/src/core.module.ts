@@ -3,11 +3,10 @@ import authConfig from '@/core/config/auth/auth.config';
 import databaseConfig from '@/core/config/database/database.config';
 import mailConfig from '@/core/config/mail/mail.config';
 import redisConfig from '@/core/config/redis/redis.config';
+import { PrismaModule } from '@/core/database/prisma/prisma.module';
 import { BullModule } from '@nestjs/bullmq';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-// Removed TypeORM; Prisma is used instead
-import { PrismaModule } from '@/core/database/prisma/prisma.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { LoggerModule } from 'nestjs-pino';
@@ -43,67 +42,69 @@ import {
 @Module({})
 export class CoreModule {
   static common(): DynamicModule {
+    const imports: any[] = [
+      ConfigModule.forRoot({
+        isGlobal: true,
+        load: [
+          appConfig,
+          databaseConfig,
+          redisConfig,
+          authConfig,
+          mailConfig,
+          bullConfig,
+          sentryConfig,
+          throttlerConfig,
+          awsConfig,
+          grafanaConfig,
+          prismaConfig,
+        ],
+        envFilePath: ['.env'],
+      }),
+      GracefulShutdownModule.forRoot({
+        cleanup: (...args) => {
+          // eslint-disable-next-line no-console
+          console.log('App shutting down...', args);
+        },
+      }),
+      LoggerModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: useLoggerFactory,
+      }),
+      // Introduce Prisma alongside TypeORM (Phase 1-2). TypeORM removal will follow.
+      PrismaModule,
+      BullModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: useBullFactory,
+      }),
+      PrometheusModule.register(),
+      CoreQueuesModule,
+      CacheManagerModule,
+      MailModule,
+      // i18n
+      I18nModule.forRootAsync({
+        resolvers: [
+          { use: QueryResolver, options: ['lang'] },
+          new HeaderResolver(['x-lang']),
+          AcceptLanguageResolver,
+        ],
+        inject: [ConfigService],
+        useFactory: useI18nFactory,
+      }),
+      // Rate limiter
+      ThrottlerModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: useThrottlerFactory,
+      }),
+      // Auth bootstrapping
+      AuthModule.forRootAsync(),
+    ];
+
     return {
       module: CoreModule,
-      imports: [
-        ConfigModule.forRoot({
-          isGlobal: true,
-          load: [
-            appConfig,
-            databaseConfig,
-            redisConfig,
-            authConfig,
-            mailConfig,
-            bullConfig,
-            sentryConfig,
-            throttlerConfig,
-            awsConfig,
-            grafanaConfig,
-            prismaConfig,
-          ],
-          envFilePath: ['.env'],
-        }),
-        GracefulShutdownModule.forRoot({
-          cleanup: (...args) => {
-            // eslint-disable-next-line no-console
-            console.log('App shutting down...', args);
-          },
-        }),
-        LoggerModule.forRootAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: useLoggerFactory,
-        }),
-        // Introduce Prisma alongside TypeORM (Phase 1-2). TypeORM removal will follow.
-        PrismaModule,
-        BullModule.forRootAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: useBullFactory,
-        }),
-        PrometheusModule.register(),
-        CoreQueuesModule,
-        CacheManagerModule,
-        MailModule,
-        // i18n
-        I18nModule.forRootAsync({
-          resolvers: [
-            { use: QueryResolver, options: ['lang'] },
-            new HeaderResolver(['x-lang']),
-            AcceptLanguageResolver,
-          ],
-          inject: [ConfigService],
-          useFactory: useI18nFactory,
-        }),
-        // Rate limiter
-        ThrottlerModule.forRootAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: useThrottlerFactory,
-        }),
-        // Auth bootstrapping
-        AuthModule.forRootAsync(),
-      ],
+      imports,
       providers: [
         {
           provide: APP_GUARD,

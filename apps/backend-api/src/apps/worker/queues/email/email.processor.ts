@@ -1,6 +1,6 @@
-import { Job as AllJobs, Queue as QueueName } from '@technabit/nest-core';
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
+import { Job as AllJobs, Queue as QueueName } from '@technabit/nest-core';
 import { Job } from 'bullmq';
 import { EmailQueueService } from './email.service';
 import { EmailJob } from './email.type';
@@ -30,17 +30,11 @@ export class EmailProcessor extends WorkerHost {
 
     switch (job.name) {
       case EmailJob.EmailVerification:
-        return await this.emailQueueService.verifyEmail(
-          job.data as any,
-        );
+        return await this.emailQueueService.verifyEmail(job.data as any);
       case EmailJob.SignInMagicLink:
-        return await this.emailQueueService.sendMagicLink(
-          job.data as any,
-        );
+        return await this.emailQueueService.sendMagicLink(job.data as any);
       case EmailJob.ResetPassword:
-        return await this.emailQueueService.resetPassword(
-          job.data as any,
-        );
+        return await this.emailQueueService.resetPassword(job.data as any);
       default:
         throw new Error(`Unhandled job named: ${(job as any).name}`);
     }
