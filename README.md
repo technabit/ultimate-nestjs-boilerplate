@@ -5,7 +5,7 @@ Advanced Nest.js boilerplate for scalable startups.
 ## Features📦
 
 - [x] Nest.js with Fastify
-- [x] PostgreSQL with TypeORM
+- [x] PostgreSQL with Prisma
 - [x] [Better Auth](https://www.better-auth.com/) for complete authentication. Handles authentication kinds like email/password, OAuth, Magic Link, Pass Keys, Two-Factor Authentication, Session Management, etc. [Learn More](#better-auth)
 - [x] REST, GraphQL & WebSocket API
 - [x] Websocket using Socket.io via Redis Adapter(For future scalability with clusters)
@@ -205,7 +205,12 @@ pnpm graph:circular
 
 ### Database Entity Relationship Diagram🛢️
 
-Visualize your database entities and their relationships.
+With Prisma, ERD generation is not built-in here. Options:
+
+- Prisma Studio (data browser): `pnpm exec prisma studio`
+- ERD generation (optional): add a Prisma ERD generator to your project, such as `prisma-erd-generator` or `prisma-dbml-generator`, and run it during `prisma generate`. Refer to each tool’s setup guide.
+
+No ERD generator is wired by default to keep dependencies minimal.
 
 ### Running API and Worker
 
@@ -242,9 +247,5 @@ Additional Prisma service controls:
 - `PRISMA_METRICS_ENABLED`: disable simple in-memory metrics when set to `false` (default: `true`)
 
 These resolve into the `prisma` config (see `src/core/config/prisma/prisma.config.ts`) and are applied by `PrismaService`.
-
-<figure>
-<img src="./github-assets/erd.png"  />
-</figure>
 
 This boilerplate is extended from [nestjs-boilerplate](https://github.com/vndevteam/nestjs-boilerplate?tab=readme-ov-file)
