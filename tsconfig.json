@@ -1,35 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "ts-node": {
     "require": ["tsconfig-paths/register"]
-  },
-  "compilerOptions": {
-    "jsx": "react",
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ES2022",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "paths": {
-      "@/*": ["apps/server/src/*", "src/*"],
-      "@core/*": ["packages/core/src/*"],
-      "@app/nest-core": ["packages/nest-core/src/index.ts"],
-      "@app/nest-core/*": ["packages/nest-core/src/*"],
-      "@/core/*": ["packages/nest-core/src/*"],
-      "rxjs": ["node_modules/rxjs"]
-    }
   }
 }

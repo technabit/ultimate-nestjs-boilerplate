@@ -1,8 +1,8 @@
 services:
-  server:
+  backend-api:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: apps/backend-api/Dockerfile.dev
     volumes:
       - /app/node_modules
       - .:/app
@@ -13,10 +13,10 @@ services:
     command: >
       sh -c "pnpm start:dev"
 
-  worker:
+  backend-worker:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: apps/worker/Dockerfile.dev
     volumes:
       - /app/node_modules
       - .:/app
@@ -40,7 +40,7 @@ services:
     volumes:
       - ./.docker/postgres_data:/var/lib/postgresql/data
     networks:
-      - nestjs-boilerplate-network
+      - technabit-nestjs-stack-network
 
   mail:
     image: axllent/mailpit:v1.25
@@ -53,4 +53,4 @@ services:
       - ${DOCKER_MAIL_PORT}:1025
       - ${DOCKER_MAIL_CLIENT_PORT}:8025
     networks:
-      - nestjs-boilerplate-network
+      - technabit-nestjs-stack-network

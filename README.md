@@ -130,7 +130,7 @@ The Docker image runs using PM2 and supports launching either the API or the Wor
 docker run -e PM2_ONLY=nestjs-boilerplate your-image
 
 # Worker only
-docker run -e PM2_ONLY=nestjs-boilerplate-worker your-image
+docker run -e PM2_ONLY=technabit-backend-worker your-image
 ```
 
 ##### Deployment:

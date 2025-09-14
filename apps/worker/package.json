@@ -1,0 +1,17 @@
+{
+  "name": "@technabit/backend-worker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build",
+    "dev": "nest start --watch",
+    "start": "nest start"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.4.4",
+    "@nestjs/core": "^10.4.4",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "7.8.2",
+    "tslib": "^2.7.0"
+  }
+}

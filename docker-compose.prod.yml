@@ -1,10 +1,10 @@
 services:
-  server:
+  backend-api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: apps/backend-api/Dockerfile
 
-  worker:
+  backend-worker:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: apps/worker/Dockerfile

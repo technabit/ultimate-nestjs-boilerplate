@@ -17,7 +17,7 @@ const usage = () => {
       '  node ./bin/compose.mjs dev up\n' +
       '  node ./bin/compose.mjs prod up --build --force-recreate\n' +
       '  node ./bin/compose.mjs dev down\n' +
-      '  node ./bin/compose.mjs dev logs -f server',
+      '  node ./bin/compose.mjs dev logs -f backend-api',
   );
 };
 

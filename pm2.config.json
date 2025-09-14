@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "nestjs-boilerplate",
-      "script": "apps/server/dist/main.js",
+      "script": "apps/backend-api/dist/main.js",
       "instances": 1,
       "autorestart": true,
       "watch": false,
@@ -12,8 +12,8 @@
       }
     },
     {
-      "name": "nestjs-boilerplate-worker",
-      "script": "apps/server/dist/worker.js",
+      "name": "technabit-backend-worker",
+      "script": "apps/backend-api/dist/worker.js",
       "instances": 1,
       "autorestart": true,
       "watch": false,

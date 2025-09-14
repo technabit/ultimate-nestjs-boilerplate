@@ -41,7 +41,7 @@ COPY --chown=node:node --from=development /app/turbo.json ./turbo.json
 COPY --chown=node:node --from=development /app/.env ./.env
 
 # Build workspace (server app and its deps)
-RUN pnpm turbo run build --filter=server
+RUN pnpm turbo run build --filter=@technabit/backend-api
 
 # Generate Prisma client and run migrations & seed (if present)
 RUN pnpm prisma:generate \

@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "technabit-backend-worker",
+      "script": "dist/main.js",
+      "cwd": ".",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
+

@@ -5,10 +5,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": ".",
+    "importHelpers": false,
     "paths": {
       "@/*": ["src/*"],
       "@/core/*": ["src/*"],
-      "@core/*": ["../core/src/*"]
+      "@core/*": ["src/*"],
+      "rxjs": ["../../node_modules/rxjs"]
     }
   },
   "include": ["src/**/*"],
