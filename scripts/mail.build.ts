@@ -14,10 +14,17 @@ import path from 'path';
 import React from 'react';
 
 const projectRootDir = path.join(__dirname, '..');
+// New monorepo location for email templates under apps/server
 const templatesDir = path.join(
   __dirname,
   '..',
-  'src/core/shared/mail/templates',
+  'apps',
+  'server',
+  'src',
+  'core',
+  'shared',
+  'mail',
+  'templates',
 );
 const outDir = templatesDir.replace('/src/', '/dist/');
 

@@ -373,6 +373,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
 
+  apps/worker2: {}
+
   packages/core: {}
 
 packages:

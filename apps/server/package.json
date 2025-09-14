@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "ts-node ./scripts/i18n.copy.ts",
+    "build": "nest build",
+    "postbuild": "pnpm -w email:build && copyfiles -f ./src/generated/*.gql ./dist/generated",
+    "dev": "nest start --watch",
+    "start": "nest start",
+    "test": "pnpm -w test",
+    "lint": "pnpm -w lint"
+  },
+  "dependencies": {
+    "@app/core": "workspace:*"
+  }
+}

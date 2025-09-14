@@ -29,15 +29,19 @@ WORKDIR /app
 
 COPY --chown=node:node package*.json pnpm-lock.yaml ./
 COPY --chown=node:node --from=development /app/node_modules ./node_modules
-COPY --chown=node:node --from=development /app/src ./src
+COPY --chown=node:node --from=development /app/apps ./apps
+COPY --chown=node:node --from=development /app/packages ./packages
+COPY --chown=node:node --from=development /app/prisma ./prisma
 COPY --chown=node:node --from=development /app/scripts ./scripts
 COPY --chown=node:node --from=development /app/tsconfig.json ./tsconfig.json
 COPY --chown=node:node --from=development /app/tsconfig.build.json ./tsconfig.build.json
 COPY --chown=node:node --from=development /app/nest-cli.json ./nest-cli.json
+COPY --chown=node:node --from=development /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --chown=node:node --from=development /app/turbo.json ./turbo.json
 COPY --chown=node:node --from=development /app/.env ./.env
 
-# Build server
-RUN pnpm build
+# Build workspace (server app and its deps)
+RUN pnpm turbo run build --filter=server
 
 # Generate Prisma client and run migrations & seed (if present)
 RUN pnpm prisma:generate \

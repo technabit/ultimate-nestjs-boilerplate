@@ -1,0 +1,11 @@
+{
+  "name": "worker2",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "nest build worker2",
+    "dev": "nest start worker2 --watch",
+    "start": "nest start worker2"
+  }
+}
+
