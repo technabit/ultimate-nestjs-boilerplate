@@ -6,7 +6,8 @@ import redisConfig from '@/core/config/redis/redis.config';
 import { BullModule } from '@nestjs/bullmq';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+// Removed TypeORM; Prisma is used instead
+import { PrismaModule } from '@/core/database/prisma/prisma.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { LoggerModule } from 'nestjs-pino';
@@ -19,6 +20,7 @@ import {
 } from '@/core/config/bull/bull.config';
 import { default as useBullFactory } from '@/core/config/bull/bull.factory';
 import grafanaConfig from '@/core/config/grafana/grafana.config';
+import prismaConfig from '@/core/config/prisma/prisma.config';
 import { default as sentryConfig } from '@/core/config/sentry/sentry.config';
 import { default as throttlerConfig } from '@/core/config/throttler/throttler.config';
 import { default as useThrottlerFactory } from '@/core/config/throttler/throttler.factory';
@@ -57,6 +59,7 @@ export class CoreModule {
             throttlerConfig,
             awsConfig,
             grafanaConfig,
+            prismaConfig,
           ],
           envFilePath: ['.env'],
         }),
@@ -71,11 +74,8 @@ export class CoreModule {
           inject: [ConfigService],
           useFactory: useLoggerFactory,
         }),
-        TypeOrmModule.forRootAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: databaseConfig,
-        }),
+        // Introduce Prisma alongside TypeORM (Phase 1-2). TypeORM removal will follow.
+        PrismaModule,
         BullModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],

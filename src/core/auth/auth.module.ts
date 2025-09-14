@@ -23,7 +23,6 @@ import {
 import { CacheModule } from '@/core/shared/cache/cache.module';
 import { CacheService } from '@/core/shared/cache/cache.service';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {
   FastifyInstance,
@@ -32,7 +31,6 @@ import type {
 } from 'fastify';
 import { AuthService } from './auth.service';
 import { BetterAuthService } from './better-auth.service';
-import { UserEntity } from './entities/user.entity';
 
 const HOOKS = [
   { metadataKey: BEFORE_HOOK_KEY, hookType: 'before' as const },
@@ -41,7 +39,7 @@ const HOOKS = [
 
 @Global()
 @Module({
-  imports: [DiscoveryModule, TypeOrmModule.forFeature([UserEntity])],
+  imports: [DiscoveryModule],
   providers: [AuthService],
   exports: [AuthService],
 })

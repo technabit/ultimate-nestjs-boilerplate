@@ -1,11 +1,11 @@
 import { AuthService } from '@/core/auth/auth.service';
 import { GlobalConfig } from '@/core/config/config.type';
+import { PrismaHealthIndicator } from '@/core/health/prisma.health';
 import { ConfigService } from '@nestjs/config';
 import {
   HealthCheckService,
   HttpHealthIndicator,
   MicroserviceHealthIndicator,
-  TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
@@ -20,7 +20,7 @@ describe('HealthController', () => {
     Record<keyof HealthCheckService, jest.Mock>
   >;
   let httpUseValue: Partial<Record<keyof HttpHealthIndicator, jest.Mock>>;
-  let dbUseValue: Partial<Record<keyof TypeOrmHealthIndicator, jest.Mock>>;
+  let dbUseValue: Partial<Record<keyof PrismaHealthIndicator, jest.Mock>>;
   let microServiceValue: Partial<
     Record<keyof MicroserviceHealthIndicator, jest.Mock>
   >;
@@ -66,10 +66,7 @@ describe('HealthController', () => {
           provide: HttpHealthIndicator,
           useValue: httpUseValue,
         },
-        {
-          provide: TypeOrmHealthIndicator,
-          useValue: dbUseValue,
-        },
+        { provide: PrismaHealthIndicator, useValue: dbUseValue },
         {
           provide: MicroserviceHealthIndicator,
           useValue: microServiceValue,

@@ -11,8 +11,13 @@ import {
   Min,
   ValidateIf,
 } from 'class-validator';
-import path from 'path';
-import { DatabaseConfig, DatabaseSSLMode } from './database-config.type';
+import { DatabaseConfig } from './database-config.type';
+
+// Simple DB config shape for Better Auth and services
+export enum DatabaseSSLMode {
+  require = 'require',
+  disable = 'disable',
+}
 
 class EnvironmentVariablesValidator {
   @ValidateIf((envValues) => envValues.DATABASE_URL)
@@ -72,17 +77,36 @@ class EnvironmentVariablesValidator {
 }
 
 export function getConfig(): DatabaseConfig {
+  // If DATABASE_URL is set, parse it; else use discrete vars
+  const url = process.env.DATABASE_URL;
+  let host = process.env.DATABASE_HOST;
+  let port = process.env.DATABASE_PORT
+    ? parseInt(process.env.DATABASE_PORT, 10)
+    : 5432;
+  let password = process.env.DATABASE_PASSWORD;
+  let database = process.env.DATABASE_NAME;
+  let username = process.env.DATABASE_USERNAME;
+
+  if (url && url.startsWith('postgres')) {
+    try {
+      const u = new URL(url);
+      host = u.hostname || host;
+      port = u.port ? parseInt(u.port, 10) : port;
+      username = decodeURIComponent(u.username || username || '');
+      password = decodeURIComponent(u.password || password || '');
+      database = (u.pathname || '').replace(/^\//, '') || database;
+    } catch {
+      // ignore invalid URL and fall back to discrete envs
+    }
+  }
+
   return {
-    type: 'postgres',
-    host: process.env.DATABASE_HOST,
-    port: process.env.DATABASE_PORT
-      ? parseInt(process.env.DATABASE_PORT, 10)
-      : 5432,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    username: process.env.DATABASE_USERNAME,
+    host: host!,
+    port,
+    password: password!,
+    database: database!,
+    username: username!,
     logging: process.env.DATABASE_LOGGING === 'true',
-    dropSchema: false,
     poolSize: process.env.DATABASE_MAX_CONNECTIONS
       ? parseInt(process.env.DATABASE_MAX_CONNECTIONS, 10)
       : 100,
@@ -96,17 +120,6 @@ export function getConfig(): DatabaseConfig {
             cert: process.env.DATABASE_CERT ?? undefined,
           }
         : undefined,
-    entities: [
-      path.join(__dirname, '..', '..', '/**/entities/*.entity{.ts,.js}'),
-    ],
-    migrations: [
-      path.join(__dirname, '..', '..', '/database/migrations/**/*{.ts,.js}'),
-    ],
-    migrationsTableName: 'migrations',
-    seeds: [path.join(__dirname, '..', '..', '/database/seeds/**/*{.ts,.js}')],
-    seedTracking: true,
-    seedTableName: 'seeders',
-    useUTC: true,
   };
 }
 

@@ -1,8 +1,9 @@
+import { EmailQueue } from '@/apps/worker/queues/email/email.type';
 import { GlobalConfig } from '@/core/config/config.type';
 import { Queue } from '@/core/constants/job.constant';
+import { PrismaService } from '@/core/database/prisma/prisma.service';
 import { CacheService } from '@/core/shared/cache/cache.service';
 import { CacheParam } from '@/core/shared/cache/cache.type';
-import { EmailQueue } from '@/apps/worker/queues/email/email.type';
 import { InjectQueue } from '@nestjs/bullmq';
 import {
   HttpException,
@@ -11,9 +12,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserEntity } from './entities/user.entity';
 
 /**
  * NOTE: This service is for handling auth related tasks outside of Better Auth.
@@ -26,18 +24,13 @@ export class AuthService {
     @InjectQueue(Queue.Email)
     private readonly emailQueue: EmailQueue,
     private readonly cacheService: CacheService,
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly prisma: PrismaService,
   ) {}
 
   async sendSigninMagicLink({ email, url }: { email: string; url: string }) {
-    const user = await this.userRepository.findOne({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-      },
+    const user = await this.prisma.user.findFirst({
+      where: { email, deletedAt: null },
+      select: { id: true },
     });
     if (!user) {
       throw new NotFoundException('User not found.');
@@ -93,6 +86,7 @@ export class AuthService {
       args: [userId],
     };
     const remainingTtl = await this.cacheService.getTtl(cacheKey);
+
     if (!(remainingTtl == null) && remainingTtl !== 0) {
       throw new HttpException(
         `Too many requests. Please wait ${Math.floor(remainingTtl / 1000)} seconds before sending again.`,

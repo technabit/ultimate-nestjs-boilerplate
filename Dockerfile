@@ -39,9 +39,10 @@ COPY --chown=node:node --from=development /app/.env ./.env
 # Build server
 RUN pnpm build
 
-# Run migrations & seeds
-RUN pnpm migration:up
-RUN pnpm seed:run
+# Generate Prisma client and run migrations & seed (if present)
+RUN pnpm prisma:generate \
+ && (test -d prisma/migrations && pnpm prisma:migrate:deploy || echo 'No Prisma migrations to deploy') \
+ && (node -e "process.exit(require('fs').existsSync('prisma/seed.ts')?0:1)" && pnpm db:seed || echo 'No Prisma seed to run')
 
 # Removes unnecessary packages and re-install only production dependencies
 ENV NODE_ENV production

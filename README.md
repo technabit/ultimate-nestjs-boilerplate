@@ -47,11 +47,17 @@ cp ./.env.docker.example ./.env.docker
 pnpm docker:dev:up
 ```
 
-- Run migrations:
+- Manage database with Prisma:
 
 ```
-docker exec -it nestjs-boilerplate-server sh
-pnpm migration:up
+# Generate Prisma client
+pnpm prisma:generate
+
+# Create/Apply migrations (dev)
+pnpm prisma:migrate:dev
+
+# Seed database
+pnpm db:seed
 ```
 
 ### Better Auth🔒
@@ -200,6 +206,7 @@ pnpm graph:circular
 ### Database Entity Relationship Diagram🛢️
 
 Visualize your database entities and their relationships.
+
 ### Running API and Worker
 
 Run the API and Worker separately during development:
@@ -218,10 +225,23 @@ The default entry files are `src/main.ts` (API) and `src/worker.ts` (worker).
 
 Shared logic lives under `src/core/*` and is wired via `CoreModule` and helper functions in `src/core/bootstrap/bootstrap.ts`.
 
+### Prisma Logger ⚙️
 
-```
-pnpm erd:generate
-```
+Control Prisma query logging via env or config (defaults shown):
+
+- `DATABASE_LOGGING`/`APP_LOGGING`: enable logs when set to `true` (default: `false`)
+- `PRISMA_LOG_SLOW_MS`: warn threshold for slow queries in ms (default: `200`)
+- `PRISMA_MAX_QUERY_LENGTH`: max SQL length in logs before truncation (default: `2000`)
+- `PRISMA_REDACT_PARAMS`: hide bind parameters when `true` (default: `true`)
+
+Additional Prisma service controls:
+
+- `PRISMA_SKIP_CONNECT`: when `true`, skips initial `$connect()` (useful for unit tests) (default: `false`)
+- `PRISMA_MAX_RETRIES`: max connection retry attempts on startup (default: `5`)
+- `PRISMA_RETRY_DELAY_MS`: delay between connection retries in milliseconds (default: `1500`)
+- `PRISMA_METRICS_ENABLED`: disable simple in-memory metrics when set to `false` (default: `true`)
+
+These resolve into the `prisma` config (see `src/core/config/prisma/prisma.config.ts`) and are applied by `PrismaService`.
 
 <figure>
 <img src="./github-assets/erd.png"  />

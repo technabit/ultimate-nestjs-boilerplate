@@ -4,6 +4,7 @@ import { BULL_BOARD_PATH } from '@/core/config/bull/bull.config';
 import { GlobalConfig } from '@/core/config/config.type';
 import { Queue } from '@/core/constants/job.constant';
 import { Public } from '@/core/decorators/public.decorator';
+import { PrismaHealthIndicator } from '@/core/health/prisma.health';
 import { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
 import { Serialize } from '@/core/utils/interceptors/serialize';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -17,7 +18,6 @@ import {
   HealthCheckService,
   HttpHealthIndicator,
   MicroserviceHealthIndicator,
-  TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
 import type { Queue as BullQueue } from 'bullmq';
 import { HealthCheckDto, QueueOverviewDto } from './dto/health.dto';
@@ -29,7 +29,7 @@ export class HealthController {
     private readonly configService: ConfigService<GlobalConfig>,
     private readonly health: HealthCheckService,
     private readonly http: HttpHealthIndicator,
-    private readonly db: TypeOrmHealthIndicator,
+    private readonly db: PrismaHealthIndicator,
     private readonly microservice: MicroserviceHealthIndicator,
     private readonly authService: AuthService,
 
@@ -52,7 +52,7 @@ export class HealthController {
   @HealthCheck()
   async check(): Promise<HealthCheckResult> {
     const list = [
-      () => this.db.pingCheck('database', { timeout: 5000 }),
+      () => this.db.pingCheck('database', 5000),
       () =>
         this.microservice.pingCheck<RedisOptions>('redis', {
           transport: Transport.REDIS,
