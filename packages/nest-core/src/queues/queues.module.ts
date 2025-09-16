@@ -1,4 +1,4 @@
-import { Queue } from '@core/constants/job';
+import { Queue } from '@/core//constants/job';
 import { BullModule } from '@nestjs/bullmq';
 import { Global, Module } from '@nestjs/common';
 

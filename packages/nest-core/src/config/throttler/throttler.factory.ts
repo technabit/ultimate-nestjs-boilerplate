@@ -5,14 +5,14 @@ import { ConfigType } from '@nestjs/config';
 import { Redis } from 'ioredis';
 
 async function useThrottlerFactory(
-  throttler: ConfigType<typeof throttlerConfig>,
+  config: ConfigType<typeof throttlerConfig>,
   redis: ConfigType<typeof redisConfig>,
 ) {
   return {
     throttlers: [
       {
-        ttl: throttler.ttl,
-        limit: throttler.limit,
+        ttl: config.ttl,
+        limit: config.limit,
       },
     ],
     storage: new ThrottlerStorageRedisService(new Redis(redis as any)),

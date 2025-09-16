@@ -1,4 +1,4 @@
-import { AUTH_INSTANCE_KEY } from '@core/constants/auth';
+import { AUTH_INSTANCE_KEY } from '@/core//constants/auth';
 import { Inject, Injectable } from '@nestjs/common';
 import type { Auth } from 'better-auth/auth';
 

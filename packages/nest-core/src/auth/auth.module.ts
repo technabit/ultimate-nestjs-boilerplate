@@ -13,16 +13,16 @@ import {
 } from '@nestjs/core';
 import { betterAuth, type Auth } from 'better-auth';
 
-import { getConfig as getBetterAuthConfig } from '@/core/config/auth/better-auth.config';
-import { GlobalConfig } from '@/core/config/config.type';
-import { CacheModule } from '@/core/shared/cache/cache.module';
-import { CacheService } from '@/core/shared/cache/cache.service';
 import {
   AFTER_HOOK_KEY,
   AUTH_INSTANCE_KEY,
   BEFORE_HOOK_KEY,
   HOOK_KEY,
-} from '@core/constants/auth';
+} from '@/core//constants/auth';
+import { getConfig as getBetterAuthConfig } from '@/core/config/auth/better-auth.config';
+import { GlobalConfig } from '@/core/config/config.type';
+import { CacheModule } from '@/core/shared/cache/cache.module';
+import { CacheService } from '@/core/shared/cache/cache.service';
 import { ConfigService } from '@nestjs/config';
 import { createAuthMiddleware } from 'better-auth/plugins';
 import type {

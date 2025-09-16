@@ -7,16 +7,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 
 import { FastifyAdapter } from '@bull-board/fastify';
 import {
+  appConfig,
   BULL_BOARD_PATH,
   CoreModule,
   graphqlConfig,
-  appConfig,
   useGraphqlFactory,
 } from '@technabit/nest-core';
 
-import { ApiModule } from '@/apps/api/api.module';
-import { WorkerModule } from '@/apps/worker/worker.module';
 import { Queue } from '@technabit/nest-core';
+import { ApiModule } from './apps/api/api.module';
+import { WorkerModule } from './apps/worker/worker.module';
 
 const BULL_BOARD_FEATURES = (Object.values(Queue) as string[]).map((name) => ({
   name,

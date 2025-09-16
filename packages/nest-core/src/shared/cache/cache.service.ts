@@ -1,5 +1,5 @@
+import { CacheKey } from '@/core//constants/cache';
 import { GlobalConfig } from '@/core/config/config.type';
-import { CacheKey } from '@core/constants/cache';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

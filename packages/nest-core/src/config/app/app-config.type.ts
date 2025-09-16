@@ -1,4 +1,4 @@
-import { Environment } from '@core/constants/app';
+import { Environment } from '@/core//constants/app';
 
 export type AppConfig = {
   nodeEnv: `${Environment}`;

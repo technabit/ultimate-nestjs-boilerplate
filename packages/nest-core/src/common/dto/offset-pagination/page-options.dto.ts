@@ -1,13 +1,13 @@
 import {
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_PAGE_LIMIT,
+  Order,
+} from '@/core//constants/app';
+import {
   EnumFieldOptional,
   NumberFieldOptional,
   StringFieldOptional,
 } from '@/core/decorators/field.decorators';
-import {
-  DEFAULT_CURRENT_PAGE,
-  DEFAULT_PAGE_LIMIT,
-  Order,
-} from '@core/constants/app';
 
 export class PageOptionsDto {
   @NumberFieldOptional({

@@ -21,9 +21,6 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "paths": {
-      "@/*": ["apps/backend-api/src/*", "src/*"],
-      "@core/*": ["packages/nest-core/dist/*"],
-      "@/core/*": ["packages/nest-core/dist/*"],
       "rxjs": ["node_modules/rxjs"]
     }
   }

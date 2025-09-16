@@ -1,5 +1,5 @@
+import { loggingRedactPaths, LogService } from '@/core//constants/app';
 import appConfig from '@/core/config/app/app.config';
-import { loggingRedactPaths, LogService } from '@core/constants/app';
 import { ConfigType } from '@nestjs/config';
 import { type IncomingMessage, type ServerResponse } from 'http';
 import { Params } from 'nestjs-pino';

@@ -12,25 +12,25 @@ import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { LoggerModule } from 'nestjs-pino';
 
 import { AuthModule } from '@/core/auth/auth.module';
-import { default as awsConfig } from '@/core/config/aws/aws.config';
+import awsConfig from '@/core/config/aws/aws.config';
 import {
   BULL_BOARD_PATH, // kept export available to root app module
   default as bullConfig,
 } from '@/core/config/bull/bull.config';
-import { default as useBullFactory } from '@/core/config/bull/bull.factory';
+import useBullFactory from '@/core/config/bull/bull.factory';
 import grafanaConfig from '@/core/config/grafana/grafana.config';
 import graphqlConfig from '@/core/config/graphql/graphql.config';
 import prismaConfig from '@/core/config/prisma/prisma.config';
-import { default as sentryConfig } from '@/core/config/sentry/sentry.config';
-import { default as throttlerConfig } from '@/core/config/throttler/throttler.config';
-import { default as useThrottlerFactory } from '@/core/config/throttler/throttler.factory';
+import sentryConfig from '@/core/config/sentry/sentry.config';
+import throttlerConfig from '@/core/config/throttler/throttler.config';
+import useThrottlerFactory from '@/core/config/throttler/throttler.factory';
 import { AppThrottlerGuard } from '@/core/config/throttler/throttler.guard';
-import { default as useGraphqlFactory } from '@/core/graphql/graphql-fastify.factory';
-import { default as useI18nFactory } from '@/core/i18n/i18n.factory';
+import useGraphqlFactory from '@/core/graphql/graphql-fastify.factory';
+import useI18nFactory from '@/core/i18n/i18n.factory';
 import { CoreQueuesModule } from '@/core/queues/queues.module';
 import { CacheModule as CacheManagerModule } from '@/core/shared/cache/cache.module';
 import { MailModule } from '@/core/shared/mail/mail.module';
-import { default as useLoggerFactory } from '@/core/tools/logger/logger-factory';
+import useLoggerFactory from '@/core/tools/logger/logger-factory';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import {

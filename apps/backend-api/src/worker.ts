@@ -2,13 +2,13 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 
-import { AppModule } from '@/app.module';
 import {
   configureCommon,
   getAppConfig,
   getFastifyLoggerOption,
   type GlobalConfig,
 } from '@technabit/nest-core';
+import { AppModule } from './app.module';
 
 const appConfig = getAppConfig();
 

@@ -66,16 +66,16 @@ export class UserService {
   }
 
   async findOneUser(id: Uuid | string): Promise<UserDto> {
-    console.log('___ FIND USER', { id });
+    // console.log('___ FIND USER', { id });
 
     const user = await this.prisma.user.findFirst({
       where: { id: String(id), deletedAt: null },
     });
 
-    console.log('___ FOUND USER', { user });
+    // console.log('___ FOUND USER', { user });
 
     if (!user) {
-      throw new NotFoundException(await this.i18nService.t('user.notFound'));
+      throw new NotFoundException(this.i18nService.t('user.notFound'));
     }
     return user as any;
   }
@@ -86,7 +86,7 @@ export class UserService {
       select: { id: true },
     });
     if (!exists) {
-      throw new NotFoundException(await this.i18nService.t('user.notFound'));
+      throw new NotFoundException(this.i18nService.t('user.notFound'));
     }
     await this.prisma.user.update({
       where: { id: String(id) },

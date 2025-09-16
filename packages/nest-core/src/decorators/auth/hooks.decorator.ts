@@ -2,7 +2,7 @@ import {
   AFTER_HOOK_KEY,
   BEFORE_HOOK_KEY,
   HOOK_KEY,
-} from '@core/constants/auth';
+} from '@/core//constants/auth';
 import { SetMetadata } from '@nestjs/common';
 
 /**

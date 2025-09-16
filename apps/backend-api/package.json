@@ -6,7 +6,7 @@
     "predev": "pnpm -w -F @technabit/nest-core build && ts-node ./scripts/i18n.prebuild.ts",
     "prebuild": "ts-node ./scripts/i18n.prebuild.ts",
     "build": "nest build",
-    "postbuild": "copyfiles -f ./src/generated/*.gql ./dist/generated",
+    "postbuild": "copyfiles -f ./src/generated/* ./dist/generated",
     "dev": "nest start --watch",
     "start": "nest start",
     "test": "pnpm -w test",

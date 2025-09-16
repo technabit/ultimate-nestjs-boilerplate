@@ -1,4 +1,4 @@
-import { MailTemplate } from '@core/constants/mail';
+import { MailTemplate } from '@/core//constants/mail';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 

@@ -15,6 +15,7 @@ import helmet from 'helmet';
 import { setupGracefulShutdown } from 'nestjs-graceful-shutdown';
 import path from 'path';
 
+import { Environment } from '@/core//constants/app';
 import type { AppConfig } from '@/core/config/app/app-config.type';
 import { BULL_BOARD_PATH } from '@/core/config/bull/bull.config';
 import { type GlobalConfig } from '@/core/config/config.type';
@@ -27,7 +28,6 @@ import { basicAuthMiddleware } from '@/core/middlewares/basic-auth.middleware';
 import { RedisIoAdapter } from '@/core/shared/socket/redis.adapter';
 import { consoleLoggingConfig } from '@/core/tools/logger/logger-factory';
 import setupSwagger, { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
-import { Environment } from '@core/constants/app';
 
 export async function configureCommon(
   app: NestFastifyApplication,

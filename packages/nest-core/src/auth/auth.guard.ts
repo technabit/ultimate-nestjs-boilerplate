@@ -12,7 +12,7 @@ import {
   AUTH_INSTANCE_KEY,
   IS_OPTIONAL_AUTH,
   IS_PUBLIC_AUTH,
-} from '@core/constants/auth';
+} from '@/core//constants/auth';
 import type { Auth } from 'better-auth/auth';
 import { fromNodeHeaders } from 'better-auth/node';
 import { FastifyRequest } from 'fastify';
@@ -78,6 +78,11 @@ export class AuthGuard implements CanActivate {
     );
 
     if (isAuthOptional && !session) return true;
+
+    console.log('___ GUARD - NO SESSION - THROW UNAUTHORIZED', {
+      session,
+      isAuthOptional,
+    });
 
     if (!session) {
       throw new UnauthorizedException({

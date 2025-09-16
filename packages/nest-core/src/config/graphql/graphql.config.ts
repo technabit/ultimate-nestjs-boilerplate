@@ -1,6 +1,6 @@
+import { Environment } from '@/core//constants/app';
 import { getConfig as getAppConfig } from '@/core/config/app/app.config';
 import validateConfig from '@/core/utils/config/validate-config';
-import { Environment } from '@core/constants/app';
 import { registerAs } from '@nestjs/config';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { GraphqlConfig } from './graphql-config.type';

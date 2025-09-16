@@ -1,5 +1,5 @@
+import { Environment, LogService } from '@/core//constants/app';
 import validateConfig from '@/core/utils/config/validate-config';
-import { Environment, LogService } from '@core/constants/app';
 import { registerAs } from '@nestjs/config';
 import {
   IsBoolean,
