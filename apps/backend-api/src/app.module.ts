@@ -1,22 +1,21 @@
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { FastifyAdapter } from '@bull-board/fastify';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-
-import { FastifyAdapter } from '@bull-board/fastify';
 import {
   appConfig,
   BULL_BOARD_PATH,
   CoreModule,
   graphqlConfig,
+  Queue,
   useGraphqlFactory,
 } from '@technabit/nest-core';
 
-import { Queue } from '@technabit/nest-core';
-import { ApiModule } from './apps/api/api.module';
-import { WorkerModule } from './apps/worker/worker.module';
+import { ModulesModule } from './modules/modules.module';
+import { WorkerModule } from './worker/worker.module';
 
 const BULL_BOARD_FEATURES = (Object.values(Queue) as string[]).map((name) => ({
   name,
@@ -50,7 +49,7 @@ export class AppModule {
             typeof BullBoardModule.forFeature
           >[0][]),
         ),
-        ApiModule,
+        ModulesModule,
       ],
     };
   }
