@@ -2,10 +2,10 @@ type EmailQueueLike = {
   add: (name: string, data: any, options?: any) => Promise<any>;
 };
 import { GlobalConfig } from '@/core/config/config.type';
-import { Queue } from '@core/constants/job';
 import { PrismaService } from '@/core/database/prisma/prisma.service';
 import { CacheService } from '@/core/shared/cache/cache.service';
 import { CacheParam } from '@/core/shared/cache/cache.type';
+import { Queue } from '@core/constants/job';
 import { InjectQueue } from '@nestjs/bullmq';
 import {
   HttpException,

@@ -1,6 +1,6 @@
-import { type GlobalConfig } from '@/core/config/config.type';
+import appConfig from '@/core/config/app/app.config';
 import { loggingRedactPaths, LogService } from '@core/constants/app';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { type IncomingMessage, type ServerResponse } from 'http';
 import { Params } from 'nestjs-pino';
 import { GenReqId, Options, type ReqId } from 'pino-http';
@@ -91,11 +91,11 @@ export function consoleLoggingConfig(): Options {
 }
 
 async function useLoggerFactory(
-  configService: ConfigService<GlobalConfig>,
+  cfg: ConfigType<typeof appConfig>,
 ): Promise<Params> {
-  const logLevel = configService.get('app.logLevel', { infer: true });
-  const logService = configService.get('app.logService', { infer: true });
-  const isDebug = configService.get('app.debug', { infer: true });
+  const logLevel = cfg.logLevel;
+  const logService = cfg.logService;
+  const isDebug = cfg.debug;
 
   const pinoHttpOptions: Options = {
     level: logLevel,

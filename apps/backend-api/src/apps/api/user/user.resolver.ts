@@ -1,8 +1,8 @@
 import { Logger, UseGuards } from '@nestjs/common';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
-import { AuthGuard, CurrentUserSession } from '@technabit/nest-core';
 import { I18nTranslations } from '@/generated/i18n.generated';
+import { AuthGuard, CurrentUserSession } from '@technabit/nest-core';
 
 import {
   Args,

@@ -172,11 +172,15 @@ async function main() {
     }
   }
 
-  const roots = [coreDir, appSrcDir, ...depRoots, ...extraDirs].filter(
+  let roots = [coreDir, appSrcDir, ...depRoots, ...extraDirs].filter(
     Boolean,
   ) as string[];
+  // Ensure unique entries
+  roots = Array.from(new Set(roots));
+
   // eslint-disable-next-line no-console
   console.log('i18n: roots =>', roots);
+
   ensureDir(mergedOut);
   // Clean merged
   for (const entry of fs.readdirSync(mergedOut)) {

@@ -6,7 +6,7 @@ import redisConfig from '@/core/config/redis/redis.config';
 import { PrismaModule } from '@/core/database/prisma/prisma.module';
 import { BullModule } from '@nestjs/bullmq';
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { GracefulShutdownModule } from 'nestjs-graceful-shutdown';
 import { LoggerModule } from 'nestjs-pino';
@@ -19,6 +19,7 @@ import {
 } from '@/core/config/bull/bull.config';
 import { default as useBullFactory } from '@/core/config/bull/bull.factory';
 import grafanaConfig from '@/core/config/grafana/grafana.config';
+import graphqlConfig from '@/core/config/graphql/graphql.config';
 import prismaConfig from '@/core/config/prisma/prisma.config';
 import { default as sentryConfig } from '@/core/config/sentry/sentry.config';
 import { default as throttlerConfig } from '@/core/config/throttler/throttler.config';
@@ -66,6 +67,7 @@ export class CoreModule {
           awsConfig,
           grafanaConfig,
           prismaConfig,
+          graphqlConfig,
         ],
         envFilePath: ['.env'],
       }),
@@ -77,14 +79,13 @@ export class CoreModule {
       }),
       LoggerModule.forRootAsync({
         imports: [ConfigModule],
-        inject: [ConfigService],
+        inject: [appConfig.KEY],
         useFactory: useLoggerFactory,
       }),
-      // Introduce Prisma alongside TypeORM (Phase 1-2). TypeORM removal will follow.
       PrismaModule,
       BullModule.forRootAsync({
         imports: [ConfigModule],
-        inject: [ConfigService],
+        inject: [bullConfig.KEY],
         useFactory: useBullFactory,
       }),
       PrometheusModule.register(),
@@ -98,14 +99,13 @@ export class CoreModule {
           new HeaderResolver(['x-lang']),
           AcceptLanguageResolver,
         ],
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) =>
-          useI18nFactory(configService, options?.i18n),
+        inject: [appConfig.KEY],
+        useFactory: (cfg) => useI18nFactory(cfg, options?.i18n),
       }),
       // Rate limiter
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
-        inject: [ConfigService],
+        inject: [throttlerConfig.KEY, redisConfig.KEY],
         useFactory: useThrottlerFactory,
       }),
       // Auth bootstrapping

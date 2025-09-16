@@ -1,6 +1,5 @@
-import { MailService } from '@technabit/nest-core';
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaService } from '@technabit/nest-core';
+import { MailService, PrismaService } from '@technabit/nest-core';
 import {
   EmailVerificationJob,
   ResetPasswordJob,
@@ -17,7 +16,9 @@ export class EmailQueueService {
   ) {}
 
   async verifyEmail(data: EmailVerificationJob['data']): Promise<void> {
-    const user = await this.prisma.user.findFirst({ where: { id: data.userId, deletedAt: null } });
+    const user = await this.prisma.user.findFirst({
+      where: { id: data.userId, deletedAt: null },
+    });
     if (!user) {
       this.logger.error(`User id = ${data.userId} does not exist.`);
     }
@@ -28,7 +29,9 @@ export class EmailQueueService {
   }
 
   async sendMagicLink(data: SignInMagicLinkJob['data']): Promise<void> {
-    const user = await this.prisma.user.findFirst({ where: { email: data.email, deletedAt: null } });
+    const user = await this.prisma.user.findFirst({
+      where: { email: data.email, deletedAt: null },
+    });
     if (!user) {
       return;
     }
@@ -39,7 +42,9 @@ export class EmailQueueService {
   }
 
   async resetPassword(data: ResetPasswordJob['data']): Promise<void> {
-    const user = await this.prisma.user.findFirst({ where: { id: data.userId, deletedAt: null } });
+    const user = await this.prisma.user.findFirst({
+      where: { id: data.userId, deletedAt: null },
+    });
     if (!user) {
       return;
     }

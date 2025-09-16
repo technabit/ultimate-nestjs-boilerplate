@@ -1,4 +1,3 @@
-import { AuthService, GlobalConfig, PrismaHealthIndicator } from '@technabit/nest-core';
 import { ConfigService } from '@nestjs/config';
 import {
   HealthCheckService,
@@ -6,6 +5,11 @@ import {
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
 import { Test, TestingModule } from '@nestjs/testing';
+import {
+  AuthService,
+  GlobalConfig,
+  PrismaHealthIndicator,
+} from '@technabit/nest-core';
 import { HealthController } from './health.controller';
 
 describe('HealthController', () => {

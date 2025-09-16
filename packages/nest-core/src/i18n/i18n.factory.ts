@@ -1,5 +1,5 @@
-import { GlobalConfig } from '@/core/config/config.type';
-import { ConfigService } from '@nestjs/config';
+import appConfig from '@/core/config/app/app.config';
+import { ConfigType } from '@nestjs/config';
 import fs from 'fs';
 import { I18nOptionsWithoutResolvers } from 'nestjs-i18n';
 import path from 'path';
@@ -114,10 +114,10 @@ function mergeTranslations(paths: string[], targetDir: string) {
 }
 
 function useI18nFactory(
-  configService: ConfigService<GlobalConfig>,
+  cfg: ConfigType<typeof appConfig>,
   i18nPathsConfig?: I18nPathsConfig,
 ): I18nOptionsWithoutResolvers {
-  const env = configService.get('app.nodeEnv', { infer: true });
+  const env = cfg.nodeEnv;
   const isLocal = env === 'local';
   const isDevelopment = env === 'development';
   // Prefer common app-local i18n paths; create a safe fallback if missing
@@ -174,7 +174,10 @@ function useI18nFactory(
       : distTranslationsDir;
 
   // Configure types output. Default to app's src/generated/i18n.generated.ts
-  const defaultTypesOut = path.resolve(appCwd, 'src/generated/i18n.generated.ts');
+  const defaultTypesOut = path.resolve(
+    appCwd,
+    'src/generated/i18n.generated.ts',
+  );
   let typesOutputPath = i18nPathsConfig?.typesOutputPath
     ? path.isAbsolute(i18nPathsConfig.typesOutputPath)
       ? i18nPathsConfig.typesOutputPath
@@ -189,9 +192,7 @@ function useI18nFactory(
   const shouldGenerateTypes = !process.cwd().includes('packages/nest-core');
 
   return {
-    fallbackLanguage: configService.getOrThrow('app.fallbackLanguage', {
-      infer: true,
-    }),
+    fallbackLanguage: cfg.fallbackLanguage,
     loaderOptions: {
       path: translationsPath,
       watch: !isProd,

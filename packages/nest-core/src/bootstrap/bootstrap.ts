@@ -22,12 +22,12 @@ import {
   getCorsOptions,
   getHelmetOptions,
 } from '@/core/config/security/security.config';
-import { Environment } from '@core/constants/app';
 import { SentryInterceptor } from '@/core/interceptors/sentry.interceptor';
 import { basicAuthMiddleware } from '@/core/middlewares/basic-auth.middleware';
 import { RedisIoAdapter } from '@/core/shared/socket/redis.adapter';
 import { consoleLoggingConfig } from '@/core/tools/logger/logger-factory';
 import setupSwagger, { SWAGGER_PATH } from '@/core/tools/swagger/swagger.setup';
+import { Environment } from '@core/constants/app';
 
 export async function configureCommon(
   app: NestFastifyApplication,

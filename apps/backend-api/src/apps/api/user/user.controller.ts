@@ -1,6 +1,3 @@
-import { AuthGuard, CursorPaginatedDto, OffsetPaginatedDto } from '@technabit/nest-core';
-import { Uuid } from '@technabit/nest-core';
-import { CurrentUserSession, ApiAuth } from '@technabit/nest-core';
 import {
   Body,
   Controller,
@@ -13,6 +10,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiAuth,
+  AuthGuard,
+  CurrentUserSession,
+  CursorPaginatedDto,
+  OffsetPaginatedDto,
+  Uuid,
+} from '@technabit/nest-core';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
 import {
   CursorPaginatedUserDto,

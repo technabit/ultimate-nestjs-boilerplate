@@ -2,6 +2,7 @@ import { AuthConfig } from '@/core/config/auth/auth-config.type';
 import { AwsConfig } from '@/core/config/aws/aws-config.types';
 import { DatabaseConfig } from '@/core/config/database/database-config.type';
 import { GrafanaConfig } from '@/core/config/grafana/grafana.type';
+import { GraphqlConfig } from '@/core/config/graphql/graphql-config.type';
 import { MailConfig } from '@/core/config/mail/mail-config.type';
 import { PrismaConfig } from '@/core/config/prisma/prisma.config';
 import { RedisConfig } from '@/core/config/redis/redis-config.type';
@@ -24,4 +25,5 @@ export type GlobalConfig = {
   aws: AwsConfig;
   grafana: GrafanaConfig;
   prisma: PrismaConfig;
+  graphql: GraphqlConfig;
 };

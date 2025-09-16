@@ -1,6 +1,6 @@
-import { AwsS3Service } from '@technabit/nest-core';
 import { File } from '@nest-lab/fastify-multer';
 import { Injectable } from '@nestjs/common';
+import { AwsS3Service } from '@technabit/nest-core';
 
 @Injectable()
 export class FileService {

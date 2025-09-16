@@ -1,6 +1,6 @@
-import { AwsModule } from '@technabit/nest-core';
 import { FastifyMulterModule } from '@nest-lab/fastify-multer';
 import { Module } from '@nestjs/common';
+import { AwsModule } from '@technabit/nest-core';
 import { FileController } from './file.controller';
 import { FileService } from './file.service';
 

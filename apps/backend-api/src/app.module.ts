@@ -2,13 +2,15 @@ import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { FastifyAdapter } from '@bull-board/fastify';
 import {
   BULL_BOARD_PATH,
   CoreModule,
+  graphqlConfig,
+  appConfig,
   useGraphqlFactory,
 } from '@technabit/nest-core';
 
@@ -36,7 +38,7 @@ export class AppModule {
         GraphQLModule.forRootAsync<ApolloDriverConfig>({
           driver: ApolloDriver,
           imports: [ConfigModule],
-          inject: [ConfigService],
+          inject: [graphqlConfig.KEY, appConfig.KEY],
           useFactory: useGraphqlFactory,
         }),
         BullBoardModule.forRoot({

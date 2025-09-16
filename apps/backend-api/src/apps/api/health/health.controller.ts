@@ -1,7 +1,3 @@
-import { AuthService, ErrorDto } from '@technabit/nest-core';
-import { BULL_BOARD_PATH, GlobalConfig } from '@technabit/nest-core';
-import { Queue } from '@technabit/nest-core';
-import { Public, PrismaHealthIndicator, SWAGGER_PATH, Serialize } from '@technabit/nest-core';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Controller, Get, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -14,6 +10,17 @@ import {
   HttpHealthIndicator,
   MicroserviceHealthIndicator,
 } from '@nestjs/terminus';
+import {
+  AuthService,
+  BULL_BOARD_PATH,
+  ErrorDto,
+  GlobalConfig,
+  PrismaHealthIndicator,
+  Public,
+  Queue,
+  SWAGGER_PATH,
+  Serialize,
+} from '@technabit/nest-core';
 import type { Queue as BullQueue } from 'bullmq';
 import { HealthCheckDto, QueueOverviewDto } from './dto/health.dto';
 

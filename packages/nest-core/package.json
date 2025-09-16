@@ -16,7 +16,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsup",
-    "postbuild": "pnpm -w email:build && copyfiles -u 3 'src/i18n/translations/**/*' 'dist/i18n/translations'",
+    "email:build": "pnpm -w email:build",
+    "postbuild": "copyfiles -u 3 'src/i18n/translations/**/*' 'dist/i18n/translations'",
     "dev": "tsup --watch",
     "lint": "eslint 'src/**/*.ts' --fix",
     "test": "echo 'no tests in nest-core yet'"
@@ -77,20 +78,50 @@
     "uuid": "11.0.3"
   },
   "peerDependenciesMeta": {
-    "@aws-sdk/client-s3": { "optional": true },
-    "@nestjs-modules/mailer": { "optional": true },
-    "@socket.io/redis-adapter": { "optional": true },
-    "socket.io": { "optional": true },
-    "@willsoto/nestjs-prometheus": { "optional": true },
-    "nestjs-pino": { "optional": true },
-    "pino-http": { "optional": true },
-    "@sentry/node": { "optional": true },
-    "fastify-multer": { "optional": true },
-    "@nest-lab/fastify-multer": { "optional": true },
-    "@nestjs/websockets": { "optional": true },
-    "@nestjs/platform-socket.io": { "optional": true },
-    "@apollo/server": { "optional": true },
-    "@nestjs/apollo": { "optional": true },
-    "@nestjs/graphql": { "optional": true }
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@nestjs-modules/mailer": {
+      "optional": true
+    },
+    "@socket.io/redis-adapter": {
+      "optional": true
+    },
+    "socket.io": {
+      "optional": true
+    },
+    "@willsoto/nestjs-prometheus": {
+      "optional": true
+    },
+    "nestjs-pino": {
+      "optional": true
+    },
+    "pino-http": {
+      "optional": true
+    },
+    "@sentry/node": {
+      "optional": true
+    },
+    "fastify-multer": {
+      "optional": true
+    },
+    "@nest-lab/fastify-multer": {
+      "optional": true
+    },
+    "@nestjs/websockets": {
+      "optional": true
+    },
+    "@nestjs/platform-socket.io": {
+      "optional": true
+    },
+    "@apollo/server": {
+      "optional": true
+    },
+    "@nestjs/apollo": {
+      "optional": true
+    },
+    "@nestjs/graphql": {
+      "optional": true
+    }
   }
 }

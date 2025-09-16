@@ -12,6 +12,19 @@ export * from './bootstrap/bootstrap';
 
 // Config (avoid name collisions like generic getConfig)
 export { getConfig as getAppConfig } from './config/app/app.config';
+export { default as appConfig } from './config/app/app.config';
+export { default as authConfig } from './config/auth/auth.config';
+export { default as databaseConfig } from './config/database/database.config';
+export { default as mailConfig } from './config/mail/mail.config';
+export { default as redisConfig } from './config/redis/redis.config';
+export { default as bullConfig } from './config/bull/bull.config';
+export { default as sentryConfig } from './config/sentry/sentry.config';
+export { default as throttlerConfig } from './config/throttler/throttler.config';
+export { default as awsConfig } from './config/aws/aws.config';
+export { default as grafanaConfig } from './config/grafana/grafana.config';
+export { default as prismaConfig } from './config/prisma/prisma.config';
+export { default as graphqlConfig } from './config/graphql/graphql.config';
+export { getConfig as getGraphqlConfig } from './config/graphql/graphql.config';
 export type { GlobalConfig } from './config/config.type';
 
 // Prisma

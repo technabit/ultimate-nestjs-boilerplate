@@ -1,9 +1,13 @@
+import appConfig from '@/core/config/app/app.config';
+import graphqlConfig from '@/core/config/graphql/graphql.config';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriverConfig } from '@nestjs/apollo';
+import { ConfigType } from '@nestjs/config';
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import fs from 'fs';
 import path from 'path';
 
 /** Narrow type for anything Apollo/Nest might pass to `context` */
@@ -96,19 +100,26 @@ function normalizeGraphQLContext(ctx: AnyCtx) {
 
 /** Your clean Apollo config factory */
 export default function useGraphqlFastifyFactory(
-  nodeEnv = process.env.NODE_ENV,
+  cfg: ConfigType<typeof graphqlConfig>,
+  appCfg: ConfigType<typeof appConfig>,
 ): ApolloDriverConfig {
-  const isDevLike =
-    nodeEnv === 'development' || nodeEnv === 'local' || nodeEnv === 'test';
+  const appCwd = process.cwd();
+  const isProd = appCfg?.nodeEnv === 'production';
+  const schemaOutDir = isProd
+    ? path.resolve(appCwd, 'dist', 'generated')
+    : path.resolve(appCwd, 'src', 'generated');
+  try {
+    fs.mkdirSync(schemaOutDir, { recursive: true });
+  } catch {}
 
   return {
     // driver is provided where you call GraphQLModule.forRoot
     playground: false,
-    introspection: isDevLike,
-    plugins: isDevLike
+    introspection: cfg.introspection,
+    plugins: cfg.localLandingPage
       ? [ApolloServerPluginLandingPageLocalDefault({ embed: true })]
       : [ApolloServerPluginLandingPageProductionDefault()],
-    autoSchemaFile: path.join(__dirname, '..', '..', 'generated', 'schema.generated.gql'),
+    autoSchemaFile: path.join(schemaOutDir, 'schema.generated.gql'),
 
     // <- the only interesting bit:
     context: (ctx: AnyCtx) => normalizeGraphQLContext(ctx),

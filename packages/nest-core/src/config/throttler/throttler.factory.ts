@@ -1,19 +1,21 @@
-import { GlobalConfig } from '@/core/config/config.type';
+import redisConfig from '@/core/config/redis/redis.config';
+import throttlerConfig from '@/core/config/throttler/throttler.config';
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { Redis } from 'ioredis';
 
-async function useThrottlerFactory(config: ConfigService<GlobalConfig>) {
+async function useThrottlerFactory(
+  throttler: ConfigType<typeof throttlerConfig>,
+  redis: ConfigType<typeof redisConfig>,
+) {
   return {
     throttlers: [
       {
-        ttl: config.getOrThrow('throttler.ttl', { infer: true }),
-        limit: config.getOrThrow('throttler.limit', { infer: true }),
+        ttl: throttler.ttl,
+        limit: throttler.limit,
       },
     ],
-    storage: new ThrottlerStorageRedisService(
-      new Redis(config.getOrThrow('redis')),
-    ),
+    storage: new ThrottlerStorageRedisService(new Redis(redis as any)),
   };
 }
 
