@@ -14,6 +14,7 @@ import {
   useGraphqlFactory,
 } from '@technabit/nest-core';
 
+import { CommonModule } from './common/common.module';
 import { ModulesModule } from './modules/modules.module';
 import { WorkerModule } from './worker/worker.module';
 
@@ -49,6 +50,7 @@ export class AppModule {
             typeof BullBoardModule.forFeature
           >[0][]),
         ),
+        CommonModule,
         ModulesModule,
       ],
     };

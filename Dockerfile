@@ -31,7 +31,6 @@ COPY --chown=node:node package*.json pnpm-lock.yaml ./
 COPY --chown=node:node --from=development /app/node_modules ./node_modules
 COPY --chown=node:node --from=development /app/apps ./apps
 COPY --chown=node:node --from=development /app/packages ./packages
-COPY --chown=node:node --from=development /app/prisma ./prisma
 COPY --chown=node:node --from=development /app/scripts ./scripts
 COPY --chown=node:node --from=development /app/tsconfig.json ./tsconfig.json
 COPY --chown=node:node --from=development /app/tsconfig.build.json ./tsconfig.build.json
@@ -44,9 +43,9 @@ COPY --chown=node:node --from=development /app/.env ./.env
 RUN pnpm turbo run build --filter=@technabit/backend-api
 
 # Generate Prisma client and run migrations & seed (if present)
-RUN pnpm prisma:generate \
- && (test -d prisma/migrations && pnpm prisma:migrate:deploy || echo 'No Prisma migrations to deploy') \
- && (node -e "process.exit(require('fs').existsSync('prisma/seed.ts')?0:1)" && pnpm db:seed || echo 'No Prisma seed to run')
+RUN pnpm -F @technabit/backend-api prisma:generate \
+ && (test -d apps/backend-api/prisma/migrations && pnpm -F @technabit/backend-api prisma:migrate:deploy || echo 'No Prisma migrations to deploy') \
+ && (node -e "process.exit(require('fs').existsSync('apps/backend-api/prisma/seed.ts')?0:1)" && pnpm -F @technabit/backend-api db:seed || echo 'No Prisma seed to run')
 
 # Removes unnecessary packages and re-install only production dependencies
 ENV NODE_ENV production

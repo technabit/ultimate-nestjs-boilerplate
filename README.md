@@ -51,13 +51,13 @@ pnpm docker:dev:up
 
 ```
 # Generate Prisma client
-pnpm prisma:generate
+pnpm -F @technabit/backend-api prisma:generate
 
 # Create/Apply migrations (dev)
-pnpm prisma:migrate:dev
+pnpm -F @technabit/backend-api prisma:migrate:dev
 
 # Seed database
-pnpm db:seed
+pnpm -F @technabit/backend-api db:seed
 ```
 
 ### Better Auth🔒

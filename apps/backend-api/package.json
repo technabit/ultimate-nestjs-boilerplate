@@ -10,7 +10,11 @@
     "dev": "nest start --watch",
     "start": "nest start",
     "test": "pnpm -w test",
-    "lint": "pnpm -w lint"
+    "lint": "pnpm -w lint",
+    "prisma:generate": "prisma generate --schema ./prisma/schema.prisma",
+    "prisma:migrate:dev": "prisma migrate dev --schema ./prisma/schema.prisma",
+    "prisma:migrate:deploy": "prisma migrate deploy --schema ./prisma/schema.prisma",
+    "db:seed": "prisma db seed --schema ./prisma/schema.prisma"
   },
   "dependencies": {
     "@apollo/server": "^4",
@@ -42,7 +46,7 @@
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^6.2.1",
     "@nestjs/websockets": "^10.4.7",
-    "@prisma/client": "^6.0.0",
+    "@prisma/client": "^6.16.1",
     "@sentry/node": "^7.29.0",
     "@sentry/tracing": "^7.29.0",
     "@socket.io/redis-adapter": "^8.3.0",
@@ -82,5 +86,8 @@
     "socket.io": "^4.8.1",
     "tslib": "^2.7.0",
     "uuid": "11.0.3"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }

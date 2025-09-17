@@ -25,11 +25,7 @@
     "format": "prettier --write 'apps/**/*.ts' 'packages/**/*.ts'",
     "prepare": "husky || true",
     "graph:app": "madge ./apps/backend-api/src/main.ts --image ./.tmp/graph.png",
-    "graph:circular": "madge --circular ./apps/backend-api/src/main.ts --image ./.tmp/circular.png",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate:dev": "prisma migrate dev",
-    "prisma:migrate:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed"
+    "graph:circular": "madge --circular ./apps/backend-api/src/main.ts --image ./.tmp/circular.png"
   },
   "dependencies": {},
   "devDependencies": {
@@ -85,9 +81,7 @@
     "prisma": "^6.0.0",
     "turbo": "^2.2.3"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
+  
   "pnpm": {
     "onlyBuiltDependencies": [
       "@prisma/client"
