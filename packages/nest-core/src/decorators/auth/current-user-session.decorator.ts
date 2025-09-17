@@ -18,7 +18,7 @@ export const CurrentUserSession = createParamDecorator(
   ): CurrentUserSession => {
     const contextType: ContextType & 'graphql' = ctx.getType();
 
-    let request: FastifyRequest & UserSessionType;
+    let request: FastifyRequest & Partial<UserSessionType> & { user?: any };
 
     if (contextType === 'graphql') {
       const gqlCtx = GqlExecutionContext.create(ctx);
@@ -27,11 +27,20 @@ export const CurrentUserSession = createParamDecorator(
       request = ctx.switchToHttp().getRequest();
     }
 
-    return data == null
-      ? {
-          ...request?.session,
-          headers: request?.headers,
-        }
-      : request.session?.[data];
+    if (data == null) {
+      const session = (request as any)?.session;
+      const user = (request as any)?.user;
+      return {
+        session,
+        user,
+        headers: request?.headers,
+      } as unknown as CurrentUserSession;
+    }
+
+    if (data === 'headers') {
+      return request.headers as unknown as CurrentUserSession;
+    }
+
+    return ((request as any)?.session?.[data]) as unknown as CurrentUserSession;
   },
 );

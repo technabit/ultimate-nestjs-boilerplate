@@ -24,7 +24,10 @@
   },
   "i18nTranslations": "dist/i18n/translations",
   "dependencies": {
-    "tslib": "^2.7.0"
+    "tslib": "^2.7.0",
+    "dotenv": "^16.4.5",
+    "@prisma/client": "^6.16.0",
+    "@prisma/adapter-pg": "^6.16.0"
   },
   "devDependencies": {
     "tsup": "^8.3.0",
@@ -50,7 +53,7 @@
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^6",
-    "@prisma/client": "^6.0.0",
+    "@prisma/client": "^6.16.0",
     "@sentry/node": "^7.29.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@willsoto/nestjs-prometheus": "^6",

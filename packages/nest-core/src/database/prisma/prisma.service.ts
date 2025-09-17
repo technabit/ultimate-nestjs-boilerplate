@@ -7,17 +7,18 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 import { PrismaLogger } from './prisma-logger';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
 @Injectable()
-export class PrismaService
-  extends PrismaClient
+export class PrismaService extends PrismaClient
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);
 
   private isConnected = false;
-  private connectionAttempts = 0;
   private isShuttingDown = false;
+  private pgPool: Pool | null = null;
 
   // Internal configuration (not exposed directly)
   private readonly cfg: {
@@ -40,6 +41,7 @@ export class PrismaService
     const dbCfg = (configService as ConfigService).get('database', {
       infer: true,
     }) as any;
+
     const host = dbCfg?.host ?? 'localhost';
     const port = dbCfg?.port ?? 5432;
     const user = dbCfg?.username ?? 'postgres';
@@ -49,24 +51,34 @@ export class PrismaService
     const rejectUnauthorized = dbCfg?.ssl?.rejectUnauthorized;
 
     const searchParams: string[] = [];
+
     if (hasSsl) {
       searchParams.push('sslmode=require');
       if (typeof rejectUnauthorized === 'boolean') {
         searchParams.push(`rejectUnauthorized=${rejectUnauthorized}`);
       }
     }
+
     const query = searchParams.length ? `?${searchParams.join('&')}` : '';
 
     const fallbackUrl = `postgresql://${encodeURIComponent(user)}:${encodeURIComponent(
       pass,
     )}@${host}:${port}/${db}${query}`;
 
+    // Use Prisma driver adapter for node-postgres shared Pool
+    const pool = new Pool({
+      connectionString: urlFromEnv || fallbackUrl,
+      ssl: hasSsl
+        ? typeof rejectUnauthorized === 'boolean'
+          ? { rejectUnauthorized }
+          : true
+        : undefined,
+    });
+
+    const adapter = new PrismaPg(pool);
+
     super({
-      datasources: {
-        db: {
-          url: urlFromEnv || fallbackUrl,
-        },
-      },
+      adapter,
       log: [
         { emit: 'event', level: 'query' },
         { emit: 'stdout', level: 'error' },
@@ -74,10 +86,13 @@ export class PrismaService
       ],
     });
 
+    this.pgPool = pool;
+
     // Configure structured Prisma logging & middleware
     const prismaCfg = (this.configService as ConfigService).get('prisma', {
       infer: true,
     }) as any;
+
     const prismaLogger = new PrismaLogger({
       enabled: prismaCfg?.logging?.enabled ?? false,
       slowQueryThresholdMs: prismaCfg?.logging?.slowQueryThresholdMs ?? 200,
@@ -85,8 +100,10 @@ export class PrismaService
       maxQueryLength: prismaCfg?.logging?.maxQueryLength ?? 2000,
       level: 'debug',
     });
+
     // Use extension-based interception (Prisma v6+)
     this.$extends(prismaLogger.asExtension());
+
     // Also tap into query events when enabled and collect basic metrics
     this.$on('query' as any, (e: any) => {
       prismaLogger.handleQueryEvent(e);
@@ -143,7 +160,6 @@ export class PrismaService
 
     for (let attempt = 1; attempt <= maxRetries + 1; attempt++) {
       try {
-        this.connectionAttempts = attempt;
         await this.$connect();
         this.isConnected = true;
         this.logger.log(
@@ -189,6 +205,11 @@ export class PrismaService
       await this.$disconnect();
       this.isConnected = false;
       this.logger.log('Prisma disconnected gracefully');
+
+      if (this.pgPool) {
+        await this.pgPool.end();
+        this.logger.log('PostgreSQL pool closed');
+      }
     } catch (err) {
       this.logger.error('Error during graceful shutdown:', err as Error);
       throw err;

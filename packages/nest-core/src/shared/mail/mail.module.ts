@@ -14,7 +14,6 @@ import { MailService } from './mail.service';
       inject: [mailConfig.KEY],
       useFactory: useMailFactory,
     }),
-    // No DB dependency here; Prisma usage will be injected where needed.
   ],
   providers: [MailService],
   exports: [MailService],

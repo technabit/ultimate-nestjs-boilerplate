@@ -4,8 +4,13 @@
       "name": "technabit-backend-api",
       "script": "dist/main.js",
       "cwd": ".",
+      "instances": 1,
+      "autorestart": true,
+      "watch": false,
+      "time": true,
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "IS_WORKER": "false"
       }
     }
   ]
