@@ -5,13 +5,16 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaClient } from '@prisma/client';
 import { PrismaLogger } from './prisma-logger';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 
+// Resolve PrismaClient at runtime from the consumer app to avoid bundling a separate client
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { PrismaClient: RuntimePrismaClient }: any = require('@prisma/client');
+
 @Injectable()
-export class PrismaService extends PrismaClient
+export class PrismaService extends (RuntimePrismaClient as new (...args: any[]) => any)
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);
@@ -101,10 +104,7 @@ export class PrismaService extends PrismaClient
       level: 'debug',
     });
 
-    // Use extension-based interception (Prisma v6+)
-    this.$extends(prismaLogger.asExtension());
-
-    // Also tap into query events when enabled and collect basic metrics
+    // Tap into query events when enabled and collect basic metrics
     this.$on('query' as any, (e: any) => {
       prismaLogger.handleQueryEvent(e);
       try {

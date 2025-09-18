@@ -35,6 +35,8 @@
     "@nestjs/cli": "^10.4.5",
     "@nestjs/schematics": "^10.1.4",
     "@nestjs/testing": "^10.4.4",
+    "@prisma/adapter-pg": "6.16.0",
+    "@prisma/client": "6.16.2",
     "@react-email/components": "0.0.41",
     "@react-email/render": "1.1.2",
     "@swc/cli": "^0.4.0",
