@@ -17,6 +17,8 @@ model User {
   twofactors          TwoFactor[]
   passkeys            Passkey[]
 
+  deletedAt DateTime?
+
   @@unique([email])
   @@unique([username])
   @@unique([phoneNumber])

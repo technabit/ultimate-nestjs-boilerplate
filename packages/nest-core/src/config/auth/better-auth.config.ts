@@ -169,7 +169,7 @@ export function getConfig({
         : {}),
     },
     rateLimit: {
-      enabled: true,
+      enabled: false,
       window: 10,
       max: 100,
       customRules: {

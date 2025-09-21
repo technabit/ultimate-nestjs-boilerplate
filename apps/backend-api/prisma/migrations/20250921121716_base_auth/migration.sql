@@ -13,6 +13,7 @@ CREATE TABLE "public"."user" (
     "phoneNumberVerified" BOOLEAN,
     "twoFactorEnabled" BOOLEAN DEFAULT false,
     "externalId" TEXT,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );

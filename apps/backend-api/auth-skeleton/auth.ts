@@ -66,7 +66,11 @@ export const auth: AuthInstance = betterAuth({
         type: "string",
         unique: true,
         required: false,
-      }
+      },
+      deletedAt: {
+        type: "date",
+        required: false,
+      },
     },
   },
   account: {
