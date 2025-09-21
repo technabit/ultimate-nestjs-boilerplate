@@ -4,9 +4,9 @@ import { CacheService } from '@/core/shared/cache/cache.service';
 import { validateUsername } from '@/core/utils/validators/username';
 import { ConfigService } from '@nestjs/config';
 import { APIError } from 'better-auth/api';
-import { magicLink, openAPI, twoFactor, username } from 'better-auth/plugins';
+import { magicLink, openAPI, phoneNumber, twoFactor, username } from 'better-auth/plugins';
 import { passkey } from 'better-auth/plugins/passkey';
-import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth/types';
+import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth';
 import { Pool } from 'pg';
 import { v4 as uuid } from 'uuid';
 
@@ -30,7 +30,16 @@ export function getConfig({
 
   // Core plugins
   const plugins: BetterAuthPlugin[] = [
-    username({ usernameValidator: validateUsername }),
+    (username({
+      usernameValidator: validateUsername,
+      minUsernameLength: 5,
+      maxUsernameLength: 15
+    }) as unknown as BetterAuthPlugin),
+    phoneNumber({
+      sendOTP: ({ phoneNumber, code }, request) => {
+          // Implement sending OTP code via SMS
+      }
+    }),
     magicLink({
       disableSignUp: true,
       async sendMagicLink({ email, url }) {
@@ -60,6 +69,7 @@ export function getConfig({
     appName: appConfig.name,
     secret: authConfig.authSecret,
     baseURL: appConfig.url,
+    trustedOrigins: authConfig.trustedOrigins,
     plugins,
     database: new Pool({
       database: databaseConfig.database,
@@ -96,16 +106,29 @@ export function getConfig({
     session: {
       freshAge: 0, // We perform every sensitive operation via our own API so this is irrelevant.
       modelName: 'session',
+      cookieCache: {
+        enabled: false,
+        maxAge: 3600,
+      }
     },
     user: {
       modelName: 'user',
-      fields: {
-        name: 'firstName',
-        emailVerified: 'isEmailVerified',
+      additionalFields: {
+        externalId: {
+          type: "string",
+          unique: true,
+          required: false,
+        }
       },
     },
     account: {
       modelName: 'account',
+      encryptOAuthTokens: true,
+      accountLinking: {
+        enabled: true,
+        trustedProviders: ["google", "email-password"],
+        allowDifferentEmails: false,
+      }
     },
     verification: {
       modelName: 'verification',
@@ -121,8 +144,10 @@ export function getConfig({
           });
         }
       },
+      sendOnSignUp: true,
+      autoSignInAfterVerification: true,
+      expiresIn: 3600 // 1 hour
     },
-    trustedOrigins: appConfig.corsOrigin as string[],
     socialProviders: {
       ...(authConfig.oAuth.github?.clientId &&
       authConfig.oAuth.github?.clientSecret
@@ -143,13 +168,30 @@ export function getConfig({
           }
         : {}),
     },
+    rateLimit: {
+      enabled: true,
+      window: 10,
+      max: 100,
+      customRules: {
+        "/example/path": {
+          window: 10,
+          max: 100
+        }
+      },
+      storage: "memory",
+      modelName: "rateLimit"
+    },
     advanced: {
+      ipAddress: {
+        ipAddressHeaders: ["x-client-ip", "x-forwarded-for"],
+        disableIpTracking: false
+      },
+      cookiePrefix: authConfig.cookiePrefix,
       database: {
         generateId() {
           return uuid();
         },
       },
-      cookiePrefix: 'TmVzdEpTIEJvaWxlcnBsYXRl',
     },
     // Use Redis for storing sessions
     secondaryStorage: {

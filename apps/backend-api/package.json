@@ -11,6 +11,7 @@
     "start": "nest start",
     "test": "pnpm -w test",
     "lint": "pnpm -w lint",
+    "better-auth:generate-schema": "pnpm dlx @better-auth/cli@latest generate --config ./auth-skeleton/auth.ts --output ./auth-skeleton/prisma/better-auth.prisma",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",

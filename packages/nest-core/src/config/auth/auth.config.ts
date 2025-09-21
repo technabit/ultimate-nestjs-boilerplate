@@ -23,6 +23,14 @@ class EnvironmentVariablesValidator {
   @IsString()
   @IsOptional()
   GITHUB_CLIENT_SECRET: string;
+
+  @IsString()
+  @IsOptional()
+  TRUSTED_ORIGINS: string;
+
+  @IsString()
+  @IsOptional()
+  COOKIE_PREFIX: string;
 }
 
 export function getConfig(): AuthConfig {
@@ -38,6 +46,10 @@ export function getConfig(): AuthConfig {
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
       },
     },
+    trustedOrigins: process.env.TRUSTED_ORIGINS
+      ? process.env.TRUSTED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+      : ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "*.dev.local",],
+    cookiePrefix: process.env.COOKIE_PREFIX ?? "r5FrNpVFQr4vt2kKD6f4yaUJ",
   };
 }
 

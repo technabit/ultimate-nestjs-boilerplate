@@ -10,4 +10,6 @@ export type AuthConfig = {
       clientSecret?: string;
     };
   };
+  trustedOrigins: string[];
+  cookiePrefix: string;
 };
