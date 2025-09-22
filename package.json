@@ -19,7 +19,7 @@
     "docker:prod:down": "node ./bin/compose.mjs prod down",
     "docker:app:logs": "node ./bin/compose.mjs dev logs -f backend-api",
     "email:dev": "email dev --dir ./packages/nest-core/src/shared/mail/templates --port 3002",
-    "email:build": "wait-on ./packages/nest-core/dist/shared/mail && ts-node ./scripts/mail.build.ts",
+    "email:build": "wait-on ./packages/nest-core/dist/shared/mail && ts-node ./packages/nest-core/scripts/mail.build.ts",
     "email:watch": "pnpm run email:build -w",
     "lint": "eslint '{apps,packages,src,test}/**/*.ts' --fix",
     "format": "prettier --write 'apps/**/*.ts' 'packages/**/*.ts'",

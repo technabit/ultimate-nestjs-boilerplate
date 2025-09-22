@@ -1,10 +1,6 @@
 /* eslint-disable no-console */
 /**
- * This is a build script that converts React Email templates into a static html(handlebars) files.
- * Why not use React Email in production?
- * React email uses React.js(duh!). But shipping a whole chunky React package and it's dependencies for just rendering email seems to be a bloat. That's why you can see that we don't ship React in prod and react & react-dom are dev packages in this project.
- * React Email drastically helps us to create component & shared design system based emails. Also, it checks our email templates for spam, accessibility and compatibility with different email clients.
- * But once it has been created, we don't need React at all. The better solution is to just convert your react email templates once completed into static html files.
+ * This is a build script that converts React Email templates into static html (handlebars) files.
  */
 import { render } from '@react-email/render';
 import chokidar from 'chokidar';
@@ -13,13 +9,10 @@ import { Stats } from 'node:fs';
 import path from 'path';
 import React from 'react';
 
-const projectRootDir = path.join(__dirname, '..');
-// New monorepo location for email templates under packages/nest-core
+const packageRootDir = path.join(__dirname, '..');
+// Email templates live inside this package
 const templatesDir = path.join(
-  __dirname,
-  '..',
-  'packages',
-  'nest-core',
+  packageRootDir,
   'src',
   'shared',
   'mail',
@@ -28,7 +21,7 @@ const templatesDir = path.join(
 const outDir = templatesDir.replace('/src/', '/dist/');
 
 if (!fs.existsSync(outDir)) {
-  fs.mkdirSync(outDir);
+  fs.mkdirSync(outDir, { recursive: true });
 }
 
 let isWatchMode = false;
@@ -64,8 +57,8 @@ if (isWatchMode) {
   chokidar
     .watch(templatesDir, {
       ignoreInitial: true,
-      ignored: (path: string, stats: Stats) =>
-        stats?.isFile() && !path.endsWith('.tsx'),
+      ignored: (watchPath: string, stats: Stats) =>
+        stats?.isFile() && !watchPath.endsWith('.tsx'),
     })
     .on('change', (filePath) => {
       if (filePath.endsWith('.tsx')) {
@@ -114,7 +107,7 @@ async function build(files: string[]) {
           stream.write(html);
           stream.end();
           console.info(
-            `✅ ${file} -> ${outDir.replace(projectRootDir, '.')}/${outputFileName}`,
+            `✅ ${file} -> ${outDir.replace(packageRootDir, '.')}\/${outputFileName}`,
           );
         }
       } catch (err) {
@@ -123,3 +116,5 @@ async function build(files: string[]) {
     }),
   );
 }
+
+

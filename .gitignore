@@ -153,3 +153,4 @@ apps/server/dist/packages/nest-core/src/shared/mail/mail.service.js
 apps/server/dist/packages/nest-core/src/shared/mail/mail.service.js.map
 apps/server/dist/packages/nest-core/src/tools/logger/logger-factory.js
 apps/server/dist/packages/nest-core/src/tools/logger/logger-factory.js.map
+apps/backend-api/tsconfig.build.tsbuildinfo

@@ -90,6 +90,7 @@ export function getConfig({
     }),
     emailAndPassword: {
       enabled: true,
+      disableSignUp: true,
       autoSignIn: false,
       requireEmailVerification: true,
       sendResetPassword: async ({ url, user }) => {
