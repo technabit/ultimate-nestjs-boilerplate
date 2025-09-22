@@ -27,7 +27,7 @@ import sentryConfig from '@/core/config/sentry/sentry.config';
 import throttlerConfig from '@/core/config/throttler/throttler.config';
 import useThrottlerFactory from '@/core/config/throttler/throttler.factory';
 import { AppThrottlerGuard } from '@/core/config/throttler/throttler.guard';
-import useGraphqlFactory from '@/core/graphql/graphql-fastify.factory';
+import useGraphqlFactory from '@/core/graphql/factories/graphql-fastify.factory';
 import useI18nFactory from '@/core/i18n/i18n.factory';
 import { CoreApiOptions, CoreI18nOptions } from '@/core/types/core-api-options';
 import { CoreQueuesModule } from '@/core/queues/queues.module';

@@ -17,7 +17,10 @@ const usage = () => {
       '  node ./bin/compose.mjs dev up\n' +
       '  node ./bin/compose.mjs prod up --build --force-recreate\n' +
       '  node ./bin/compose.mjs dev down\n' +
-      '  node ./bin/compose.mjs dev logs -f backend-api',
+      '  node ./bin/compose.mjs dev logs -f backend-api\n' +
+      '\n' +
+      'Notes:\n' +
+      '  Compose files are now under ./docker/',
   );
 };
 
@@ -93,8 +96,8 @@ if (!runner) {
 }
 
 const composeFiles = [
-  path.join(root, 'docker-compose.yml'),
-  path.join(root, profile === 'dev' ? 'docker-compose.dev.yml' : 'docker-compose.prod.yml'),
+  path.join(root, 'docker', 'docker-compose.yml'),
+  path.join(root, 'docker', profile === 'dev' ? 'docker-compose.dev.yml' : 'docker-compose.prod.yml'),
 ];
 
 const baseArgs = [];

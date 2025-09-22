@@ -4,7 +4,7 @@ services:
     image: technabit-backend-api:latest
     restart: unless-stopped
     env_file:
-      - .env
+      - ../.env
     environment:
       - IS_WORKER=false
       - PM2_ONLY=nestjs-boilerplate
@@ -20,7 +20,7 @@ services:
     image: technabit-backend-worker:latest
     restart: unless-stopped
     env_file:
-      - .env
+      - ../.env
     environment:
       - IS_WORKER=true
       - PM2_ONLY=technabit-backend-worker
@@ -40,7 +40,7 @@ services:
     environment:
       REDIS_ARGS: '--requirepass ${REDIS_PASSWORD}'
     volumes:
-      - ./.docker/redis_data:/data
+      - ../.docker/redis_data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
     command: 'redis-server --save 120 1 --loglevel warning'
@@ -74,8 +74,8 @@ services:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     volumes:
-      - ./src/core/tools/grafana/provisioning:/etc/grafana/provisioning
-      - ./src/core/tools/grafana/dashboards:/var/lib/grafana/dashboards
+      - ../packages/nest-core/src/tools/grafana/provisioning:/etc/grafana/provisioning
+      - ../packages/nest-core/src/tools/grafana/dashboards:/var/lib/grafana/dashboards
     networks:
       - technabit-nestjs-stack-network
     profiles:
@@ -110,7 +110,7 @@ services:
       - |
         chown -R 65534:65534 /prometheus
     volumes:
-      - ./.docker/prometheus-data:/prometheus
+      - ../.docker/prometheus-data:/prometheus
     profiles:
       - monitoring
 
@@ -126,7 +126,7 @@ services:
       - |
         chown -R 65534:65534 /var/lib/grafana
     volumes:
-      - ./.docker/grafana-data:/var/lib/grafana
+      - ../.docker/grafana-data:/var/lib/grafana
     profiles:
       - monitoring
 

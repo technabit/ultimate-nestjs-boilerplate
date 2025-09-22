@@ -4,7 +4,7 @@ export { default as useThrottlerFactory } from './config/throttler/throttler.fac
 export { AppThrottlerGuard } from './config/throttler/throttler.guard';
 export { CoreModule } from './core.module';
 export type { CoreI18nOptions, CoreApiOptions } from './types/core-api-options';
-export { default as useGraphqlFactory } from './graphql/graphql-fastify.factory';
+export { default as useGraphqlFactory } from './graphql/factories/graphql-fastify.factory';
 export { default as useI18nFactory } from './i18n/i18n.factory';
 
 // Bootstrap helpers
