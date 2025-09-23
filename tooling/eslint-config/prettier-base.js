@@ -3,7 +3,10 @@
  * @type {import("prettier").Config}
  */
 const config = {
-  singleQuote: true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "plugins": ["prettier-plugin-organize-imports"],
+  "organizeImportsSkipDestructiveCodeActions": true
 };
 
 export default config;

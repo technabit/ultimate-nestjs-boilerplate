@@ -13,5 +13,9 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "7.8.2",
     "tslib": "^2.7.0"
+  },
+  "devDependencies": {
+    "@technabit/eslint-config": "workspace:*",
+    "@technabit/typescript-config": "workspace:*"
   }
 }
