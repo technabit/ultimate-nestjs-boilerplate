@@ -1,7 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { magicLink, openAPI, phoneNumber, twoFactor, username } from 'better-auth/plugins';
+import {
+  magicLink,
+  openAPI,
+  phoneNumber,
+  twoFactor,
+  username,
+} from 'better-auth/plugins';
 import { passkey } from 'better-auth/plugins/passkey';
 import { v4 as uuid } from 'uuid';
 
@@ -17,12 +23,12 @@ const isProd = process.env.NODE_ENV === 'production';
 const plugins = [
   username({
     minUsernameLength: 5,
-    maxUsernameLength: 15
+    maxUsernameLength: 15,
   }),
   phoneNumber({
     sendOTP: ({ phoneNumber, code }, request) => {
       // Implement sending OTP code via SMS
-    }
+    },
   }),
   magicLink({
     disableSignUp: true,
@@ -42,7 +48,12 @@ export const auth: AuthInstance = betterAuth({
   appName,
   secret: authSecret,
   baseURL,
-  trustedOrigins: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "*.dev.local",],
+  trustedOrigins: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    '*.dev.local',
+  ],
   plugins,
   database: prismaAdapter(client, {
     provider: 'postgresql',
@@ -63,12 +74,12 @@ export const auth: AuthInstance = betterAuth({
     modelName: 'user',
     additionalFields: {
       externalId: {
-        type: "string",
+        type: 'string',
         unique: true,
         required: false,
       },
       deletedAt: {
-        type: "date",
+        type: 'date',
         required: false,
       },
     },
@@ -78,9 +89,9 @@ export const auth: AuthInstance = betterAuth({
     encryptOAuthTokens: true,
     accountLinking: {
       enabled: true,
-      trustedProviders: ["google", "email-password"],
+      trustedProviders: ['google', 'email-password'],
       allowDifferentEmails: false,
-    }
+    },
   },
   verification: {
     modelName: 'verification',
@@ -91,25 +102,25 @@ export const auth: AuthInstance = betterAuth({
     },
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
-    expiresIn: 3600 // 1 hour
+    expiresIn: 3600, // 1 hour
   },
   rateLimit: {
     enabled: true,
     window: 10,
     max: 100,
     customRules: {
-      "/example/path": {
+      '/example/path': {
         window: 10,
-        max: 100
-      }
+        max: 100,
+      },
     },
-    storage: "memory",
-    modelName: "rateLimit"
+    storage: 'memory',
+    modelName: 'rateLimit',
   },
   advanced: {
     ipAddress: {
-      ipAddressHeaders: ["x-client-ip", "x-forwarded-for"],
-      disableIpTracking: false
+      ipAddressHeaders: ['x-client-ip', 'x-forwarded-for'],
+      disableIpTracking: false,
     },
     cookiePrefix: 'r5FrNpVFQr4vt2kKD6f4yaUJ',
     database: {

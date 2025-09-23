@@ -4,7 +4,13 @@ import { CacheService } from '@/core/shared/cache/cache.service';
 import { validateUsername } from '@/core/utils/validators/username';
 import { ConfigService } from '@nestjs/config';
 import { APIError } from 'better-auth/api';
-import { magicLink, openAPI, phoneNumber, twoFactor, username } from 'better-auth/plugins';
+import {
+  magicLink,
+  openAPI,
+  phoneNumber,
+  twoFactor,
+  username,
+} from 'better-auth/plugins';
 import { passkey } from 'better-auth/plugins/passkey';
 import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth';
 import { Pool } from 'pg';
@@ -30,15 +36,15 @@ export function getConfig({
 
   // Core plugins
   const plugins: BetterAuthPlugin[] = [
-    (username({
+    username({
       usernameValidator: validateUsername,
       minUsernameLength: 5,
-      maxUsernameLength: 15
-    }) as unknown as BetterAuthPlugin),
+      maxUsernameLength: 15,
+    }) as unknown as BetterAuthPlugin,
     phoneNumber({
       sendOTP: ({ phoneNumber, code }, request) => {
-          // Implement sending OTP code via SMS
-      }
+        // Implement sending OTP code via SMS
+      },
     }),
     magicLink({
       disableSignUp: true,
@@ -110,16 +116,16 @@ export function getConfig({
       cookieCache: {
         enabled: false,
         maxAge: 3600,
-      }
+      },
     },
     user: {
       modelName: 'user',
       additionalFields: {
         externalId: {
-          type: "string",
+          type: 'string',
           unique: true,
           required: false,
-        }
+        },
       },
     },
     account: {
@@ -127,9 +133,9 @@ export function getConfig({
       encryptOAuthTokens: true,
       accountLinking: {
         enabled: true,
-        trustedProviders: ["google", "email-password"],
+        trustedProviders: ['google', 'email-password'],
         allowDifferentEmails: false,
-      }
+      },
     },
     verification: {
       modelName: 'verification',
@@ -147,7 +153,7 @@ export function getConfig({
       },
       sendOnSignUp: true,
       autoSignInAfterVerification: true,
-      expiresIn: 3600 // 1 hour
+      expiresIn: 3600, // 1 hour
     },
     socialProviders: {
       ...(authConfig.oAuth.github?.clientId &&
@@ -174,18 +180,18 @@ export function getConfig({
       window: 10,
       max: 100,
       customRules: {
-        "/example/path": {
+        '/example/path': {
           window: 10,
-          max: 100
-        }
+          max: 100,
+        },
       },
-      storage: "memory",
-      modelName: "rateLimit"
+      storage: 'memory',
+      modelName: 'rateLimit',
     },
     advanced: {
       ipAddress: {
-        ipAddressHeaders: ["x-client-ip", "x-forwarded-for"],
-        disableIpTracking: false
+        ipAddressHeaders: ['x-client-ip', 'x-forwarded-for'],
+        disableIpTracking: false,
       },
       cookiePrefix: authConfig.cookiePrefix,
       database: {

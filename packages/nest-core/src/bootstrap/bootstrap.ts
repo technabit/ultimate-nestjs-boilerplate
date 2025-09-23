@@ -36,7 +36,9 @@ export async function configureCommon(
   const isWorker = !!opts?.isWorker;
   const configService = app.get(ConfigService<GlobalConfig>);
 
-  const raw = app.getHttpAdapter().getInstance() as import('fastify').FastifyInstance;
+  const raw = app
+    .getHttpAdapter()
+    .getInstance() as import('fastify').FastifyInstance;
 
   await raw.register(fastifyCookie as any, {
     secret: configService.getOrThrow('auth.authSecret', {

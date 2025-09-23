@@ -41,6 +41,6 @@ export const CurrentUserSession = createParamDecorator(
       return request.headers as unknown as CurrentUserSession;
     }
 
-    return ((request as any)?.session?.[data]) as unknown as CurrentUserSession;
+    return (request as any)?.session?.[data] as unknown as CurrentUserSession;
   },
 );

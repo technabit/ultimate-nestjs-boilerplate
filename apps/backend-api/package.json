@@ -78,6 +78,8 @@
     "uuid": "11.0.3"
   },
   "devDependencies": {
+    "@technabit/eslint-config": "workspace:*",
+    "@technabit/typescript-config": "workspace:*",
     "prisma": "^6.16.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.5"

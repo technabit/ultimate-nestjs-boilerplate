@@ -10,11 +10,12 @@ import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 // Resolve PrismaClient at runtime from the consumer app to avoid bundling a separate client
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const { PrismaClient: RuntimePrismaClient }: any = require('@prisma/client');
 
 @Injectable()
-export class PrismaService extends (RuntimePrismaClient as new (...args: any[]) => any)
+export class PrismaService
+  extends (RuntimePrismaClient as new (...args: any[]) => any)
   implements OnModuleInit, OnModuleDestroy
 {
   private readonly logger = new Logger(PrismaService.name);

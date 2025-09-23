@@ -1,12 +1,17 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@technabit/typescript-config/nestjs.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "strict": true,
     "rootDir": "./src",
     "outDir": "./dist",
     "paths": {
-      "@technabit/backend-api/*": ["apps/backend-api/src/*"],
-      "@/*": ["apps/backend-api/src/*"],
+      "@technabit/backend-api/*": [
+        "src/*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
     }
   },
   "include": [

@@ -15,5 +15,3 @@ export type CoreApiOptions = CoreI18nOptions & {
     features?: Array<Record<string, any>>;
   };
 };
-
-

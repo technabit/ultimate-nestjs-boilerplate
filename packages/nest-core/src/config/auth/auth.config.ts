@@ -47,9 +47,16 @@ export function getConfig(): AuthConfig {
       },
     },
     trustedOrigins: process.env.TRUSTED_ORIGINS
-      ? process.env.TRUSTED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
-      : ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "*.dev.local",],
-    cookiePrefix: process.env.COOKIE_PREFIX ?? "r5FrNpVFQr4vt2kKD6f4yaUJ",
+      ? process.env.TRUSTED_ORIGINS.split(',')
+          .map((origin) => origin.trim())
+          .filter(Boolean)
+      : [
+          'http://localhost:3000',
+          'http://localhost:3001',
+          'http://localhost:3002',
+          '*.dev.local',
+        ],
+    cookiePrefix: process.env.COOKIE_PREFIX ?? 'r5FrNpVFQr4vt2kKD6f4yaUJ',
   };
 }
 

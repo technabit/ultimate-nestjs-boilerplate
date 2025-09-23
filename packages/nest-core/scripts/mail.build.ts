@@ -116,5 +116,3 @@ async function build(files: string[]) {
     }),
   );
 }
-
-

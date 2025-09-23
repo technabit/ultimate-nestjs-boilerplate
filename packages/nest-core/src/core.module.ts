@@ -134,12 +134,16 @@ export class CoreModule {
 
     const bullBoard = options?.bullBoard;
     const bullBoardEnabled = bullBoard?.enabled !== false;
-    if (bullBoardEnabled && bullBoard?.features && bullBoard.features.length > 0) {
+    if (
+      bullBoardEnabled &&
+      bullBoard?.features &&
+      bullBoard.features.length > 0
+    ) {
       try {
         // Lazy load so nest-core doesn't hard depend on bull-board packages
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+
         const { BullBoardModule } = require('@bull-board/nestjs');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+
         const { FastifyAdapter } = require('@bull-board/fastify');
 
         const route = bullBoard?.route ?? BULL_BOARD_PATH;

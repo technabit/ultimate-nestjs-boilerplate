@@ -10,5 +10,3 @@ export const bullBoardFeatures = (Object.values(Queue) as string[]).map(
 );
 
 export default bullBoardFeatures;
-
-

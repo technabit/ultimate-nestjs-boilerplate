@@ -4,4 +4,3 @@ export type GraphqlConfig = {
   // Use Apollo local landing page (instead of production)
   localLandingPage: boolean;
 };
-
