@@ -3,13 +3,17 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import {
   magicLink,
-  openAPI,
   phoneNumber,
   twoFactor,
   username,
+  // --
+  openAPI,
+  organization,
+  admin,
+  apiKey,
 } from 'better-auth/plugins';
 import { passkey } from 'better-auth/plugins/passkey';
-import { v4 as uuid } from 'uuid';
+import { v7 as uuidv7 } from 'uuid';
 
 const client = new PrismaClient();
 
@@ -21,6 +25,10 @@ const authSecret = process.env.AUTH_SECRET ?? 'dev-secret';
 const isProd = process.env.NODE_ENV === 'production';
 
 const plugins = [
+  admin({
+
+  }),
+  apiKey(),
   username({
     minUsernameLength: 5,
     maxUsernameLength: 15,
@@ -36,6 +44,7 @@ const plugins = [
       // Wire your email sender here if desired; not needed for schema generation
     },
   }),
+  organization(),
   twoFactor(),
   passkey({
     rpName: appName,
@@ -126,7 +135,7 @@ export const auth: AuthInstance = betterAuth({
     database: {
       useNumberId: false,
       generateId() {
-        return uuid();
+        return uuidv7();
       },
     },
   },

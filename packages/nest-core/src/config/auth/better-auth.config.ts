@@ -14,7 +14,7 @@ import {
 import { passkey } from 'better-auth/plugins/passkey';
 import { BetterAuthOptions, BetterAuthPlugin } from 'better-auth';
 import { Pool } from 'pg';
-import { v4 as uuid } from 'uuid';
+import { v7 as uuidv7 } from 'uuid';
 
 /**
  * Better Auth Configuration
@@ -96,7 +96,7 @@ export function getConfig({
     }),
     emailAndPassword: {
       enabled: true,
-      disableSignUp: true,
+      disableSignUp: false,
       autoSignIn: false,
       requireEmailVerification: true,
       sendResetPassword: async ({ url, user }) => {
@@ -196,7 +196,7 @@ export function getConfig({
       cookiePrefix: authConfig.cookiePrefix,
       database: {
         generateId() {
-          return uuid();
+          return uuidv7();
         },
       },
     },

@@ -11,7 +11,7 @@
     "start": "nest start",
     "test": "pnpm -w test",
     "lint": "pnpm -w lint",
-    "better-auth:generate-schema": "pnpm dlx @better-auth/cli@latest generate --config ./auth-skeleton/auth.ts --output ./auth-skeleton/prisma/better-auth.prisma",
+    "better-auth:generate-schema": "pnpm dlx @better-auth/cli@latest generate --config ../../packages/nest-core/auth-skeleton/auth.ts --output ./auth-skeleton/prisma/better-auth.prisma",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
@@ -50,6 +50,7 @@
     "@socket.io/redis-adapter": "^8.3.0",
     "@technabit/nest-core": "workspace:*",
     "@willsoto/nestjs-prometheus": "^6.0.1",
+    "bcryptjs": "^3.0.2",
     "better-auth": "^1.3.12",
     "bullmq": "^5.29.1",
     "cache-manager": "^5.7.6",
@@ -78,6 +79,7 @@
     "uuid": "11.0.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
     "@technabit/eslint-config": "workspace:*",
     "@technabit/typescript-config": "workspace:*",
     "prisma": "^6.16.0",

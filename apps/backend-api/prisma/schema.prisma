@@ -8,6 +8,8 @@ datasource db {
 }
 
 model Temp {
-  id                   String   @id @default(cuid())
+  id                   String   @id @db.Uuid
   title                String
+
+  @@map("temp")
 }

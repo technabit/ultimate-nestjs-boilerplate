@@ -1,6 +1,7 @@
 import { createAuthClient } from 'better-auth/client';
 import {
   adminClient,
+  apiKeyClient,
   genericOAuthClient,
   inferAdditionalFields,
   magicLinkClient,
@@ -23,6 +24,7 @@ export const authClient = createAuthClient({
     organizationClient(),
     multiSessionClient(),
     adminClient(),
+    apiKeyClient(),
     genericOAuthClient(),
   ],
 });
