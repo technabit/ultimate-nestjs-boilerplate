@@ -1,10 +1,10 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { CoreModule } from '@technabit/nest-core';
-import bullBoardFeatures from './config/bull-board.config';
 
+import bullBoardFeatures from './config/bull-board.config';
+import { WorkerModule } from './worker/worker.module';
 import { CommonModule } from './common/common.module';
 import { ModulesModule } from './modules/modules.module';
-import { WorkerModule } from './worker/worker.module';
 
 const BULL_BOARD_FEATURES = bullBoardFeatures;
 
