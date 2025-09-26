@@ -110,7 +110,11 @@ export default function useGraphqlFastifyFactory(
     : path.resolve(appCwd, 'src', 'generated');
   try {
     fs.mkdirSync(schemaOutDir, { recursive: true });
-  } catch {}
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException)?.code !== 'EEXIST') {
+      throw error;
+    }
+  }
 
   return {
     // driver is provided where you call GraphQLModule.forRoot

@@ -6,10 +6,17 @@ type FindManyArgs<T> = {
   orderBy?: any;
   select?: any;
   include?: any;
+  skip?: number;
+  take?: number;
+};
+
+type PrismaPaginatorDelegate<T> = {
+  findMany: (args: FindManyArgs<T>) => Promise<T[]>;
+  count: (args: Pick<FindManyArgs<T>, 'where'>) => Promise<number>;
 };
 
 export async function paginateOffsetPrisma<T>(
-  delegate: { findMany: Function; count: Function },
+  delegate: PrismaPaginatorDelegate<T>,
   baseArgs: FindManyArgs<T>,
   pageOptionsDto: PageOptionsDto,
   options?: Partial<{ skipCount: boolean; takeAll: boolean }>,
